@@ -1,4 +1,4 @@
-package data_access;
+package use_case;
 
 public class MedicationData implements Dataclass {
     private int id;

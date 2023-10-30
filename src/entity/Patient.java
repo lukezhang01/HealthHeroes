@@ -1,6 +1,6 @@
 package entity;
 
-import data_access.MedicationData;
+import use_case.MedicationData;
 import java.util.*;
 
 public class Patient implements User {
