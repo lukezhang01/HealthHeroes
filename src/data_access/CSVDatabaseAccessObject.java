@@ -14,7 +14,7 @@ public class CSVDatabaseAccessObject {
     public CSVDatabaseAccessObject(String file_path) throws IOException{
         csvFile = new File(file_path);
         if (csvFile.length() == 0) {
-            return patients;
+            //return patients;
         }
     }
 }
