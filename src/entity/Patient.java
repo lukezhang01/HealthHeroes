@@ -6,37 +6,31 @@ import java.time.LocalDate;
 
 public class Patient implements User {
     private int id;
-    private String name;
-    private String password;
-    private LocalDate appointment_date;
-    private  LocalDate date_added;
+    public String fullName;
+    private int height;
+    private int weight;
+    private ArrayList<LocalDate> appointment_dates;
+    private LocalDate date_added;
     private ArrayList<Drug> prescribed_drugs;
     private ArrayList<String> allergies;
     private ArrayList<String> illnesses;
     private ArrayList<String> symptoms;
 
-    public Patient(int id, String name, String password, LocalDate appointment_date,
+    public Patient(int id, String fullName, int height, int weight, ArrayList<LocalDate> appointment_dates,
                    LocalDate date_added, ArrayList<Drug> prescribed_drugs,
                    ArrayList<String> allergies, ArrayList<String> illnesses, ArrayList<String> symptoms) {
         this.id = id;
-        this.name = name;
-        this.password = password;
-        this.appointment_date = appointment_date;
+        this.fullName = fullName;
+        this.height = height;
+        this.weight = weight;
+        this.appointment_dates = appointment_dates;
         this.date_added = date_added;
         this.prescribed_drugs = prescribed_drugs;
         this.allergies = allergies;
         this.illnesses = illnesses;
         this.symptoms = symptoms;
     }
-    @Override
-    public String getName() {
-        return this.name;
-    }
 
-    @Override
-    public String getPassword() {
-        return this.password;
-    }
 
     public int getID() { return this.id; }
 
@@ -57,12 +51,16 @@ public class Patient implements User {
         this.prescribed_drugs.clear();
     }
 
-    public String getAppointmentDateAsString() {
-        return appointment_date.toString();
+    public String getAppointmentDatesAsString() {
+        String allDates = "";
+        for (LocalDate date : this.appointment_dates) {
+            allDates += date.toString();
+        }
+        return allDates;
     }
 
-    public String getDateAddedAsString() {
-        return date_added.toString();
+    public LocalDate getDateAdded() {
+        return this.date_added;
     }
 
     public String getAllergiesAsString() {
@@ -75,6 +73,13 @@ public class Patient implements User {
 
     public String getSymptomsAsString() {
         return String.join("", this.symptoms);
+    }
+
+    public String[] getAllData() {
+        return new String[]{String.valueOf(this.id), this.fullName, String.valueOf(this.height),
+                            String.valueOf(this.weight), this.getAppointmentDatesAsString(), this.date_added.toString(),
+                            this.getPrescribedDrugsAsString(), this.getAllergiesAsString(), this.getIllnessesAsString(),
+                            this.getSymptomsAsString()};
     }
 
 }

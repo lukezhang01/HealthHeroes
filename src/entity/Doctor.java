@@ -11,14 +11,13 @@ public class Doctor implements User {
         this.password = password;
         this.patients = patients;
     }
-    @Override
+
     public String getName() {
-        return null;
+        return this.name;
     }
 
-    @Override
     public String getPassword() {
-        return null;
+        return this.password;
     }
 
     public void addPatient(Patient new_patient) {
