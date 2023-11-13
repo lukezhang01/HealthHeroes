@@ -14,9 +14,6 @@ public class CSVDatabaseAccessObject implements SignupUserDataAccessInterface {
     private Map<String, Patient> patients = new HashMap<>();
 
     public CSVDatabaseAccessObject(String file_path) throws IOException{
-        csvFile = new File(file_path);
-        if (csvFile.length() == 0) {
-            //return patients;
     }
 
     public Patient readPatientFromCSV(File csvFile) throws  IOException {
