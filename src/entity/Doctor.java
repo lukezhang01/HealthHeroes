@@ -6,19 +6,18 @@ public class Doctor implements User {
     private String password;
     private ArrayList<Patient> patients;
 
-    public void Doctor(String name, String password, ArrayList<Patient> patients) {
+    public Doctor(String name, String password, ArrayList<Patient> patients) {
         this.name = name;
         this.password = password;
         this.patients = patients;
     }
-    @Override
+
     public String getName() {
-        return null;
+        return this.name;
     }
 
-    @Override
     public String getPassword() {
-        return null;
+        return this.password;
     }
 
     public void addPatient(Patient new_patient) {

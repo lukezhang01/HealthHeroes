@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import java.util.Map;
+
 public class FdaDatabaseAccessObject {
     private final String apiKey ;
 
@@ -93,18 +94,13 @@ public class FdaDatabaseAccessObject {
     }
 
 
-    public static void main(String[] args) throws IOException {
-        //Sample calls
-        FdaDatabaseAccessObject obj = new FdaDatabaseAccessObject();
-        System.out.println(obj.recentlyRecalled(5).get(0).get("product_description"));
-        System.out.println(obj.DrugInfo(1,"drug_interactions","caffeine").get(0).get("indications_and_usage"));
-        System.out.println(obj.DrugInfo(1,"drug_interactions","caffeine").get(0).get("spl_unclassified_section_table"));
-        System.out.println(obj.adverseEffects(3,"nonsteroidal+anti-inflammatory+drug").get(0).get("patient"));
-        System.out.println(obj.commonReactions(3,"nonsteroidal+anti-inflammatory+drug"));
-
-
-
-    }
-
+//     public static void main(String[] args) throws IOException {
+//         Sample calls
+//         FdaDatabaseAccessObject obj = new FdaDatabaseAccessObject();
+//         System.out.println(obj.recentlyRecalled(5).get(0).get("product_description"));
+//         System.out.println(obj.DrugInfo(1,"drug_interactions","caffeine").get(0).get("indications_and_usage"));
+//         System.out.println(obj.DrugInfo(1,"drug_interactions","caffeine").get(0).get("spl_unclassified_section_table"));
+//         System.out.println(obj.adverseEffects(3,"nonsteroidal+anti-inflammatory+drug").get(0).get("patient"));
+//         System.out.println(obj.commonReactions(3,"nonsteroidal+anti-inflammatory+drug"));
+// }
 }
-
