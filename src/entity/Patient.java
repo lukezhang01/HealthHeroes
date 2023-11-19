@@ -62,24 +62,33 @@ public class Patient implements User {
     public LocalDate getDateAdded() {
         return this.date_added;
     }
+    public int getWeight() {
+        return this.weight;
+    }
+
+    public int getHeight() {
+        return this.height;
+    }
+    // the following methods insert commas between each element in the array
+    // so that this matches the csv formatting
 
     public String getAllergiesAsString() {
-        return String.join("", this.allergies);
+        return String.join(",", this.allergies);
     }
 
     public String getIllnessesAsString() {
-        return String.join("", this.illnesses);
+        return String.join(",", this.illnesses);
     }
 
     public String getSymptomsAsString() {
-        return String.join("", this.symptoms);
+        return String.join(",", this.symptoms);
     }
 
-    public String[] getAllData() {
-        return new String[]{String.valueOf(this.id), this.fullName, String.valueOf(this.height),
-                            String.valueOf(this.weight), this.getAppointmentDatesAsString(), this.date_added.toString(),
-                            this.getPrescribedDrugsAsString(), this.getAllergiesAsString(), this.getIllnessesAsString(),
-                            this.getSymptomsAsString()};
-    }
+//    public String[] getAllData() {
+//        return new String[]{String.valueOf(this.id), this.fullName, String.valueOf(this.height),
+//                            String.valueOf(this.weight), this.getAppointmentDatesAsString(), this.date_added.toString(),
+//                            this.getPrescribedDrugsAsString(), this.getAllergiesAsString(), this.getIllnessesAsString(),
+//                            this.getSymptomsAsString()};
+//    }
 
 }

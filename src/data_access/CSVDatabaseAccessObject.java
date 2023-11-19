@@ -12,9 +12,28 @@ public class CSVDatabaseAccessObject implements SignupUserDataAccessInterface {
     private final String[] patient_headers = {"id", "full_name", "height", "weight", "appointment_date", "date_added", "prescribed_drugs",
             "allergies", "illnesses", "symptoms"};
     private Map<String, Patient> patients = new HashMap<>();
+    private Doctor doctor;
+    private String[] allPatientIDs;
 
-    public CSVDatabaseAccessObject(String file_path) throws IOException{
-        
+    public CSVDatabaseAccessObject(String doctorFilePath, String patientIDFilePath) throws IOException{
+        File doctorFile = new File(doctorFilePath);
+        File patientIDs = new File(patientIDFilePath);
+        if (doctorFile.length() == 0) {
+            save();
+        } else {
+            try (BufferedReader reader = new BufferedReader(new FileReader(doctorFile))) {
+                reader.readLine();
+                String username = String.valueOf(reader.readLine());
+                reader.readLine();
+                String password = String.valueOf(reader.readLine());
+                reader.readLine();
+                String[] patientList = String.valueOf(reader.readLine()).split(",");
+                ArrayList<Patient> patients = new ArrayList<>();
+                for (String patientID : patientList) {
+
+                }
+            }
+        }
     }
 
     public Patient readPatientFromCSV(File csvFile) throws  IOException {
@@ -72,11 +91,13 @@ public class CSVDatabaseAccessObject implements SignupUserDataAccessInterface {
     private void savePatients() {
         BufferedWriter writer;
         try {
-
             for (Patient patient: patients.values()) {
                 String file_path = "Patient " + patient.getID();
                 writer = new BufferedWriter(new FileWriter(file_path));
-                String[] patientData = patient.getAllData();
+                String[] patientData = new String[]{String.valueOf(patient.getID()), patient.fullName, String.valueOf(patient.getHeight()),
+                            String.valueOf(patient.getWeight()), patient.getAppointmentDatesAsString(), patient.getDateAdded().toString(),
+                            patient.getPrescribedDrugsAsString(), patient.getAllergiesAsString(), patient.getIllnessesAsString(),
+                            patient.getSymptomsAsString()};
                 for (int i = 0; i < patient_headers.length; i++) {
                     writer.write(patient_headers[i]);
                     writer.newLine();
@@ -95,11 +116,13 @@ public class CSVDatabaseAccessObject implements SignupUserDataAccessInterface {
         return false;
     }
 
+
     @Override
-    public void save(Doctor doctor) {
+    public void save() {
         BufferedWriter writer;
         try {
 
+            
 
         } catch (IOException e) {
             throw new RuntimeException(e);
