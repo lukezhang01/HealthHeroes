@@ -1,2 +1,6 @@
-package use_case.prescribe;public class PrescribeOutputData {
+package use_case.prescribe;
+
+public class PrescribeOutputData {
+    public PrescribeOutputData(){
+    }
 }
