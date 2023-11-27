@@ -1,4 +1,5 @@
-package use_case;
+package entity;
+
 import java.time.*;
 
 public class Drug implements Dataclass {

@@ -1,2 +1,5 @@
-package interface_adapter.patientList;public class PatientListPresenter {
+package interface_adapter.patientList;
+
+public class PatientListPresenter {
+
 }
