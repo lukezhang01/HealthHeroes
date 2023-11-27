@@ -1,5 +1,4 @@
-package use_case.signup;
-import entity.*;
+package use_case.ll;
 
 public interface SignupUserDataAccessInterface {
     boolean existsByName(String identifier);

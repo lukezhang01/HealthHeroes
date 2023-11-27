@@ -1,4 +1,4 @@
-package use_case.signup;
+package use_case.ll;
 
 public class SignupOutputData {
     public SignupOutputData() {}
