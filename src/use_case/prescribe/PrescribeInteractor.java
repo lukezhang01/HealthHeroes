@@ -22,6 +22,7 @@ public class PrescribeInteractor implements PrescribeInputBoundary{
     public void execute(PrescribeInputData inputData) {
         if(userDataAccessObject.getPatient(inputData.getPatientid()) != null){
             userDataAccessObject.getPatient(inputData.getPatientid()).addDrug(inputData.getDrug());
+            userPresenter.prepareSuccessView(new PrescribeOutputData(inputData.getDrug()));
         }
         else{
             userPresenter.prepareFailView("Patient does not exist");
