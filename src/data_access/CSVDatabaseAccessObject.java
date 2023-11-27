@@ -2,12 +2,13 @@ package data_access;
 import entity.*;
 import use_case.Drug;
 import use_case.signup.SignupUserDataAccessInterface;
+import use_case.prescribe.PrescribeUserDataInterface;
 
 import java.io.*;
 import java.util.*;
 import java.time.LocalDate;
 
-public class CSVDatabaseAccessObject implements SignupUserDataAccessInterface {
+public class CSVDatabaseAccessObject implements SignupUserDataAccessInterface, PrescribeUserDataInterface{
 
     private final String[] patient_headers = {"id", "full_name", "height", "weight", "appointment_date", "date_added", "prescribed_drugs",
             "allergies", "illnesses", "symptoms"};
