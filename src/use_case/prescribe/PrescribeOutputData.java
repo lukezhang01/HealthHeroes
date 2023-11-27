@@ -1,6 +1,6 @@
 package use_case.prescribe;
 import data_access.FdaDatabaseAccessObject;
-import use_case.Drug;
+import entity.*;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -85,10 +85,9 @@ public class PrescribeOutputData {
             return "Adverse Reactions or Drug Not Found";
         }
     }
-}
 
 
-/*
+
     public static void main(String[] args) throws IOException{
 
         PrescribeOutputData data = new PrescribeOutputData(new Drug("ibuprofen",1, LocalDate.now(),LocalDate.now()));
@@ -97,4 +96,3 @@ public class PrescribeOutputData {
     }
 
 }
-*/
