@@ -1,5 +1,5 @@
 package use_case.prescribe;
-import use_case.Drug;
+import entity.*;
 
 import java.time.LocalDate;
 
