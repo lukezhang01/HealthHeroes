@@ -1,4 +1,4 @@
-package use_case.ll;
+package use_case.signup;
 
 public class SignupInputData {
     final private String username;
