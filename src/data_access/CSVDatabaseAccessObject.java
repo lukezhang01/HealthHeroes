@@ -8,7 +8,7 @@ import java.io.*;
 import java.util.*;
 import java.time.LocalDate;
 
-public class CSVDatabaseAccessObject implements SignupUserDataAccessInterface, PrescribeUserDataInterface{
+public class CSVDatabaseAccessObject implements SignupUserDataAccessInterface{
 
     private final String[] patient_headers = {"id", "full_name", "height", "weight", "appointment_date", "date_added", "prescribed_drugs",
             "allergies", "illnesses", "symptoms"};
