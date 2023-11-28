@@ -1,9 +1,11 @@
 package use_case.prescribe;
 import entity.*;
 
-public interface PrescribeOutputBoundary{
-    void prepareSuccessView(PrescribeOutputData user);
+import java.io.IOException;
 
-    void prepareFailView(String error);
+public interface PrescribeOutputBoundary{
+    void prepareSuccessView(PrescribeOutputData user) throws IOException;
+
+    void prepareFailView(String error) throws IOException;
 
 }
