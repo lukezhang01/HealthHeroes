@@ -14,5 +14,15 @@ public class PatientListOutputData {
         this.dateAdded = dateAdded;
     }
 
+    public String getFullName() {
+        return this.fullName;
+    }
 
+    public String getAppointmentDate() {
+        return this.appointmentDate;
+    }
+
+    public String getDateAdded() {
+        return this.getDateAdded();
+    }
 }
