@@ -1,6 +1,8 @@
 package use_case.prescribe;
 import entity.*;
 
+import java.io.IOException;
+
 
 public class PrescribeInteractor implements PrescribeInputBoundary{
     final PrescribeUserDataInterface userDataAccessObject;
@@ -19,7 +21,7 @@ public class PrescribeInteractor implements PrescribeInputBoundary{
 
 
     @Override
-    public void execute(PrescribeInputData inputData) {
+    public void execute(PrescribeInputData inputData) throws IOException {
         if(userDataAccessObject.getPatient(inputData.getPatientid()) != null){
             userDataAccessObject.getPatient(inputData.getPatientid()).addDrug(inputData.getDrug());
             userPresenter.prepareSuccessView(new PrescribeOutputData(inputData.getDrug()));

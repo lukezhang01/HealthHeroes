@@ -14,6 +14,10 @@ public class PrescribeOutputData {
         this.databaseobj = new FdaDatabaseAccessObject();
     }
 
+    public String getDrugName() {
+        return drugName;
+    }
+
     public String getWarnings() throws IOException {
         try {
             return databaseobj.DrugInfo(1, "spl_product_data_elements", drugName).get(0).get("warnings").toString();

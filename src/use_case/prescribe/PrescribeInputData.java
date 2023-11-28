@@ -8,8 +8,9 @@ public class PrescribeInputData {
 
     private int patientid;
 
-    public PrescribeInputData(Drug drug){
+    public PrescribeInputData(Drug drug,int patientid){
         this.drug=drug;
+        this.patientid = patientid;
     }
 
     public String getName(){
