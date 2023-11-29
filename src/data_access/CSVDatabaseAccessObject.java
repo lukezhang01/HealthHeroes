@@ -1,13 +1,16 @@
 package data_access;
 import entity.*;
-import use_case.Drug;
+import entity.Drug;
 import use_case.signup.SignupUserDataAccessInterface;
+
 
 import java.io.*;
 import java.util.*;
 import java.time.LocalDate;
 
-public class CSVDatabaseAccessObject implements SignupUserDataAccessInterface {
+
+public class CSVDatabaseAccessObject implements SignupUserDataAccessInterface, CSVDatabaseAccessInterface {
+
 
     private final String[] patient_headers = {"id", "full_name", "height", "weight", "appointment_date", "date_added", "prescribed_drugs",
             "allergies", "illnesses", "symptoms"};
@@ -17,6 +20,7 @@ public class CSVDatabaseAccessObject implements SignupUserDataAccessInterface {
     private final String filePath;
     private String username;
     private String password;
+
 
     public CSVDatabaseAccessObject(String doctorFilePath) throws IOException{
         this.filePath = doctorFilePath;
@@ -38,6 +42,7 @@ public class CSVDatabaseAccessObject implements SignupUserDataAccessInterface {
         }
     }
 
+
     public Patient readPatientFromCSV(File csvFile) throws  IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(csvFile))) {
             reader.readLine();
@@ -45,9 +50,9 @@ public class CSVDatabaseAccessObject implements SignupUserDataAccessInterface {
             reader.readLine();
             String fullName = String.valueOf(reader.readLine());
             reader.readLine();
-            int height = Integer.parseInt(String.valueOf(reader.readLine()));
+            float height = Float.parseFloat(String.valueOf(reader.readLine()));
             reader.readLine();
-            int weight = Integer.parseInt(String.valueOf(reader.readLine()));
+            float weight = Float.parseFloat(String.valueOf(reader.readLine()));
             reader.readLine();
             String[] appointmentDates = String.valueOf(reader.readLine()).split(",");
             reader.readLine();
@@ -66,6 +71,7 @@ public class CSVDatabaseAccessObject implements SignupUserDataAccessInterface {
         }
     }
 
+
     public ArrayList<LocalDate> getDates(String[] dates) {
         ArrayList<LocalDate> localDates = new ArrayList<>();
         for (String date : dates) {
@@ -73,6 +79,7 @@ public class CSVDatabaseAccessObject implements SignupUserDataAccessInterface {
         }
         return localDates;
     }
+
 
     public ArrayList<Drug> getDrugs(String[] drugs) {
         ArrayList<Drug> drugsList = new ArrayList<>();
@@ -85,8 +92,16 @@ public class CSVDatabaseAccessObject implements SignupUserDataAccessInterface {
         return drugsList;
     }
 
+
+    @Override
     public Patient getPatient(int id) {
         return patients.get(id);
+    }
+
+
+    @Override
+    public Map<Integer, Patient> getAllPatients() {
+        return this.patients;
     }
 
 
@@ -97,9 +112,9 @@ public class CSVDatabaseAccessObject implements SignupUserDataAccessInterface {
                 String file_path = "Patient " + patient.getID();
                 writer = new BufferedWriter(new FileWriter(file_path));
                 String[] patientData = new String[]{String.valueOf(patient.getID()), patient.fullName, String.valueOf(patient.getHeight()),
-                            String.valueOf(patient.getWeight()), patient.getAppointmentDatesAsString(), patient.getDateAdded().toString(),
-                            patient.getPrescribedDrugsAsString(), patient.getAllergiesAsString(), patient.getIllnessesAsString(),
-                            patient.getSymptomsAsString()};
+                        String.valueOf(patient.getWeight()), patient.getAppointmentDatesAsString(), patient.getDateAdded().toString(),
+                        patient.getPrescribedDrugsAsString(), patient.getAllergiesAsString(), patient.getIllnessesAsString(),
+                        patient.getSymptomsAsString()};
                 for (int i = 0; i < patient_headers.length; i++) {
                     writer.write(patient_headers[i]);
                     writer.newLine();
@@ -108,15 +123,19 @@ public class CSVDatabaseAccessObject implements SignupUserDataAccessInterface {
                 writer.close();
             }
 
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
+
     @Override
     public boolean existsByName(String identifier) {
         return false;
     }
+
+
 
 
     @Override
@@ -138,8 +157,10 @@ public class CSVDatabaseAccessObject implements SignupUserDataAccessInterface {
             }
             writer.write(temp);
 
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 }
+

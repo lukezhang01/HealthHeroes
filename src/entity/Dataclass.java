@@ -1,4 +1,4 @@
-package use_case;
+package entity;
 
 public interface Dataclass {
 

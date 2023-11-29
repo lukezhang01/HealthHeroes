@@ -27,4 +27,13 @@ public class Doctor implements User {
     public void removePatient(Patient patient) {
         this.patients.remove(patient);
     }
+
+    public Patient getPatient(Integer id){
+        for(int i=0; i<patients.size();i++){
+            if(patients.get(i).getID() == id){
+                return patients.get(i);
+            }
+        }
+        return null;
+    }
 }

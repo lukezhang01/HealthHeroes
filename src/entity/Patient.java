@@ -1,14 +1,13 @@
 package entity;
 
-import use_case.Drug;
 import java.util.*;
 import java.time.LocalDate;
 
 public class Patient implements User {
     private int id;
     public String fullName;
-    private int height;
-    private int weight;
+    private float height;
+    private float weight;
     private ArrayList<LocalDate> appointment_dates;
     private LocalDate date_added;
     private ArrayList<Drug> prescribed_drugs;
@@ -16,7 +15,7 @@ public class Patient implements User {
     private ArrayList<String> illnesses;
     private ArrayList<String> symptoms;
 
-    public Patient(int id, String fullName, int height, int weight, ArrayList<LocalDate> appointment_dates,
+    public Patient(int id, String fullName, float height, float weight, ArrayList<LocalDate> appointment_dates,
                    LocalDate date_added, ArrayList<Drug> prescribed_drugs,
                    ArrayList<String> allergies, ArrayList<String> illnesses, ArrayList<String> symptoms) {
         this.id = id;
@@ -59,14 +58,20 @@ public class Patient implements User {
         return allDates;
     }
 
+    public String getLatestAppointmentDate() {
+        int size = this.appointment_dates.size();
+        LocalDate lastDate = this.appointment_dates.get(size - 1);
+        return lastDate.toString();
+    }
+
     public LocalDate getDateAdded() {
         return this.date_added;
     }
-    public int getWeight() {
+    public float getWeight() {
         return this.weight;
     }
 
-    public int getHeight() {
+    public float getHeight() {
         return this.height;
     }
     // the following methods insert commas between each element in the array
