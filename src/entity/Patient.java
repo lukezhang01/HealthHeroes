@@ -89,6 +89,7 @@ public class Patient implements User {
         return String.join(",", this.symptoms);
     }
 
+
 //    public String[] getAllData() {
 //        return new String[]{String.valueOf(this.id), this.fullName, String.valueOf(this.height),
 //                            String.valueOf(this.weight), this.getAppointmentDatesAsString(), this.date_added.toString(),

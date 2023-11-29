@@ -22,7 +22,7 @@ public class LoginPresenter {
         this.loginViewModel = loginViewModel;
     }
 
-    @Override
+
     public void prepareSuccessView(LoginOutputData response) {
         // On success, switch to the logged in view.
 
@@ -35,7 +35,7 @@ public class LoginPresenter {
         this.viewManagerModel.firePropertyChanged();
     }
 
-    @Override
+
     public void prepareFailView(String error) {
         LoginState loginState = loginViewModel.getState();
         loginState.setUsernameError(error);
