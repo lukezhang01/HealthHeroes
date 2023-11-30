@@ -1,32 +1,42 @@
 package interface_adapter.patientList;
 
 import use_case.patientList.FetchPatientsUseCase;
+import use_case.patientList.PatientListInputData;
+import use_case.patientList.PatientListInteractor;
 import use_case.patientList.PatientListOutputData;
+import view.AddPatientView;
 
 import java.util.ArrayList;
 
 public class PatientListController {
-    private FetchPatientsUseCase fetchPatientsUseCase;
+    private PatientListInteractor patientListInteractor;
     private PatientListPresenter patientListPresenter;
 
-    public PatientListController(FetchPatientsUseCase fetchPatientsUseCase, PatientListPresenter patientListPresenter) {
-        this.fetchPatientsUseCase = fetchPatientsUseCase;
+    public PatientListController(PatientListInteractor patientListInteractor, PatientListPresenter patientListPresenter) {
+        this.patientListInteractor = patientListInteractor;
         this.patientListPresenter = patientListPresenter;
     }
 
-    public void handleFetchPatients() {
-        ArrayList<PatientListOutputData> patients = fetchPatientsUseCase.execute();
+    public void loadPatients() {
+        ArrayList<PatientListOutputData> patients = patientListInteractor.fetchPatients();
         patientListPresenter.present(patients);
     }
 
     public void handleAddPatient() {
-        // call a class to present AddPatientView
+        /*
+        needs to call view manager to pull up new view for adding a new patient
+         */
+        AddPatientView addPatientView = new AddPatientView(this.patientListInteractor);
+        // this.patientListInteractor.addPatient();
     }
 
     public void handleDeletePatient(PatientListOutputData patient) {
-
+        this.patientListInteractor.deletePatient(patient.getId());
     }
 
     public void handlePatientClick(PatientListOutputData patient) {
+        /*
+        needs to call view manager to pull up new view for single patient
+         */
     }
 }

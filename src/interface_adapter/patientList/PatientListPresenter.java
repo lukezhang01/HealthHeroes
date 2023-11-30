@@ -8,8 +8,8 @@ import java.util.ArrayList;
 public class PatientListPresenter {
     private PatientListView patientListView;
 
-    public PatientListPresenter(PatientListView patientListView) {
-        this.patientListView = patientListView;
+    public PatientListPresenter(PatientListView view) {
+        this.patientListView = view;
     }
 
     public void present(ArrayList<PatientListOutputData> patients) {
