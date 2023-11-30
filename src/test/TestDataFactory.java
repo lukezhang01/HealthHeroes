@@ -18,13 +18,16 @@ public class TestDataFactory {
 
         ArrayList<LocalDate> appointmentDates = new ArrayList<>();
         // november 30th 2023 appointment
-        appointmentDates.add(LocalDate.of(2023, 11, 30));
+        appointmentDates.add(LocalDate.of(2023, 11, 20));
+        appointmentDates.add(LocalDate.of(2023, 9, 13));
+        appointmentDates.add(LocalDate.of(2023, 9, 4));
         // set date added as right now
         LocalDate dateAdded = LocalDate.now(); // Current date as date added
 
         ArrayList<Drug> prescribedDrugs = new ArrayList<>();
         // PRESCRIBED DRUGS
         prescribedDrugs.add(new Drug("Paracetamol", 500.0f, LocalDate.of(2023, 11, 1), LocalDate.of(2023, 11, 10)));
+        prescribedDrugs.add(new Drug("Vyvanse", 30.0f, LocalDate.of(2023, 11, 1), LocalDate.of(2023, 11, 10)));
         // ALLERGIES
         ArrayList<String> allergies = new ArrayList<>();
         allergies.add("Pollen");
