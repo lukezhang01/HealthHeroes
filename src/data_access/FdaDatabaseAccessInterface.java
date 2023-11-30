@@ -1,23 +1,22 @@
 package data_access;
 
-import java.io.IOException;
 
 public interface FdaDatabaseAccessInterface {
-    String getWarnings(String drugName) throws IOException;
+    String getWarnings(String drugName) ;
 
-    String getDescription(String drugName) throws IOException;
+    String getDescription(String drugName) ;
 
-    String getInteractions(String drugName) throws IOException;
+    String getInteractions(String drugName) ;
 
-    String getPregnancy(String drugName) throws IOException;
+    String getPregnancy(String drugName) ;
 
-    String getNursing(String drugName) throws IOException;
+    String getNursing(String drugName) ;
 //  For nursing mothers
-    String getUsage(String drugName) throws IOException;
+    String getUsage(String drugName) ;
 
-    String getAbuse(String drugName) throws IOException;
+    String getAbuse(String drugName) ;
 
-    String getHandling(String drugName) throws IOException;
+    String getHandling(String drugName) ;
 
-    String getReactions(String drugName) throws IOException;
+    String getReactions(String drugName) ;
 }

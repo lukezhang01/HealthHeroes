@@ -49,7 +49,7 @@ public class FdaDatabaseAccessObject implements FdaDatabaseAccessInterface{
      * Returns recentlyRecalled products
      * @param  limit  the number of recent product recalls wanted
      */
-    public List<Map<String, Object>> recentlyRecalled(Integer limit) throws IOException {
+    public List<Map<String, Object>> recentlyRecalled(Integer limit) {
 
         String apiCall = "https://api.fda.gov/drug/enforcement.json?api_key=" + apiKey + "&limit=" + limit.toString();
         return convertCallToList(apiCall);
@@ -65,8 +65,7 @@ public class FdaDatabaseAccessObject implements FdaDatabaseAccessInterface{
      * Sample call - DrugInfo(1,"drug_interactions","caffeine").get("adverse_reactions")
      *
      */
-    public List<Map<String, Object>> DrugInfo(Integer limit, String searchString, String query) throws IOException {
-
+    public List<Map<String, Object>> DrugInfo(Integer limit, String searchString, String query) {
         String apiCall = "https://api.fda.gov/drug/label.json?search=" + searchString + ":" + query + "&api_key=" + apiKey + "&limit=" + limit.toString();
         return convertCallToList(apiCall);
     }
@@ -77,7 +76,7 @@ public class FdaDatabaseAccessObject implements FdaDatabaseAccessInterface{
      * @param  limit  the number of adverseEffects included
      * Sample call - adverseEffects(3,"nonsteroidal+anti-inflammatory+drug")
      */
-    public List<Map<String, Object>> adverseEffects(Integer limit, String drugClass) throws IOException {
+    public List<Map<String, Object>> adverseEffects(Integer limit, String drugClass)  {
         String apiCall = "https://api.fda.gov/drug/event.json?search=patient.drug.openfda.pharm_class_epc:"+drugClass+"&api_key=" + apiKey + "&limit=" + limit.toString();
         return convertCallToList(apiCall);
     }
@@ -88,12 +87,12 @@ public class FdaDatabaseAccessObject implements FdaDatabaseAccessInterface{
      * @param  limit  the number of adverseEffects included
      * Sample call - adverseEffects(3,"nonsteroidal+anti-inflammatory+drug")
      */
-    public List<Map<String, Object>> commonReactions(Integer limit, String drugClass) throws IOException {
+    public List<Map<String, Object>> commonReactions(Integer limit, String drugClass)  {
         String apiCall = "https://api.fda.gov/drug/event.json?search=patient.drug.openfda.pharm_class_epc:"+drugClass+"&api_key=" + apiKey + "&count=patient.reaction.reactionmeddrapt.exact";
         return convertCallToList(apiCall);
     }
 
-    public String getWarnings(String drugName) throws IOException {
+    public String getWarnings(String drugName) {
         try {
             return this.DrugInfo(1, "spl_product_data_elements", drugName).get(0).get("warnings").toString();
         } catch (NullPointerException e) {
@@ -101,7 +100,7 @@ public class FdaDatabaseAccessObject implements FdaDatabaseAccessInterface{
         }
     }
 
-    public String getDescription(String drugName) throws IOException {
+    public String getDescription(String drugName) {
         try {
             return this.DrugInfo(1, "spl_product_data_elements", drugName).get(0).get("description").toString();
         } catch (NullPointerException e) {
@@ -109,7 +108,7 @@ public class FdaDatabaseAccessObject implements FdaDatabaseAccessInterface{
         }
     }
 
-    public String getInteractions(String drugName) throws IOException {
+    public String getInteractions(String drugName) {
         try {
             return this.DrugInfo(1, "spl_product_data_elements", drugName).get(0).get("drug_interactions").toString();
         } catch (NullPointerException e) {
@@ -117,7 +116,7 @@ public class FdaDatabaseAccessObject implements FdaDatabaseAccessInterface{
         }
     }
 
-    public String getPregnancy(String drugName) throws IOException {
+    public String getPregnancy(String drugName) {
         try {
             return this.DrugInfo(1, "spl_product_data_elements", drugName).get(0).get("pregnancy").toString();
         } catch (NullPointerException e) {
@@ -125,7 +124,7 @@ public class FdaDatabaseAccessObject implements FdaDatabaseAccessInterface{
         }
     }
 
-    public String getNursing(String drugName) throws IOException {
+    public String getNursing(String drugName)  {
         try {
             return this.DrugInfo(1, "spl_product_data_elements", drugName).get(0).get("nursing_mothers").toString();
         } catch (NullPointerException e) {
@@ -133,7 +132,7 @@ public class FdaDatabaseAccessObject implements FdaDatabaseAccessInterface{
         }
     }
 
-    public String getUsage(String drugName) throws IOException {
+    public String getUsage(String drugName)  {
         try {
             return this.DrugInfo(1, "spl_product_data_elements", drugName).get(0).get("indications_and_usage").toString();
         } catch (NullPointerException e) {
@@ -141,7 +140,7 @@ public class FdaDatabaseAccessObject implements FdaDatabaseAccessInterface{
         }
     }
 
-    public String getAbuse(String drugName) throws IOException {
+    public String getAbuse(String drugName)  {
         try {
             return this.DrugInfo(1, "spl_product_data_elements", drugName).get(0).get("abuse").toString();
         } catch (NullPointerException e) {
@@ -149,7 +148,7 @@ public class FdaDatabaseAccessObject implements FdaDatabaseAccessInterface{
         }
     }
 
-    public String getHandling(String drugName) throws IOException {
+    public String getHandling(String drugName)  {
         try {
             return this.DrugInfo(1, "spl_product_data_elements", drugName).get(0).get("storage_and_handling").toString();
         } catch (NullPointerException e) {
@@ -157,7 +156,7 @@ public class FdaDatabaseAccessObject implements FdaDatabaseAccessInterface{
         }
     }
 
-    public String getReactions(String drugName) throws IOException {
+    public String getReactions(String drugName)  {
         try {
             return this.DrugInfo(1, "spl_product_data_elements", drugName).get(0).get("adverse_reactions").toString();
         } catch (NullPointerException e) {
@@ -167,7 +166,7 @@ public class FdaDatabaseAccessObject implements FdaDatabaseAccessInterface{
 
 
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args)  {
 //       Sample calls
          FdaDatabaseAccessObject obj = new FdaDatabaseAccessObject();
          System.out.println(obj.recentlyRecalled(5).get(0).get("product_description"));
