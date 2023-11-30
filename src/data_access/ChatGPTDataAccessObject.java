@@ -94,7 +94,7 @@ public abstract class ChatGPTPatientDataAccessAbstractClass implements ChatGPTHe
                 int responseCode = connection.getResponseCode();
                 System.out.println("Response Code: " + responseCode);
 
-// If the response code is not successful, read the error stream
+                // If the response code is not successful, read the error stream
                 if (responseCode != HttpURLConnection.HTTP_OK) {
                     BufferedReader errorReader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
                     String line;
@@ -133,17 +133,7 @@ public abstract class ChatGPTPatientDataAccessAbstractClass implements ChatGPTHe
     }
 
     protected ChatGPTPatientDataAccessAbstractClass(Patient patient, String setUpInstruction) {
-        String patientDetailsTest = "Name: Doe\n" +
-                "Gender: Male\n" +
-                "Height: 173 cm\n" +
-                "Weight: 190 lbs\n" +
-                "Medication: Advil, Painkillers,\n" +
-                "Allergies: Dust, Alcohol,\n" +
-                "Illnesses: Autism, Asthma,\n" +
-                "Doctor Comments:\n" +
-                "- seems depressed.";
-
-        String patientDetails = patientDetailsTest.replaceAll("\n", "\\n"); //patient.getDetailsAsString()
+        System.out.println(patient.getSymptomsAsString());
         this.setUpPrompt = String.format(INSTRUCTION_FORMAT, String.format(GPT_INSTRUCTIONS, setUpInstruction, patientDetails));
         this.assistantMessages = new ArrayList<>();
         this.userMessages = new ArrayList<>();
