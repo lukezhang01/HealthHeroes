@@ -25,4 +25,8 @@ public class PatientListOutputData {
     public String getDateAdded() {
         return this.getDateAdded();
     }
+
+    public int getId() {
+        return this.id;
+    }
 }

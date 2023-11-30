@@ -17,12 +17,10 @@ public class PatientListView extends JFrame {
     private PatientListController patientListController;
 
 
-    public PatientListView(PatientListController patientListController) {
+    public PatientListView() {
         super("Patient List View");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(new BorderLayout());
-
-        this.patientListController = patientListController;
 
         // creating top panel + sorting dropdown menu
         JPanel topPanel = new JPanel();
@@ -56,11 +54,15 @@ public class PatientListView extends JFrame {
         this.patients = patients;
 
         for (PatientListOutputData patient : patients) {
-            JPanel patientComponent = PatientListComponentBuilder.build(patient, patientListController);
+            JPanel patientComponent = PatientListComponentBuilder.build(patient, this.patientListController);
             patientPanel.add(patientComponent);
         }
 
         patientPanel.revalidate();
         patientPanel.repaint();
+    }
+
+    public void setController(PatientListController controller) {
+        this.patientListController = controller;
     }
 }

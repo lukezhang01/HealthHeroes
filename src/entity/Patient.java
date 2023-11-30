@@ -4,7 +4,7 @@ import java.util.*;
 import java.time.LocalDate;
 
 public class Patient implements User {
-    private int id;
+    private final int id;
     public String fullName;
     private float height;
     private float weight;

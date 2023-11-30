@@ -110,7 +110,7 @@ public class CSVDatabaseAccessObject implements SignupUserDataAccessInterface, C
         try {
             for (Patient patient: patients.values()) {
                 String file_path = "Patient " + patient.getID();
-                writer = new BufferedWriter(new FileWriter(file_path));
+                writer = new BufferedWriter(new FileWriter(file_path, false));
                 String[] patientData = new String[]{String.valueOf(patient.getID()), patient.fullName, String.valueOf(patient.getHeight()),
                         String.valueOf(patient.getWeight()), patient.getAppointmentDatesAsString(), patient.getDateAdded().toString(),
                         patient.getPrescribedDrugsAsString(), patient.getAllergiesAsString(), patient.getIllnessesAsString(),
@@ -161,6 +161,17 @@ public class CSVDatabaseAccessObject implements SignupUserDataAccessInterface, C
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void deletePatient(int id) {
+    }
+
+    @Override
+    public void addPatient(int id, String fullName, float height, float weight,
+                           ArrayList<LocalDate> appointmentDates, ArrayList<Drug> prescribedDrugs,
+                           ArrayList<String> allergies, ArrayList<String> illnesses, ArrayList<String> symptoms) {
+
     }
 }
 
