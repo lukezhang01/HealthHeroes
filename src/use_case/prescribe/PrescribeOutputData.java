@@ -18,7 +18,7 @@ public class PrescribeOutputData {
         return drugName;
     }
 
-    public String getWarnings() throws IOException {
+    public String getWarnings() {
         try {
             return databaseobj.DrugInfo(1, "spl_product_data_elements", drugName).get(0).get("warnings").toString();
         } catch (NullPointerException e) {
@@ -26,7 +26,7 @@ public class PrescribeOutputData {
         }
     }
 
-    public String getDescription() throws IOException {
+    public String getDescription() {
         try {
             return databaseobj.DrugInfo(1, "spl_product_data_elements", drugName).get(0).get("description").toString();
         } catch (NullPointerException e) {
@@ -34,7 +34,7 @@ public class PrescribeOutputData {
         }
     }
 
-    public String getInteractions() throws IOException {
+    public String getInteractions() {
         try {
             return databaseobj.DrugInfo(1, "spl_product_data_elements", drugName).get(0).get("drug_interactions").toString();
         } catch (NullPointerException e) {
@@ -42,7 +42,7 @@ public class PrescribeOutputData {
         }
     }
 
-    public String getPregnancy() throws IOException {
+    public String getPregnancy() {
         try {
             return databaseobj.DrugInfo(1, "spl_product_data_elements", drugName).get(0).get("pregnancy").toString();
         } catch (NullPointerException e) {
@@ -50,7 +50,7 @@ public class PrescribeOutputData {
         }
     }
 
-    public String getNursing() throws IOException {
+    public String getNursing() {
         try {
             return databaseobj.DrugInfo(1, "spl_product_data_elements", drugName).get(0).get("nursing_mothers").toString();
         } catch (NullPointerException e) {
@@ -58,7 +58,7 @@ public class PrescribeOutputData {
         }
     }
 
-    public String getUsage() throws IOException {
+    public String getUsage() {
         try {
             return databaseobj.DrugInfo(1, "spl_product_data_elements", drugName).get(0).get("indications_and_usage").toString();
         } catch (NullPointerException e) {
@@ -66,7 +66,7 @@ public class PrescribeOutputData {
         }
     }
 
-    public String getAbuse() throws IOException {
+    public String getAbuse() {
         try {
             return databaseobj.DrugInfo(1, "spl_product_data_elements", drugName).get(0).get("abuse").toString();
         } catch (NullPointerException e) {
@@ -74,7 +74,7 @@ public class PrescribeOutputData {
         }
     }
 
-    public String getHandling() throws IOException {
+    public String getHandling() {
         try {
             return databaseobj.DrugInfo(1, "spl_product_data_elements", drugName).get(0).get("storage_and_handling").toString();
         } catch (NullPointerException e) {
@@ -82,7 +82,7 @@ public class PrescribeOutputData {
         }
     }
 
-    public String getReactions() throws IOException {
+    public String getReactions() {
         try {
             return databaseobj.DrugInfo(1, "spl_product_data_elements", drugName).get(0).get("adverse_reactions").toString();
         } catch (NullPointerException e) {
@@ -92,7 +92,7 @@ public class PrescribeOutputData {
 
 
 
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) {
 
         PrescribeOutputData data = new PrescribeOutputData(new Drug("ibuprofen",1, LocalDate.now(),LocalDate.now()));
         System.out.println(data.getWarnings());
