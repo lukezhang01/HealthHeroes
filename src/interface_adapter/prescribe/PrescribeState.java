@@ -5,6 +5,7 @@ import java.io.IOException;
 
 public class PrescribeState {
 
+    private boolean error;
     private String warnings;
     private String description;
     private String interactions;
@@ -65,5 +66,7 @@ public class PrescribeState {
     public String getStateDescription(){
         return this.description;
     }
+
+    public void setError(boolean error){this.error = error;}
 
 }
