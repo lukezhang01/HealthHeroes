@@ -9,10 +9,12 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
-public abstract class ChatGPTPatientDataAccessAbstractClass implements ChatGPTHealthDataAccessInterface {
+public abstract class ChatGPTDataAccessObject implements ChatGPTHealthDataAccessInterface {
 
     private final String USER_FORMAT = """
             {"role": "user", "content": "%s"}%s
@@ -24,23 +26,39 @@ public abstract class ChatGPTPatientDataAccessAbstractClass implements ChatGPTHe
     private final String ASSISTANT_FORMAT = """
             {"role": "assistant", "content": "%s"}%s
             """;
-    private final String GPT_INSTRUCTIONS = "You are an intelligent, smart, careful, and appropriate medical assistant tool:\\nYou must follow the instructions below exactly:\\n-- INSTRUCTION --\\n%s\\n-- PATIENT --\\n%s\\nVariable Details:\\n-- INSTRUCTION -- : below is the an instruction that you must follow for the rest of the conversation.\\n-- PATIENT --: below is the string containing health details about the patient. You will answer every subsequent\\nmessage with respect to these details.";
-
     private ArrayList<String> assistantMessages;
     private ArrayList<String> userMessages;
-    private String setUpPrompt;
+    private String setUpPrompt = "";
+
+    private boolean saveHistory = false;
 
 
     private static String getValidJSONString(String str){
         return str.replace("\\", "\\\\").replace("\"", "\\\"");
     }
+    public static String getOneLinedString(String str){
+        return str.replaceAll("\\R", "\\\\n").replaceAll("\"", "\\\\\"").replaceAll("\\n", " ");
+    }
     protected static String getStringMessageFromJSON(String json) {
-        String patternString = "\"content\":\\s*\"((?:[^\"\\\\]|\\\\.)*)\"";
-        Pattern pattern = Pattern.compile(patternString);
-        Matcher matcher = pattern.matcher(json);
-        if (matcher.find()) {
-            String content = matcher.group(1);
-            return getValidJSONString(content);
+        ObjectMapper mapper = new ObjectMapper();
+
+        try {
+            // Convert JSON string to Map
+            Map<String, Object> map = mapper.readValue(json, Map.class);
+            // Extract the 'choices' list
+            List<Map<String, Object>> choices = (List<Map<String, Object>>) map.get("choices");
+
+            // Assuming you want to get the content of the first choice
+            if (!choices.isEmpty()) {
+                Map<String, Object> firstChoice = choices.get(0);
+                Map<String, String> message = (Map<String, String>) firstChoice.get("message");
+                String content = message.get("content");
+
+                // return the content;
+                return content;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return "";
     }
@@ -51,15 +69,17 @@ public abstract class ChatGPTPatientDataAccessAbstractClass implements ChatGPTHe
             String assistantMessage = this.assistantMessages.get(i);
             String userMessage = this.userMessages.get(i);
             // add user message
-            messageHistory.append(String.format(USER_FORMAT, userMessage, ","));
+            messageHistory.append(String.format(USER_FORMAT, getOneLinedString(userMessage), ","));
             // add assistant message
-            messageHistory.append(String.format(ASSISTANT_FORMAT, assistantMessage, ","));
+            messageHistory.append(String.format(ASSISTANT_FORMAT, getOneLinedString(assistantMessage), ","));
         }
+//        System.out.println(messageHistory);
         return messageHistory.toString();
     }
     @Override
     public String messageGPT(String message) {
         message = getValidJSONString(message);
+        message = getOneLinedString(message);
         String newMessage = String.format(USER_FORMAT, message, "");
         int MAX_RETRIES = 1;
         for (int i = 0; i < MAX_RETRIES; i++) {
@@ -92,10 +112,11 @@ public abstract class ChatGPTPatientDataAccessAbstractClass implements ChatGPTHe
                 // After sending the request, check the response code
                 // == ERROR HANDLE CODE ==
                 int responseCode = connection.getResponseCode();
-                System.out.println("Response Code: " + responseCode);
+//                System.out.println("Response Code: " + responseCode);
 
                 // If the response code is not successful, read the error stream
                 if (responseCode != HttpURLConnection.HTTP_OK) {
+                    System.out.println(requestBody);
                     BufferedReader errorReader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
                     String line;
                     StringBuilder errorResponse = new StringBuilder();
@@ -120,8 +141,10 @@ public abstract class ChatGPTPatientDataAccessAbstractClass implements ChatGPTHe
                 reader.close();
                 String gptResponse = getStringMessageFromJSON(response.toString());
                 // update context history
-                this.assistantMessages.add(gptResponse);
-                this.userMessages.add(message);
+                if (this.saveHistory) {
+                    this.assistantMessages.add(getOneLinedString(gptResponse));
+                    this.userMessages.add(getOneLinedString(message));
+                }
                 return gptResponse.replace("\\n", "\n").replace("\\\\\\", "");
             } catch (IOException e){
                 System.out.println(e);
@@ -132,9 +155,14 @@ public abstract class ChatGPTPatientDataAccessAbstractClass implements ChatGPTHe
         return "[A Fatal Error Has Occurred]";
     }
 
-    protected ChatGPTPatientDataAccessAbstractClass(Patient patient, String setUpInstruction) {
-        System.out.println(patient.getSymptomsAsString());
-        this.setUpPrompt = String.format(INSTRUCTION_FORMAT, String.format(GPT_INSTRUCTIONS, setUpInstruction, patientDetails));
+    public void setInstructionPrompt(String instructions) {
+        // make the entire string into only one line for JSON.
+        String singleLineInstructions = instructions.replaceAll("\\R", "\\\\n").replaceAll("\"", "\\\\\"");
+        this.setUpPrompt = String.format(INSTRUCTION_FORMAT, singleLineInstructions);
+    }
+
+    protected ChatGPTDataAccessObject(boolean saveHistory) {
+        this.saveHistory = saveHistory;
         this.assistantMessages = new ArrayList<>();
         this.userMessages = new ArrayList<>();
     }
