@@ -4,6 +4,11 @@ import java.util.*;
 import java.time.LocalDate;
 
 public class Patient implements User {
+    /*
+    height = in cm
+    weight = in kg
+    drug dosage = in mL
+     */
     private final int id;
     public String fullName;
     private float height;
@@ -74,6 +79,16 @@ public class Patient implements User {
     public float getHeight() {
         return this.height;
     }
+
+    // getters for chatgpt data
+    public String getWeightAsString() {
+        return this.weight + " kg";
+    }
+
+    public String getHeightAsString() {
+        return this.height + " cm";
+    }
+
     // the following methods insert commas between each element in the array
     // so that this matches the csv formatting
 
@@ -88,13 +103,5 @@ public class Patient implements User {
     public String getSymptomsAsString() {
         return String.join(",", this.symptoms);
     }
-
-
-//    public String[] getAllData() {
-//        return new String[]{String.valueOf(this.id), this.fullName, String.valueOf(this.height),
-//                            String.valueOf(this.weight), this.getAppointmentDatesAsString(), this.date_added.toString(),
-//                            this.getPrescribedDrugsAsString(), this.getAllergiesAsString(), this.getIllnessesAsString(),
-//                            this.getSymptomsAsString()};
-//    }
 
 }
