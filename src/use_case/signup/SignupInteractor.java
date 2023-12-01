@@ -27,7 +27,7 @@ public class SignupInteractor implements SignupInputBoundary {
             Doctor doctor = userFactory.create(signupInputData.getUsername(), signupInputData.getPassword(), signupInputData.getCountry(), new ArrayList<>());
             userDataAccessObject.save();
 
-            SignupOutputData signupOutputData = new SignupOutputData();
+            SignupOutputData signupOutputData = new SignupOutputData(doctor.getName());
             userPresenter.prepareSuccessView(signupOutputData);
         }
     }
