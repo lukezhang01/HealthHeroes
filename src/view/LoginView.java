@@ -3,7 +3,9 @@ package view;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginState;
 import interface_adapter.login.LoginViewModel;
+import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupState;
+import interface_adapter.signup.SignupViewModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,112 +16,95 @@ import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-public class LoginView extends JPanel implements ActionListener, PropertyChangeListener {
+public class LoginView extends JFrame{
 
-    public final String viewName = "log in";
-    private final LoginViewModel loginViewModel;
+        private JTextField usernameField;
+        private JPasswordField passwordField;
+        private final LoginViewModel viewModel;
+        private final LoginController controller;
 
-    final JTextField usernameInputField = new JTextField(15);
-    private final JLabel usernameErrorField = new JLabel();
+        public LoginView(LoginViewModel viewModel, LoginController controller) {
+            super("Login View");
+            this.viewModel = viewModel;
+            this.controller = controller;
 
-    final JPasswordField passwordInputField = new JPasswordField(15);
-    private final JLabel passwordErrorField = new JLabel();
+            // Set the default close operation and layout
+            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            setLayout(new GridBagLayout());
+            GridBagConstraints constraints = new GridBagConstraints();
 
-    final JButton logIn;
-    final JButton cancel;
-    private final LoginController loginController;
+            constraints.fill = GridBagConstraints.HORIZONTAL;
+            constraints.insets = new Insets(10, 10, 5, 10); // top, left, bottom, right padding
 
-    public LoginView(LoginViewModel viewModel, LoginController controller) {
+            // Username label and text field
+            constraints.gridx = 0; // column 0
+            constraints.gridy = 0; // row 0
+            add(new JLabel("Username"), constraints);
 
-        this.loginController = controller;
-        this.loginViewModel = viewModel;
-        this.loginViewModel.addPropertyChangeListener(this);
+            constraints.gridx = 1; // column 1
+            usernameField = new JTextField(15);
+            add(usernameField, constraints);
 
-        JLabel title = new JLabel("Login Screen");
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+            // Password label and text field
+            constraints.gridx = 0; // reset to column 0
+            constraints.gridy = 1; // next row
+            add(new JLabel("Password"), constraints);
 
-        LabelTextPanel usernameInfo = new LabelTextPanel(new JLabel("Username"), usernameInputField);
-        LabelTextPanel passwordInfo = new LabelTextPanel(new JLabel("Password"), passwordInputField);
+            constraints.gridx = 1; // column 1
+            passwordField = new JPasswordField(15);
+            add(passwordField, constraints);
 
-        JPanel buttons = new JPanel();
-        logIn = new JButton("Log In");
-        buttons.add(logIn);
-        cancel = new JButton("Cancel");
-        buttons.add(cancel);
+            // Login button centered below the text fields
+            JButton loginButton = new JButton("Login");
+            loginButton.addActionListener(e -> onLogin());
+            constraints.gridx = 0; // spans both columns
+            constraints.gridy = 2; // next row
+            constraints.gridwidth = 2; // span two columns
+            constraints.anchor = GridBagConstraints.CENTER;
+            add(loginButton, constraints);
 
-        logIn.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent evt) {
-                        if (evt.getSource().equals(logIn)) {
-                            LoginState currentState = loginViewModel.getState();
+            // Sign Up label and button in a panel for alignment
+            JPanel signUpPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+            signUpPanel.add(new JLabel("Are you a new user?"));
 
-                            loginController.execute(
-                                    currentState.getUsername(),
-                                    currentState.getPassword()
-                            );
-                        }
-                    }
-                }
-        );
+            JButton signUpButton = new JButton("Sign Up");
+            signUpButton.addActionListener(e -> onSignUp());
+            signUpPanel.add(signUpButton);
 
-        cancel.addActionListener(this);
+            // Adding the sign-up panel to the frame
+            constraints.gridx = 0; // reset to column 0
+            constraints.gridy = 3; // next row
+            constraints.gridwidth = 2; // span two columns
+            add(signUpPanel, constraints);
 
-        usernameInputField.addKeyListener(new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-                LoginState currentState = loginViewModel.getState();
-                currentState.setUsername(usernameInputField.getText() + e.getKeyChar());
-                loginViewModel.setState(currentState);
-            }
+            // Set the frame size
+            setPreferredSize(new Dimension(350, 200));
 
-            @Override
-            public void keyPressed(KeyEvent e) {
-            }
+            // Pack and display the window
+            pack();
+            setLocationRelativeTo(null); // Center on screen
+            setVisible(true);
+        }
 
-            @Override
-            public void keyReleased(KeyEvent e) {
-            }
-        });
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        private void onLogin() {
+            // Get the user input from the fields
+            String username = usernameField.getText();
+            String password = new String(passwordField.getPassword());
 
-        passwordInputField.addKeyListener(
-                new KeyListener() {
-                    @Override
-                    public void keyTyped(KeyEvent e) {
-                        LoginState currentState = loginViewModel.getState();
-                        currentState.setPassword(passwordInputField.getText() + e.getKeyChar());
-                        loginViewModel.setState(currentState);
-                    }
+            // Print the data
+            System.out.println("Login button clicked");
+            System.out.println("Username: " + username);
+            System.out.println("Password: " + password);
 
-                    @Override
-                    public void keyPressed(KeyEvent e) {
-                    }
+            controller.handleLogin(username, password);
+        }
 
-                    @Override
-                    public void keyReleased(KeyEvent e) {
-                    }
-                });
+        private void onSignUp() {
+            // Print the message
+            System.out.println("Sign Up button clicked - Redirect to Sign Up View");
 
-        this.add(title);
-        this.add(usernameInfo);
-        this.add(usernameErrorField);
-        this.add(passwordInfo);
-        this.add(passwordErrorField);
-        this.add(buttons);
-    }
+            controller.handleSignup();
+        }
 
-    public void actionPerformed(ActionEvent evt) {
-        System.out.println("Click " + evt.getActionCommand());
-    }
-
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        LoginState state = (LoginState) evt.getNewValue();
-        setFields(state);
-    }
-
-    private void setFields(LoginState state) {
-        usernameInputField.setText(state.getUsername());
-    }
 
 }

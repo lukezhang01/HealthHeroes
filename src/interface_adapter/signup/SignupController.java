@@ -7,10 +7,14 @@ public class SignupController {
         this.userSignupUseCaseInteractor = userSignupUseCaseInteractor;
     }
 
-    public void execute(String username, String password, String repeatPassword, String country) {
+    public void handleSubmit(String username, String password, String repeatPassword, String country) {
         SignupInputData signupInputData = new SignupInputData(username, password, repeatPassword, country);
 
         userSignupUseCaseInteractor.execute(signupInputData);
+    }
+
+    public void handleCancel() {
+        // TODO: close the signup window and open login window
     }
 
 }
