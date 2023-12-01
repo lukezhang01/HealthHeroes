@@ -4,26 +4,21 @@ import entity.Doctor;
 import entity.Patient;
 
 public class ChatInputData {
-    final private Doctor doctor;
-    final private int patientId;
+
+    final private boolean isUser;
     final private String message;
 
 
-    public Doctor getDoctor() {
-        return doctor;
-    }
-
-    public Patient getPatient() {
-        return doctor.getPatient(this.patientId);
+    public boolean isUser() {
+        return this.isUser;
     }
 
     public String getMessage() {
         return this.message;
     }
 
-    public ChatInputData(Doctor doctor, int patientId, String message) {
-        this.doctor = doctor;
-        this.patientId = patientId;
+    public ChatInputData(String message, boolean isUser) {
         this.message = message;
+        this.isUser = isUser;
     }
 }

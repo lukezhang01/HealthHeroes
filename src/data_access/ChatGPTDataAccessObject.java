@@ -1,5 +1,6 @@
 package data_access;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import entity.Patient;
 
 import java.io.BufferedReader;
@@ -17,14 +18,14 @@ import java.util.Map;
 public abstract class ChatGPTDataAccessObject implements ChatGPTHealthDataAccessInterface {
 
     private final String USER_FORMAT = """
-            {"role": "user", "content": "%s"}%s
+            {"role": "user", "content": %s}%s
             """;
 
     private final String INSTRUCTION_FORMAT = """
             {"role": "system", "content": "%s"},
             """;
     private final String ASSISTANT_FORMAT = """
-            {"role": "assistant", "content": "%s"}%s
+            {"role": "assistant", "content": %s}%s
             """;
     private ArrayList<String> assistantMessages;
     private ArrayList<String> userMessages;
@@ -33,12 +34,17 @@ public abstract class ChatGPTDataAccessObject implements ChatGPTHealthDataAccess
     private boolean saveHistory = false;
 
 
-    private static String getValidJSONString(String str){
-        return str.replace("\\", "\\\\").replace("\"", "\\\"");
+    private static String getValidJSONString(String str) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String ret = str;
+        try{
+            ret = objectMapper.writeValueAsString(str);
+        }catch(JsonProcessingException e){
+            System.out.println(e);
+        }
+        return ret;
     }
-    public static String getOneLinedString(String str){
-        return str.replaceAll("\\R", "\\\\n").replaceAll("\"", "\\\\\"").replaceAll("\\n", " ");
-    }
+
     protected static String getStringMessageFromJSON(String json) {
         ObjectMapper mapper = new ObjectMapper();
 
@@ -69,9 +75,9 @@ public abstract class ChatGPTDataAccessObject implements ChatGPTHealthDataAccess
             String assistantMessage = this.assistantMessages.get(i);
             String userMessage = this.userMessages.get(i);
             // add user message
-            messageHistory.append(String.format(USER_FORMAT, getOneLinedString(userMessage), ","));
+            messageHistory.append(String.format(USER_FORMAT, getValidJSONString(userMessage), ","));
             // add assistant message
-            messageHistory.append(String.format(ASSISTANT_FORMAT, getOneLinedString(assistantMessage), ","));
+            messageHistory.append(String.format(ASSISTANT_FORMAT, getValidJSONString(assistantMessage), ","));
         }
 //        System.out.println(messageHistory);
         return messageHistory.toString();
@@ -79,7 +85,6 @@ public abstract class ChatGPTDataAccessObject implements ChatGPTHealthDataAccess
     @Override
     public String messageGPT(String message) {
         message = getValidJSONString(message);
-        message = getOneLinedString(message);
         String newMessage = String.format(USER_FORMAT, message, "");
         int MAX_RETRIES = 1;
         for (int i = 0; i < MAX_RETRIES; i++) {
@@ -142,8 +147,8 @@ public abstract class ChatGPTDataAccessObject implements ChatGPTHealthDataAccess
                 String gptResponse = getStringMessageFromJSON(response.toString());
                 // update context history
                 if (this.saveHistory) {
-                    this.assistantMessages.add(getOneLinedString(gptResponse));
-                    this.userMessages.add(getOneLinedString(message));
+                    this.assistantMessages.add((getValidJSONString(gptResponse)));
+                    this.userMessages.add((getValidJSONString(message)));
                 }
                 return gptResponse.replace("\\n", "\n").replace("\\\\\\", "");
             } catch (IOException e){
