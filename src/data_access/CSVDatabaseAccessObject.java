@@ -14,7 +14,7 @@ public class CSVDatabaseAccessObject implements SignupUserDataAccessInterface, C
 
 
     private final String[] patient_headers = {"id", "full_name", "height", "weight", "appointment_date", "date_added", "prescribed_drugs",
-            "allergies", "illnesses", "symptoms"};
+            "allergies", "illnesses", "symptoms", "lifestyle_information", "isPregnant", "additional_notes"};
     private final String[] doctor_headers = {"username", "password", "patients"};
     private Map<Integer, Patient> patients = new HashMap<>();
     private String[] allPatientIDs;
@@ -67,10 +67,17 @@ public class CSVDatabaseAccessObject implements SignupUserDataAccessInterface, C
             String[] illnesses = String.valueOf(reader.readLine()).split(",");
             reader.readLine();
             String[] symptoms = String.valueOf(reader.readLine()).split(",");
+            reader.readLine();
+            String lifestyleInfomation = String.valueOf(reader.readLine());
+            reader.readLine();
+            boolean isPregnant = Boolean.parseBoolean(String.valueOf(reader.readLine()));
+            reader.readLine();
+            String additionalNotes = String.valueOf(reader.readLine());
             return new Patient(id, fullName, height, weight, getDates(appointmentDates), dateAdded, getDrugs(drugs),
                     new ArrayList<>(List.of(allergies)),
                     new ArrayList<>(List.of(illnesses)),
-                    new ArrayList<>(List.of(symptoms)));
+                    new ArrayList<>(List.of(symptoms)),
+                    lifestyleInfomation, isPregnant, additionalNotes);
         }
     }
 
@@ -118,7 +125,8 @@ public class CSVDatabaseAccessObject implements SignupUserDataAccessInterface, C
                 String[] patientData = new String[]{String.valueOf(patient.getID()), patient.fullName, String.valueOf(patient.getHeight()),
                         String.valueOf(patient.getWeight()), patient.getAppointmentDatesAsString(), patient.getDateAdded().toString(),
                         patient.getPrescribedDrugsAsString(), patient.getAllergiesAsString(), patient.getIllnessesAsString(),
-                        patient.getSymptomsAsString()};
+                        patient.getSymptomsAsString(), patient.getLifestyleInformation(), String.valueOf(patient.getIsPregnant()),
+                        patient.getAdditionalNotes()};
                 for (int i = 0; i < patient_headers.length; i++) {
                     writer.write(patient_headers[i]);
                     writer.newLine();
@@ -134,8 +142,13 @@ public class CSVDatabaseAccessObject implements SignupUserDataAccessInterface, C
     }
 
 
+
+    public boolean existsById(int id) {
+        return patients.containsKey(id);
+    }
+
     @Override
-    public boolean existsByName(String identifier) {
+    public boolean existsByName(String name) {
         return false;
     }
 
@@ -167,12 +180,11 @@ public class CSVDatabaseAccessObject implements SignupUserDataAccessInterface, C
 
     @Override
     public void deletePatient(int id) {
+
     }
 
     @Override
-    public void addPatient(int id, String fullName, float height, float weight,
-                           ArrayList<LocalDate> appointmentDates, ArrayList<Drug> prescribedDrugs,
-                           ArrayList<String> allergies, ArrayList<String> illnesses, ArrayList<String> symptoms) {
+    public void addPatient(Patient patient) {
 
     }
 }
