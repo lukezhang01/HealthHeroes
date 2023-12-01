@@ -116,13 +116,14 @@ public class ChatGPTContextDataAccessObject extends ChatGPTPatientDataAwareDataA
                  ..long string of API data goes here...\\n
                  ____________________\\n
                  Input Actions (This is what you will do when met with either input type 1 or type 2):\\n
-                 1) Goal: given the doctor's message, figure out which functions to call to retrieve data required or which functions to call to fulfill orders. You must call generateCSV function to generate csv.\\n
+                 1) Goal: given the doctor's message, figure out which functions to call to retrieve data required or which functions to call to fulfill orders.\\n
                  Rules: \\n
                  - You are required to figure out the parameters required for the function call as well.\\n
+                 - ONLY CREATE A CSV FILE WHEN EXPLICTLY TOLD TO, OTHERWISE DO NOT OD ANYTHING.
                  - You must translate potential informal drug names to formal common drug names and make it all lowercase.\\n
                  - You can call functions multiple times if required. \\n
-                 - You can only generate CSV when it explicitly asks you to generate a csv.
                  - For CSV files, only put in relevant information requested - nothing extra.
+                 - If a CSV cell has multiple values seperated by a comma, you must seperate them by / instead. You must still use , as the delimiter to make cells.
                  Here are the ONLY functions you can call:\\n
                  - getWarnings(String drugName): warnings about a drug\\n
                  - getPregnancy(String drugName): get FDA Pregnancy category information\\n
@@ -138,7 +139,6 @@ public class ChatGPTContextDataAccessObject extends ChatGPTPatientDataAwareDataA
                  - Your csvData must be in csv format and have good formatting (headings, titles, etc...).
                  - You may manipulate data and use your intuition on generating unique csv files.
                  - You must output in the format below. Group relevant function with same drugName calls together. Output ONLY "None" if no relevant calls are required.:
-                 - YOU CAN ONLY EITHER CALL RETRIEVE FUNCTIONS OR UTIL FUNCTIONS - NOT BOTH.
                  IF RETRIEVE FUNCTION:
                  functionName1: drugName
                  functionName2: drugName
@@ -152,6 +152,6 @@ public class ChatGPTContextDataAccessObject extends ChatGPTPatientDataAwareDataA
                     - Use your judgment to remove confusing information or reword them.\\n
                  Output Format:\\n
                     - Make the format neat and as short as possible. Do not put with special markup formatting.\\n
-            """, false);
+            """, true);
     }
 }
