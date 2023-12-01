@@ -16,104 +16,127 @@ import java.beans.PropertyChangeListener;
 import javax.swing.*;
 import java.awt.*;
 
-public class SignupView extends JPanel{
-    public final String viewName = "sign up";
+public class SignupView extends JFrame{
+    private JTextField usernameField;
+    private JPasswordField passwordField;
+    private JPasswordField repeatPasswordField;
     private String[] countries = {"Canada", "USA", "..."};
+    private JComboBox<String> countryComboBox;
+    private final SignupViewModel viewModel;
+    private final SignupController controller;
 
-    private final SignupViewModel signupViewModel;
-    private final JTextField usernameInputField = new JTextField(15);
-    private final JPasswordField passwordInputField = new JPasswordField(15);
-    private final JPasswordField repeatPasswordInputField = new JPasswordField(15);
-
-    private final JComboBox<String> countryDropDown = new JComboBox<>(countries);
-    private final JButton signUp;
-    private final JButton cancel;
-
-    private final SignupController signupController;
     public SignupView(SignupViewModel viewModel, SignupController controller) {
-        // Frame setup
-        this.signupController = controller;
-        this.signupViewModel = viewModel;
+        super("Signup Screen");
+        this.controller = controller;
+        this.viewModel = viewModel;
 
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        // Set the default close operation and layout
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new GridBagLayout());
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.fill = GridBagConstraints.HORIZONTAL;
 
-        JLabel title = new JLabel("Sign up view");
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        // Username field
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        add(new JLabel("User name"), constraints);
 
-        LabelTextPanel usernameInfo = new LabelTextPanel(new JLabel("Username"), usernameInputField);
-        LabelTextPanel passwordInfo = new LabelTextPanel(new JLabel("Password"), passwordInputField);
-        LabelTextPanel repeatPasswordInfo = new LabelTextPanel(new JLabel("Repeat Password"), repeatPasswordInputField);
+        usernameField = new JTextField(15);
+        constraints.gridx = 1;
+        constraints.gridy = 0;
+        add(usernameField, constraints);
 
-        JComboBox<String> countryDropDown = new JComboBox<>(countries);
+        // Password field
+        constraints.gridx = 0;
+        constraints.gridy = 1;
+        add(new JLabel("Password"), constraints);
 
-        JPanel buttons = new JPanel();
-        signUp = new JButton("Sign up");
-        buttons.add(signUp);
-        cancel = new JButton("Cancel");
-        buttons.add(cancel);
+        passwordField = new JPasswordField(15);
+        constraints.gridx = 1;
+        constraints.gridy = 1;
+        add(passwordField, constraints);
 
-        signUp.addActionListener(
-                new ActionListener() {
-                    public void actionPerformed(ActionEvent evt) {
-                        if (evt.getSource().equals(signUp)) {
-                            SignupState currentState = signupViewModel.getState();
+        // Repeat Password field
+        constraints.gridx = 0;
+        constraints.gridy = 2;
+        add(new JLabel("Repeat password"), constraints);
 
-                            signupController.execute(
-                                    currentState.getUsername(),
-                                    currentState.getPassword(),
-                                    currentState.getRepeatPassword(),
-                                    currentState.getCountry()
-                            );
-                        }
-                    }
-                }
-        );
+        repeatPasswordField = new JPasswordField(15);
+        constraints.gridx = 1;
+        constraints.gridy = 2;
+        add(repeatPasswordField, constraints);
 
-        usernameInputField.addKeyListener(
-                new KeyListener() {
-                    @Override
-                    public void keyTyped(KeyEvent e) {
-                        SignupState currentState = signupViewModel.getState();
-                        String text = usernameInputField.getText() + e.getKeyChar();
-                        currentState.setUsername(text);
-                        signupViewModel.setState(currentState);
-                    }
+        // Country combo box
+        constraints.gridx = 0;
+        constraints.gridy = 3;
+        add(new JLabel("Country"), constraints);
 
-                    @Override
-                    public void keyPressed(KeyEvent e) {
-                    }
+        countryComboBox = new JComboBox<>(countries);
+        constraints.gridx = 1;
+        constraints.gridy = 3;
+        add(countryComboBox, constraints);
 
-                    @Override
-                    public void keyReleased(KeyEvent e) {
-                    }
-                });
+        JPanel buttonsPanel = getButtonsPanel();
 
-        repeatPasswordInputField.addKeyListener(
-                new KeyListener() {
-                    @Override
-                    public void keyTyped(KeyEvent e) {
-                        SignupState currentState = signupViewModel.getState();
-                        currentState.setRepeatPassword(repeatPasswordInputField.getText() + e.getKeyChar());
-                        signupViewModel.setState(currentState); // Hmm, is this necessary?
-                    }
+        // Centering the buttons panel in the frame
+        constraints.gridx = 0;
+        constraints.gridy = 4;
+        constraints.gridwidth = 2; // Span across two columns
+        constraints.fill = GridBagConstraints.NONE;  // Override any previous fill settings
+        constraints.anchor = GridBagConstraints.CENTER; // Center the panel
+        add(buttonsPanel, constraints);
 
-                    @Override
-                    public void keyPressed(KeyEvent e) {
+        // Set the frame size
+        setPreferredSize(new Dimension(300, 200));
 
-                    }
+        // Pack and display the window
+        pack();
+        setVisible(true);
+    }
 
-                    @Override
-                    public void keyReleased(KeyEvent e) {
+    private JPanel getButtonsPanel() {
+        JPanel buttonsPanel = new JPanel(new GridLayout(1, 2, 10, 0)); // 1 row, 2 cols, 10px horizontal gap
 
-                    }
-                }
-        );
+        JButton signUpButton = new JButton("Sign up");
+        signUpButton.addActionListener(e -> onSubmit());
 
-        this.add(title);
-        this.add(usernameInfo);
-        this.add(passwordInfo);
-        this.add(repeatPasswordInfo);
-        this.add(buttons);
+        JButton cancelButton = new JButton("Cancel");
+        cancelButton.addActionListener(e -> onCancel());
+
+        // Set preferred size for the buttons to be the same
+        Dimension buttonSize = new Dimension(100, 25); // Set the desired size for both buttons
+        signUpButton.setPreferredSize(buttonSize);
+        cancelButton.setPreferredSize(buttonSize);
+
+        // Add buttons to the panel
+        buttonsPanel.add(signUpButton);
+        buttonsPanel.add(cancelButton);
+        return buttonsPanel;
+    }
+
+    private void onSubmit() {
+        // Get the user input from the fields
+        String username = usernameField.getText();
+        String password = new String(passwordField.getPassword());
+        String repeatPassword = new String(repeatPasswordField.getPassword());
+        String country = (String) countryComboBox.getSelectedItem();
+
+        // Print the data
+        System.out.println("Signup button clicked");
+        System.out.println("Username: " + username);
+        System.out.println("Password: " + password);
+        System.out.println("Repeat Password: " + repeatPassword);
+        System.out.println("Country: " + country);
+
+        // Submit
+        controller.handleSubmit(username, password, repeatPassword, country);
+    }
+
+    private void onCancel() {
+        // Print the message
+        System.out.println("Cancel button clicked");
+
+        controller.handleCancel();
     }
 }
 
