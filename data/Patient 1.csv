@@ -7,14 +7,14 @@ height
 weight 
 65
 appointment_date
-"2023-11-28,2023-11-29"
+2023-11-28,2023-11-29
 date_added
 2023-11-29
 prescribed_drugs
-melatonin
+melatonin 20 2022-11-12 2023-11-30
 allergies
-"dust,pollen"
+dust,pollen
 illnesses
-"cold,flu"
+cold,flu
 symptoms
-"coughing,itchy throat"
+coughing,itchy throat

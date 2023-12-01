@@ -104,4 +104,18 @@ public class Patient implements User {
         return String.join(",", this.symptoms);
     }
 
+
+    /*
+    UPDATERS FOR PATIENT FEATURES
+     */
+    public void updateHeight(float newHeight) {
+        this.height = newHeight;
+    }
+
+    public void updateWeight(float newWeight) {
+        this.weight = newWeight;
+    }
+
+    public void addAllergy()
+
 }
