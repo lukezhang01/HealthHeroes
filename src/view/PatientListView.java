@@ -15,19 +15,35 @@ public class PatientListView extends JFrame {
     private JComboBox<String> sortBy;
     private ArrayList<PatientListOutputData> patients;
     private PatientListController patientListController;
-
+    private JPanel container;
 
     public PatientListView() {
         super("Patient List View");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(new BorderLayout());
 
+        this.container = new JPanel();
+
         // creating top panel + sorting dropdown menu
         JPanel topPanel = new JPanel();
-        topPanel.add(new JLabel("Patients"));
+        topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
+
+        // title label
+        JLabel titleLabel = new JLabel("Patients");
+        titleLabel.setFont(new Font("Lato", Font.BOLD, 24));
+        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        topPanel.add(titleLabel);
+
+        JPanel sortPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        // Add the "Sort by" label and combo box to the sub-panel
+        sortPanel.add(new JLabel("Sort by:"));
         String[] sortOptions = {"Name", "Last Appointment Date", "Date Added"};
         sortBy = new JComboBox<>(sortOptions);
-        topPanel.add(sortBy);
+        sortPanel.add(sortBy, BorderLayout.CENTER);
+
+        topPanel.add(sortPanel, BorderLayout.CENTER);
+        // this.container.add(topPanel, BorderLayout.CENTER);
+        this.add(topPanel, BorderLayout.NORTH);
 
         // scrollable view for patients
         patientPanel = new JPanel();
@@ -44,7 +60,10 @@ public class PatientListView extends JFrame {
             }
         });
         bottomPanel.add(addButton);
+        //this.container.add(bottomPanel);
+        this.add(bottomPanel, BorderLayout.SOUTH);
 
+        //this.add(container, BorderLayout.CENTER);
 
         this.setSize(600, 400);
         this.setVisible(true);
@@ -60,6 +79,8 @@ public class PatientListView extends JFrame {
 
         patientPanel.revalidate();
         patientPanel.repaint();
+        // this.container.add(patientPanel, BorderLayout.CENTER);
+        this.add(patientPanel, BorderLayout.CENTER);
     }
 
     public void setController(PatientListController controller) {

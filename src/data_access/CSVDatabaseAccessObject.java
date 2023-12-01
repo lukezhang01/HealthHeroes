@@ -5,6 +5,7 @@ import use_case.signup.SignupUserDataAccessInterface;
 
 
 import java.io.*;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.time.LocalDate;
 
@@ -20,6 +21,7 @@ public class CSVDatabaseAccessObject implements SignupUserDataAccessInterface, C
     private final String filePath;
     private String username;
     private String password;
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 
     public CSVDatabaseAccessObject(String doctorFilePath) throws IOException{
@@ -36,7 +38,7 @@ public class CSVDatabaseAccessObject implements SignupUserDataAccessInterface, C
                 reader.readLine();
                 String[] patientList = String.valueOf(reader.readLine()).split(",");
                 for (String patientID : patientList) {
-                    patients.put(Integer.parseInt(patientID), readPatientFromCSV(new File("Patient " + patientID + ".csv")));
+                    patients.put(Integer.parseInt(patientID), readPatientFromCSV(new File("data/Patient " + patientID + ".csv")));
                 }
             }
         }
@@ -56,7 +58,8 @@ public class CSVDatabaseAccessObject implements SignupUserDataAccessInterface, C
             reader.readLine();
             String[] appointmentDates = String.valueOf(reader.readLine()).split(",");
             reader.readLine();
-            LocalDate dateAdded = LocalDate.parse(String.valueOf(reader.readLine()));
+            LocalDate dateAdded = LocalDate.parse(String.valueOf(reader.readLine()), formatter);
+            reader.readLine();
             String[] drugs = String.valueOf(reader.readLine()).split(",");
             reader.readLine();
             String[] allergies = String.valueOf(reader.readLine()).split(",");
@@ -75,7 +78,7 @@ public class CSVDatabaseAccessObject implements SignupUserDataAccessInterface, C
     public ArrayList<LocalDate> getDates(String[] dates) {
         ArrayList<LocalDate> localDates = new ArrayList<>();
         for (String date : dates) {
-            localDates.add(LocalDate.parse(date));
+            localDates.add(LocalDate.parse(date, formatter));
         }
         return localDates;
     }
@@ -85,6 +88,7 @@ public class CSVDatabaseAccessObject implements SignupUserDataAccessInterface, C
         ArrayList<Drug> drugsList = new ArrayList<>();
         for (String drug : drugs) {
             String[] drug_info = drug.split(" ");
+            // System.out.println(Arrays.toString(drug_info));
             drugsList.add(new Drug(drug_info[0], Float.parseFloat(drug_info[1]),
                     LocalDate.parse(drug_info[2]),
                     LocalDate.parse(drug_info[3])));
