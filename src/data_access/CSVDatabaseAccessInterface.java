@@ -14,8 +14,6 @@ public interface CSVDatabaseAccessInterface {
 
     void deletePatient(int id);
 
-    void addPatient(int id, String fullName, float height, float weight,
-                    ArrayList<LocalDate> appointmentDates, ArrayList<Drug> prescribedDrugs,
-                    ArrayList<String> allergies, ArrayList<String> illnesses, ArrayList<String> symptoms);
+    void addPatient(Patient patient);
 
 }

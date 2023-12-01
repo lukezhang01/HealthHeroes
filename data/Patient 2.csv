@@ -1,7 +1,7 @@
 ﻿id
 2
 full_name
-george floyd
+john smith
 height
 170
 weight 
@@ -15,3 +15,9 @@ fentanyl 100 2022-10-06 2023-01-10
 allergies
 
 illnesses
+
+lifestyle_information
+eats fast food
+isPregnant
+false
+additional_notes

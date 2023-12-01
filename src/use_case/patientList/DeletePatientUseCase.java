@@ -9,7 +9,7 @@ public class DeletePatientUseCase {
         this.databaseAccessObject = databaseAccessObject;
     }
 
-    public void execute(int id) {
+    public void deletePatient(int id) {
         databaseAccessObject.deletePatient(id);
     }
 }

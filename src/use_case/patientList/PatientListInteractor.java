@@ -28,7 +28,7 @@ public class PatientListInteractor {
         for the controller
      */
     public void deletePatient(int id) {
-
+        this.deletePatientUseCase.deletePatient(id);
     }
 
     /*
@@ -36,8 +36,11 @@ public class PatientListInteractor {
      */
     public void addPatient(int id, String fullName, float height, float weight,
                            ArrayList<LocalDate> appointmentDates, ArrayList<Drug> prescribedDrugs,
-                           ArrayList<String> allergies, ArrayList<String> illnesses, ArrayList<String> symptoms) {
-
+                           ArrayList<String> allergies, ArrayList<String> illnesses, ArrayList<String> symptoms,
+                           String lifestyleInformation, boolean isPregnant, String additionalNotes) {
+        LocalDate now = LocalDate.now();
+        this.addPatientUseCase.addPatient(id, fullName, height, weight, appointmentDates, now,
+                prescribedDrugs, allergies, illnesses, symptoms, lifestyleInformation, isPregnant, additionalNotes);
     }
 
 }

@@ -39,7 +39,13 @@ public class TestDataFactory {
         ArrayList<String> symptoms = new ArrayList<>();
         symptoms.add("Headache");
 
-        return new Patient(id, fullName, height, weight, appointmentDates, dateAdded, prescribedDrugs, allergies, illnesses, symptoms);
+        // LIFESTYLE INFO
+        String lifestyleInformation = "high consumption of fast food and alcohol";
+
+        boolean isPregnant = true;
+        String additionalNotes = "";
+
+        return new Patient(id, fullName, height, weight, appointmentDates, dateAdded, prescribedDrugs, allergies, illnesses, symptoms, lifestyleInformation, isPregnant, additionalNotes);
     }
 
 
