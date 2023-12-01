@@ -25,7 +25,7 @@ public class Drug implements Dataclass {
     }
 
     public String getDosageAsString() {
-        return String.valueOf(this.dosage);
+        return this.dosage + "mL";
     }
 
 }

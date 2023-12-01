@@ -1,5 +1,7 @@
 package interface_adapter;
 
+import interface_adapter.patientList.PatientListController;
+
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
@@ -23,4 +25,5 @@ public class ViewManagerModel {
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         support.addPropertyChangeListener(listener);
     }
+
 }
