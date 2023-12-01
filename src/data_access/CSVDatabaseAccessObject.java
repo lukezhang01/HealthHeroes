@@ -180,12 +180,13 @@ public class CSVDatabaseAccessObject implements SignupUserDataAccessInterface, C
 
     @Override
     public void deletePatient(int id) {
-
+        System.out.println("reached database obj");
     }
 
     @Override
     public void addPatient(Patient patient) {
-
+        this.patients.put(patient.getID(), patient);
+        this.savePatients();
     }
 }
 

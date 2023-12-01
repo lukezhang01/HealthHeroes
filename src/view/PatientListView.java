@@ -71,6 +71,7 @@ public class PatientListView extends JFrame {
     public void display(ArrayList<PatientListOutputData> patients) {
         patientPanel.removeAll();
         this.patients = patients;
+        System.out.println(patients);
 
         for (PatientListOutputData patient : patients) {
             JPanel patientComponent = PatientListComponentBuilder.build(patient, this.patientListController);
