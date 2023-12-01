@@ -19,10 +19,14 @@ public class Patient implements User {
     private ArrayList<String> allergies;
     private ArrayList<String> illnesses;
     private ArrayList<String> symptoms;
+    private String lifestyleInformation;
+    private boolean isPregnant;
+    private String additionalNotes;
 
     public Patient(int id, String fullName, float height, float weight, ArrayList<LocalDate> appointment_dates,
                    LocalDate date_added, ArrayList<Drug> prescribed_drugs,
-                   ArrayList<String> allergies, ArrayList<String> illnesses, ArrayList<String> symptoms) {
+                   ArrayList<String> allergies, ArrayList<String> illnesses, ArrayList<String> symptoms,
+                   String lifestyleInformation, boolean isPregnant, String additionalNotes) {
         this.id = id;
         this.fullName = fullName;
         this.height = height;
@@ -33,6 +37,9 @@ public class Patient implements User {
         this.allergies = allergies;
         this.illnesses = illnesses;
         this.symptoms = symptoms;
+        this.lifestyleInformation = lifestyleInformation;
+        this.isPregnant = isPregnant;
+        this.additionalNotes = additionalNotes;
     }
 
 
@@ -104,6 +111,18 @@ public class Patient implements User {
         return String.join(",", this.symptoms);
     }
 
+    public boolean getIsPregnant() {
+        return this.isPregnant;
+    }
+
+    public String getLifestyleInformation() {
+        return this.lifestyleInformation;
+    }
+
+    public String getAdditionalNotes() {
+        return this.additionalNotes;
+    }
+
 
     /*
     UPDATERS FOR PATIENT FEATURES
@@ -116,6 +135,28 @@ public class Patient implements User {
         this.weight = newWeight;
     }
 
-    public void addAllergy()
+    public void addAllergy(String newAllergy) {
+        this.allergies.add(newAllergy);
+    }
+
+    public void addIllness(String newIllness) {
+        this.illnesses.add(newIllness);
+    }
+
+    /*
+    for UI that updates lifestyle information, display original lifestyle information so the user can
+    edit and add to the original string. The edited string gets passed here
+     */
+    public void updateLifestyleInformation(String newInformation) {
+        this.lifestyleInformation = newInformation;
+    }
+
+    public void updatePregnancy(boolean isPregnant) {
+        this.isPregnant = isPregnant;
+    }
+
+    public void updateAdditionalNotes(String newNotes) {
+        this.additionalNotes = newNotes;
+    }
 
 }
