@@ -47,7 +47,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         cancel = new JButton(loginViewModel.CANCEL_BUTTON_LABEL);
         buttons.add(cancel);
 
-        logIn.addActionListener(                // This creates an anonymous subclass of ActionListener and instantiates it.
+        logIn.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
                         if (evt.getSource().equals(logIn)) {
@@ -108,9 +108,6 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         this.add(buttons);
     }
 
-    /**
-     * React to a button click that results in evt.
-     */
     public void actionPerformed(ActionEvent evt) {
         System.out.println("Click " + evt.getActionCommand());
     }
