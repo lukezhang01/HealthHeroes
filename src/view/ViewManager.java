@@ -7,12 +7,15 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 public class ViewManager implements PropertyChangeListener {
+    private final CardLayout cardLayout;
+    private final JPanel views;
     private ViewManagerModel viewManagerModel;
-    private JFrame currentView;
 
-    public ViewManager() {
-        viewManagerModel = new ViewManagerModel();
-        viewManagerModel.addPropertyChangeListener(this);
+    public ViewManager(JPanel views, CardLayout cardLayout, ViewManagerModel viewManagerModel) {
+        this.views = views;
+        this.cardLayout = cardLayout;
+        this.viewManagerModel = viewManagerModel;
+        this.viewManagerModel.addPropertyChangeListener(this);
 
         // Initial view setup
         viewManagerModel.setActiveView("LoginView");
@@ -22,22 +25,9 @@ public class ViewManager implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if ("view".equals(evt.getPropertyName())) {
-            if (currentView != null) {
-                currentView.dispose();
-            }
-            switch (viewManagerModel.getActiveView()) {
-                case "LoginView":
-                    currentView = new LoginView(viewManagerModel);
-                    break;
-                case "SignupView":
-                    currentView = new SignupView(viewManagerModel);
-                    break;
-                // Add other cases for different views
-            }
-            if (currentView != null) {
-                currentView.setVisible(true);
-            }
+        if (evt.getPropertyName().equals("view")) {
+            String viewModelName = (String) evt.getNewValue();
+            cardLayout.show(views, viewModelName);
         }
     }
 }
