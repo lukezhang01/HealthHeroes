@@ -13,14 +13,12 @@ public interface LoginUserDataAccessInterface {
     boolean existsByName(String identifier);
 
     /**
-     * writes the information on the CURRENT doctor (that is logged in) to csv
+     *
+     * @param username
+     * @param password
+     * @return checks whether the username and password credentials are valid
+     * NOTE: Assumes the doctor with the username already exists (make sure to call existByName first)
      */
-    void save();
+    boolean passwordMatch(String username, String password);
 
-    Doctor get(String username);
-
-    /**
-     * saves all current patients (ie. rewrites them to csv) of the current logged in doctor
-     */
-    void savePatients();
 }
