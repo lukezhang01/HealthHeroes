@@ -16,6 +16,7 @@ import java.util.List;
 public class AddPatientView extends JFrame {
     private PatientListInteractor interactor;
 
+    private final Dimension DIMENSION = new Dimension(300, 600);
     private JTextField nameField;
     private JTextField heightField;
     private JTextField weightField;
@@ -33,24 +34,18 @@ public class AddPatientView extends JFrame {
         // Set up the frame
         setTitle("Add New Patient");
         setSize(400, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setMaximumSize(DIMENSION);
+        setMinimumSize(DIMENSION);
 
         // Create the main panel with a box layout
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
 
-        // Add input fields
-        mainPanel.add(new JLabel("Full Name:"));
-        nameField = new JTextField(20);
-        mainPanel.add(nameField);
-
-        mainPanel.add(new JLabel("Height:"));
-        heightField = new JTextField(20);
-        mainPanel.add(heightField);
-
-        mainPanel.add(new JLabel("Weight:"));
-        weightField = new JTextField(20);
-        mainPanel.add(weightField);
+        // Add input fields with labels on the same line
+        mainPanel.add(createLabeledField("Full Name:", 20));
+        mainPanel.add(createLabeledField("Height:", 20));
+        mainPanel.add(createLabeledField("Weight:", 20));
 
         // Set up drugs panel with a dynamic layout
         drugsPanel = new JPanel();
@@ -84,6 +79,16 @@ public class AddPatientView extends JFrame {
         setVisible(true);
     }
 
+    private JPanel createLabeledField(String labelText, int fieldSize) {
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        JLabel label = new JLabel(labelText);
+        JTextField textField = new JTextField(fieldSize);
+        textField.setMaximumSize(new Dimension(Integer.MAX_VALUE, textField.getPreferredSize().height));
+        panel.add(label);
+        panel.add(textField);
+        return panel;
+    }
+
     private void addDrugFields() {
         DrugEntry drugEntry = new DrugEntry();
         drugsPanel.add(drugEntry.getPanel());
@@ -91,5 +96,7 @@ public class AddPatientView extends JFrame {
         drugsPanel.revalidate();
         drugsPanel.repaint();
     }
+
+
 
 }

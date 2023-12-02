@@ -18,8 +18,9 @@ public class PatientListController {
     }
 
     public void loadPatients() {
-        ArrayList<PatientListOutputData> patients = patientListInteractor.fetchPatients();
-        patientListPresenter.present(patients);
+        ArrayList<PatientListOutputData> patientData = patientListInteractor.fetchPatients();
+        System.out.println(patientData.toString());
+        patientListPresenter.present(patientData);
     }
 
     public void handleAddPatient() {

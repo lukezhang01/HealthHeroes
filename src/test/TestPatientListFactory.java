@@ -19,7 +19,7 @@ public class TestPatientListFactory {
             view.display(testArray);
 
             FetchPatientsUseCase fetch = new FetchPatientsUseCase(databaseAccessObject);
-            AddPatientUseCase add = new AddPatientUseCase();
+            AddPatientUseCase add = new AddPatientUseCase(databaseAccessObject);
             DeletePatientUseCase delete = new DeletePatientUseCase(databaseAccessObject);
 
             PatientListInteractor interactor = new PatientListInteractor(fetch, add, delete);
@@ -27,6 +27,7 @@ public class TestPatientListFactory {
             PatientListPresenter presenter = new PatientListPresenter(view);
             PatientListController controller = new PatientListController(interactor, presenter);
             view.setController(controller);
+            controller.loadPatients();
         } catch (IOException e) {
             System.out.println(e);
         }
