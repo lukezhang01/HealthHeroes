@@ -1,6 +1,7 @@
 package data_access;
 import entity.*;
 import entity.Drug;
+import use_case.login.LoginUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
 
 
@@ -10,7 +11,7 @@ import java.util.*;
 import java.time.LocalDate;
 
 
-public class CSVDatabaseAccessObject implements SignupUserDataAccessInterface, CSVDatabaseAccessInterface {
+public class CSVDatabaseAccessObject implements CSVDatabaseAccessInterface {
 
 
     private final String[] patient_headers = {"id", "full_name", "height", "weight", "appointment_date", "date_added", "prescribed_drugs",
@@ -115,8 +116,8 @@ public class CSVDatabaseAccessObject implements SignupUserDataAccessInterface, C
         return this.patients;
     }
 
-
-    private void savePatients() {
+    @Override
+    public void savePatients() {
         BufferedWriter writer;
         try {
             for (Patient patient: patients.values()) {
@@ -147,11 +148,6 @@ public class CSVDatabaseAccessObject implements SignupUserDataAccessInterface, C
         return patients.containsKey(id);
     }
 
-    @Override
-    public boolean existsByName(String name) {
-        return false;
-    }
-
 
     @Override
     public void save() {
@@ -178,9 +174,29 @@ public class CSVDatabaseAccessObject implements SignupUserDataAccessInterface, C
         }
     }
 
+
     @Override
     public void deletePatient(int id) {
+        // remove from doctor csv
+        try {
+            this.patients.remove(id);
+            save();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        // remove csv file
+        try {
+            File file = new File("data/Patient " + id + ".csv");
 
+            // using if else statement for testing purposes
+            if (file.delete()) {
+                System.out.println("File deleted successfully");
+            } else {
+                System.out.println("Failed to delete file");
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     @Override
