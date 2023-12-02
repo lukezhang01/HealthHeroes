@@ -38,7 +38,7 @@ public class PatientListInteractor {
     /*
         this class will add a patient to the database for the controller
      */
-    public void addPatient(String fullName, float height, float weight,
+    public void addPatient(String fullName, float height, float weight, String dateOfBirthString, String gender,
                            String[] appointmentDatesString, ArrayList<Object[]> writtenDrugs,
                            ArrayList<String> allergies, ArrayList<String> illnesses, ArrayList<String> symptoms,
                            String lifestyleInformation, boolean isPregnant, String additionalNotes) {
@@ -46,7 +46,8 @@ public class PatientListInteractor {
         int id = generateGUID();
         ArrayList<LocalDate> appointmentDates = convertToArrayList(appointmentDatesString);
         ArrayList<Drug> prescribedDrugs = convertToDrugs(writtenDrugs);
-        this.addPatientUseCase.addPatient(id, fullName, height, weight, appointmentDates, now,
+        LocalDate dateOfBirth = LocalDate.parse(dateOfBirthString, formatter);
+        this.addPatientUseCase.addPatient(id, fullName, height, weight, dateOfBirth, gender, appointmentDates, now,
                 prescribedDrugs, allergies, illnesses, symptoms, lifestyleInformation, isPregnant, additionalNotes);
     }
 

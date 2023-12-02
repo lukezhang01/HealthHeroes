@@ -22,6 +22,8 @@ public class AddPatientView extends JFrame {
     private JTextField nameField;
     private JTextField heightField;
     private JTextField weightField;
+    private JTextField dateOfBirthField;
+    private JTextField genderField;
     private JComboBox<String> isPregnantField;
     private JTextField appointmentDatesField;
     private JTextField allergiesField;
@@ -60,6 +62,12 @@ public class AddPatientView extends JFrame {
 
         JLabel weightLabel = new JLabel("Weight:");
         weightField = new JTextField(FIELD_SIZE);
+
+        JLabel dateOfBirthLabel = new JLabel("Date of Birth:");
+        dateOfBirthField = new JTextField(FIELD_SIZE);
+
+        JLabel genderLabel = new JLabel("Gender:");
+        genderField = new JTextField(FIELD_SIZE);
 
         JLabel appointmentDatesLabel = new JLabel("Appointment Dates:");
         appointmentDatesField = new JTextField(FIELD_SIZE);
@@ -143,6 +151,8 @@ public class AddPatientView extends JFrame {
                 String fullName = nameField.getText();
                 float height = Float.parseFloat(heightField.getText());
                 float weight = Float.parseFloat(weightField.getText());
+                String dateOfBirth = dateOfBirthField.getText();
+                String gender = genderField.getText();
                 String[] appointmentDates = appointmentDatesField.getText().split(",");
                 ArrayList<Object[]> prescribedDrugs = getDrugsData();
                 String[] allergies = allergiesField.getText().split(",");
@@ -152,9 +162,9 @@ public class AddPatientView extends JFrame {
                 boolean isPregnant = getIsPregnant();
                 String additionalNotes = additionalNotesField.getText();
 
-                interactor.addPatient(fullName, height, weight, appointmentDates, prescribedDrugs,
-                        new ArrayList<>(List.of(allergies)), new ArrayList<>(List.of(illnesses)),
-                        new ArrayList<>(List.of(symptoms)), lifestyleInformation, isPregnant, additionalNotes);
+//                interactor.addPatient(fullName, height, weight, appointmentDates, prescribedDrugs,
+//                        new ArrayList<>(List.of(allergies)), new ArrayList<>(List.of(illnesses)),
+//                        new ArrayList<>(List.of(symptoms)), lifestyleInformation, isPregnant, additionalNotes);
             }
         });
         mainPanel.add(addPatientButton);
