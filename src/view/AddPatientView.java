@@ -152,8 +152,9 @@ public class AddPatientView extends JFrame {
                 boolean isPregnant = getIsPregnant();
                 String additionalNotes = additionalNotesField.getText();
 
-                interactor.addPatient(fullName, height, weight, appointmentDates, prescribedDrugs, allergies, illnesses,
-                        symptoms, lifestyleInformation, isPregnant, additionalNotes);
+                interactor.addPatient(fullName, height, weight, appointmentDates, prescribedDrugs,
+                        new ArrayList<>(List.of(allergies)), new ArrayList<>(List.of(illnesses)),
+                        new ArrayList<>(List.of(symptoms)), lifestyleInformation, isPregnant, additionalNotes);
             }
         });
         mainPanel.add(addPatientButton);
