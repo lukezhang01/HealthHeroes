@@ -9,7 +9,7 @@ import use_case.login.LoginOutputData;
 import use_case.signup.SignupOutputBoundary;
 import use_case.signup.SignupOutputData;
 
-public class LoginPresenter {
+public class LoginPresenter implements LoginOutputBoundary{
     private final LoginViewModel loginViewModel;
     private final LoggedInViewModel loggedInViewModel;
     private ViewManagerModel viewManagerModel;
@@ -21,7 +21,6 @@ public class LoginPresenter {
         this.loggedInViewModel = loggedInViewModel;
         this.loginViewModel = loginViewModel;
     }
-
 
     public void prepareSuccessView(LoginOutputData response) {
         // On success, switch to the logged in view.
@@ -38,7 +37,12 @@ public class LoginPresenter {
 
     public void prepareFailView(String error) {
         LoginState loginState = loginViewModel.getState();
-        loginState.setUsernameError(error);
+        loginState.setDialogMessage(error);
         loginViewModel.firePropertyChanged();
+    }
+
+    public void prepareSignupView(){
+        this.viewManagerModel.setActiveView(loggedInViewModel.getViewName());
+        this.viewManagerModel.firePropertyChanged();
     }
 }

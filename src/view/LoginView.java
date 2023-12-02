@@ -16,7 +16,7 @@ import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-public class LoginView extends JFrame{
+public class LoginView extends JFrame implements ActionListener, PropertyChangeListener {
 
         private JTextField usernameField;
         private JPasswordField passwordField;
@@ -105,6 +105,19 @@ public class LoginView extends JFrame{
 
             controller.handleSignup();
         }
+    public void actionPerformed(ActionEvent evt) {
+        System.out.println("Click " + evt.getActionCommand());
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        LoginState state = (LoginState) evt.getNewValue();
+        setFields(state);
+    }
+
+    private void setFields(LoginState state) {
+        usernameField.setText(state.getUsername());
+    }
 
 
 }
