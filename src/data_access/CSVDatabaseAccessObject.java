@@ -1,6 +1,7 @@
 package data_access;
 import entity.*;
 import entity.Drug;
+import use_case.login.LoginUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
 
 
@@ -10,7 +11,7 @@ import java.util.*;
 import java.time.LocalDate;
 
 
-public class CSVDatabaseAccessObject implements SignupUserDataAccessInterface, CSVDatabaseAccessInterface {
+public class CSVDatabaseAccessObject implements SignupUserDataAccessInterface, CSVDatabaseAccessInterface, LoginUserDataAccessInterface {
 
 
     private final String[] patient_headers = {"id", "full_name", "height", "weight", "appointment_date", "date_added", "prescribed_drugs",
@@ -115,8 +116,8 @@ public class CSVDatabaseAccessObject implements SignupUserDataAccessInterface, C
         return this.patients;
     }
 
-
-    private void savePatients() {
+    @Override
+    public void savePatients() {
         BufferedWriter writer;
         try {
             for (Patient patient: patients.values()) {
@@ -147,9 +148,20 @@ public class CSVDatabaseAccessObject implements SignupUserDataAccessInterface, C
         return patients.containsKey(id);
     }
 
+    /**
+     *
+     * @param identifier
+     * @return returns whether there already exists a doctor with the identifier
+     */
+
     @Override
-    public boolean existsByName(String name) {
+    public boolean existsByName(String identifier) {
         return false;
+    }
+
+    @Override
+    public void saveNewDoctor() {
+
     }
 
 
@@ -176,6 +188,11 @@ public class CSVDatabaseAccessObject implements SignupUserDataAccessInterface, C
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public Doctor get(String username) {
+        return null;
     }
 
     @Override
