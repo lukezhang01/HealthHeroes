@@ -15,6 +15,7 @@ public class TestPatientListFactory {
         try {
             CSVDatabaseAccessObject databaseAccessObject = new CSVDatabaseAccessObject("data/Doctor1.csv");
             PatientListView view = new PatientListView();
+            view.addLeftPanel();
             ArrayList<PatientListOutputData> testArray = new ArrayList<>();
             view.display(testArray);
 
