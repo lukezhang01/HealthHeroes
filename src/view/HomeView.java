@@ -80,6 +80,13 @@ public class HomeView extends JFrame implements ActionListener, PropertyChangeLi
         homeButton.setContentAreaFilled(true);
         homeButton.setBorderPainted(false);
         homeButton.setFocusPainted(false);
+        patientButton.setBackground(new Color(99, 255, 147));
+        patientButton.setForeground(new Color(45, 46, 45));
+        patientButton.setFont(ViewModel.HEADING_FONT_BOLD);
+        patientButton.setOpaque(true);
+        patientButton.setContentAreaFilled(true);
+        patientButton.setBorderPainted(false);
+        patientButton.setFocusPainted(false);
         leftPanel.add(homeButton);
         leftPanel.add(patientButton);
         this.add(leftPanel, BorderLayout.WEST);

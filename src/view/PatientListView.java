@@ -245,6 +245,13 @@ public class PatientListView extends JFrame {
         homeButton.setContentAreaFilled(true);
         homeButton.setBorderPainted(false);
         homeButton.setFocusPainted(false);
+        patientButton.setBackground(new Color(99, 255, 147));
+        patientButton.setForeground(new Color(45, 46, 45));
+        patientButton.setFont(ViewModel.HEADING_FONT_BOLD);
+        patientButton.setOpaque(true);
+        patientButton.setContentAreaFilled(true);
+        patientButton.setBorderPainted(false);
+        patientButton.setFocusPainted(false);
 
 
         homeButton.addActionListener(new ActionListener() {
