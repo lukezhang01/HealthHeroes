@@ -1,4 +1,5 @@
 package view;
+import entity.Patient;
 import interface_adapter.ViewModel;
 import interface_adapter.patientList.PatientListController;
 import use_case.patientList.PatientListOutputData;
@@ -21,6 +22,10 @@ public class PatientListView extends JFrame {
 
     // COLORS
     private JPanel patientPanel;
+
+    private SandwichBar sandwichBar;
+
+    private HomeView homeView;
     private JScrollPane scrollPane;
     private JButton addButton;
     private JComboBox<String> sortBy;
@@ -227,17 +232,51 @@ public class PatientListView extends JFrame {
         //this.container.add(bottomPanel);
         this.add(bottomPanel, BorderLayout.SOUTH);
 
-        //this.add(container, BorderLayout.CENTER);
 
-        this.setSize(600, 400);
-    }
-
-    public void addLeftPanel(){
         JPanel leftPanel = new JPanel();
-        leftPanel = new SandwichBar(this).sandwich;
+        leftPanel.setLayout(new BoxLayout(leftPanel,BoxLayout.Y_AXIS));
+        leftPanel.setBackground(new Color(73, 93, 135));
+        JButton homeButton = new JButton("Home");
+        JButton patientButton = new JButton("Patients");
+        homeButton.setBackground(new Color(99, 255, 147));
+        homeButton.setForeground(new Color(45, 46, 45));
+        homeButton.setFont(ViewModel.HEADING_FONT_BOLD);
+        homeButton.setOpaque(true);
+        homeButton.setContentAreaFilled(true);
+        homeButton.setBorderPainted(false);
+        homeButton.setFocusPainted(false);
+        patientButton.setBackground(new Color(99, 255, 147));
+        patientButton.setForeground(new Color(45, 46, 45));
+        patientButton.setFont(ViewModel.HEADING_FONT_BOLD);
+        patientButton.setOpaque(true);
+        patientButton.setContentAreaFilled(true);
+        patientButton.setBorderPainted(false);
+        patientButton.setFocusPainted(false);
+
+
+        homeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                homeView.setPatientListView(PatientListView.this);
+                homeView.setVisible(true);
+                PatientListView.this.setVisible(false);
+                homeView.revalidate();
+                homeView.repaint();
+            }
+        });
+
+
+        leftPanel.add(homeButton);
+        leftPanel.add(patientButton);
+        //this.add(container, BorderLayout.CENTER);
         this.add(leftPanel, BorderLayout.WEST);
+
+        this.revalidate();
+        this.repaint();
+        this.setSize(600, 400);
         this.setVisible(true);
     }
+
     public void display(ArrayList<PatientListOutputData> patients) {
         patientPanel.removeAll();
         this.patients = patients;
@@ -259,7 +298,7 @@ public class PatientListView extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            new PatientListView().addLeftPanel();
+            new PatientListView();
 
         });
     }
@@ -267,5 +306,12 @@ public class PatientListView extends JFrame {
 
     public void setController(PatientListController controller) {
         this.patientListController = controller;
+    }
+    public void setHomeView(HomeView homeView){
+        this.homeView = homeView;
+    }
+
+    public void setSandwichBar(SandwichBar sandwichBar){
+        this.sandwichBar = sandwichBar;
     }
 }
