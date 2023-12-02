@@ -16,7 +16,8 @@ import java.beans.PropertyChangeListener;
 import javax.swing.*;
 import java.awt.*;
 
-public class SignupView extends JFrame{
+public class SignupView extends JFrame implements ActionListener, PropertyChangeListener{
+    public final String viewName = "sign up";
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JPasswordField repeatPasswordField;
@@ -137,6 +138,17 @@ public class SignupView extends JFrame{
         System.out.println("Cancel button clicked");
 
         controller.handleCancel();
+    }
+    public void actionPerformed(ActionEvent evt) {
+
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        SignupState state = (SignupState) evt.getNewValue();
+        if (state.getDialogMessage() != null) {
+            JOptionPane.showMessageDialog(this, state.getDialogMessage());
+        }
     }
 }
 

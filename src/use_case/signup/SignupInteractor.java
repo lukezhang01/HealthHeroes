@@ -17,7 +17,7 @@ public class SignupInteractor implements SignupInputBoundary {
     }
 
     @Override
-    public void execute(SignupInputData signupInputData) {
+    public void executeSubmit(SignupInputData signupInputData) {
         if (userDataAccessObject.existsByName(signupInputData.getUsername())) {
             userPresenter.prepareFailView("This username already exists.");
         } else if (!signupInputData.getPassword().equals(signupInputData.getRepeatPassword())) {
@@ -29,7 +29,12 @@ public class SignupInteractor implements SignupInputBoundary {
             userDataAccessObject.save();
 
             SignupOutputData signupOutputData = new SignupOutputData(doctor.getName());
-            userPresenter.prepareSuccessView(signupOutputData);
+            userPresenter.prepareLoginView();
         }
+    }
+
+    @Override
+    public void executeCancel(){
+        userPresenter.prepareLoginView();
     }
 }

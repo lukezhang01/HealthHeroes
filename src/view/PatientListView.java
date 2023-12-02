@@ -230,6 +230,12 @@ public class PatientListView extends JFrame {
         //this.add(container, BorderLayout.CENTER);
 
         this.setSize(600, 400);
+    }
+
+    public void addLeftPanel(){
+        JPanel leftPanel = new JPanel();
+        leftPanel = new SandwichBar(this).sandwich;
+        this.add(leftPanel, BorderLayout.WEST);
         this.setVisible(true);
     }
     public void display(ArrayList<PatientListOutputData> patients) {
@@ -250,6 +256,14 @@ public class PatientListView extends JFrame {
         this.revalidate();
         this.repaint();
     }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            new PatientListView().addLeftPanel();
+
+        });
+    }
+
 
     public void setController(PatientListController controller) {
         this.patientListController = controller;

@@ -1,5 +1,6 @@
 package use_case.signup;
 
 public interface SignupInputBoundary {
-    void execute(SignupInputData signupInputData);
+    void executeSubmit(SignupInputData signupInputData);
+    void executeCancel();
 }
