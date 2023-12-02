@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class PatientListView extends JFrame {
+public class PatientListView extends JFrame{
     private JPanel patientPanel;
     private JScrollPane scrollPane;
     private JButton addButton;
@@ -66,8 +66,15 @@ public class PatientListView extends JFrame {
         //this.add(container, BorderLayout.CENTER);
 
         this.setSize(600, 400);
+    }
+
+    public void addLeftPanel(){
+        JPanel leftPanel = new JPanel();
+        leftPanel = new SandwichBar(this).sandwich;
+        this.add(leftPanel, BorderLayout.WEST);
         this.setVisible(true);
     }
+
     public void display(ArrayList<PatientListOutputData> patients) {
         patientPanel.removeAll();
         this.patients = patients;
@@ -83,6 +90,14 @@ public class PatientListView extends JFrame {
         // this.container.add(patientPanel, BorderLayout.CENTER);
         this.add(patientPanel, BorderLayout.CENTER);
     }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            new PatientListView().addLeftPanel();
+
+        });
+    }
+
 
     public void setController(PatientListController controller) {
         this.patientListController = controller;
