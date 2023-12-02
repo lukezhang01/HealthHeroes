@@ -13,7 +13,6 @@ public class DrugEntry {
     private JTextField startField;
     private JTextField endField;
     private JPanel panel;
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public DrugEntry() {
         panel = new JPanel(new GridLayout(0, 4));
@@ -105,8 +104,7 @@ public class DrugEntry {
 
     public Object[] getEntryData() {
         Object[] data = {
-          nameField.getText(), Float.parseFloat(dosageField.getText()),
-                LocalDate.parse(startField.getText(), formatter), LocalDate.parse(endField.getText(), formatter)
+          nameField.getText(), dosageField.getText(), startField.getText(), endField.getText()
         };
         return data;
     }
