@@ -2,6 +2,10 @@ package view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class DrugEntry {
     private JTextField nameField;
@@ -9,13 +13,78 @@ public class DrugEntry {
     private JTextField startField;
     private JTextField endField;
     private JPanel panel;
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public DrugEntry() {
         panel = new JPanel(new GridLayout(0, 4));
-        nameField = new JTextField();
-        dosageField = new JTextField();
-        startField = new JTextField();
-        endField = new JTextField();
+        nameField = new JTextField("Name");
+        nameField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (nameField.getText().equals("Name")) {
+                    nameField.setText("");
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (nameField.getText().isEmpty()) {
+                    nameField.setText("Name");
+                }
+            }
+        });
+
+        dosageField = new JTextField("Dosage");
+        dosageField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (dosageField.getText().equals("Dosage")) {
+                    dosageField.setText("");
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (dosageField.getText().isEmpty()) {
+                    dosageField.setText("Dosage");
+                }
+            }
+        });
+
+
+        startField = new JTextField("Start");
+        startField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (startField.getText().equals("Start")) {
+                    startField.setText("");
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (startField.getText().isEmpty()) {
+                    startField.setText("Start");
+                }
+            }
+        });
+
+        endField = new JTextField("End");
+        endField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (endField.getText().equals("End")) {
+                    endField.setText("");
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (endField.getText().isEmpty()) {
+                    endField.setText("End");
+                }
+            }
+        });
 
         panel.add(nameField);
         panel.add(dosageField);
@@ -24,6 +93,22 @@ public class DrugEntry {
     }
 
     public JPanel getPanel() {
+        panel.setMaximumSize(new Dimension(Integer.MAX_VALUE, panel.getPreferredSize().height));
+        for (Component comp : panel.getComponents()) {
+            if (comp instanceof JTextField) {
+                JTextField field = (JTextField) comp;
+                field.setMaximumSize(new Dimension(Integer.MAX_VALUE, field.getPreferredSize().height));
+            }
+        }
         return panel;
     }
+
+    public Object[] getEntryData() {
+        Object[] data = {
+          nameField.getText(), Float.parseFloat(dosageField.getText()),
+                LocalDate.parse(startField.getText(), formatter), LocalDate.parse(endField.getText(), formatter)
+        };
+        return data;
+    }
+
 }
