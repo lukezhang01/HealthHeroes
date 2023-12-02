@@ -30,17 +30,24 @@ public class ChatGPTPatientDataAwareDataAccessObject extends ChatGPTDataAccessOb
                 "Illnesses: %s\\n" +
                 "Current Symptoms: %s\\n" +
                 "Prescribed Drugs: %s\\n" +
-                "Appointment Dates: %s\\n";
+                "Appointment Dates: %s\\n" +
+                "Is Pregnant: %s\\n" +
+                "Life Style Information:\\n%s\\n" +
+                "Additional Doctor Notes:\\n%s\\n";
+
         return String.format(detailsFormat,
                 this.queryPatient.fullName,
-                this.queryPatient.getWeight(),
-                this.queryPatient.getHeight(),
+                this.queryPatient.getWeightAsString(),
+                this.queryPatient.getHeightAsString(),
                 this.queryPatient.getAllergiesAsString(),
                 this.queryPatient.getIllnessesAsString(),
                 this.queryPatient.getSymptomsAsString(),
                 this.queryPatient.getPrescribedDrugsAsString(),
-                this.queryPatient.getAppointmentDatesAsString()
-                );
+                this.queryPatient.getAppointmentDatesAsString(),
+                this.queryPatient.getIsPregnant(),
+                this.queryPatient.getLifestyleInformation(),
+                this.queryPatient.getAdditionalNotes()
+        );
 
     }
 
@@ -59,6 +66,6 @@ public class ChatGPTPatientDataAwareDataAccessObject extends ChatGPTDataAccessOb
         // set up initial instruction prompt
         this.setInstructionPrompt(setUpInstructions);
 
-        // instructions: \"You are a doctor's assistant. You must keep your outputs as concise and accurate as possible. Do not format your output, keep the formatting simple. Remember you are chatting with a licensed doctor. Do not reference that you are an LLM or an AI model. You will be given details below:\"\\n";
+
     }
 }
