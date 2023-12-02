@@ -3,6 +3,9 @@ package use_case.chat;
 import data_access.*;
 
 import javax.swing.*;
+import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -101,6 +104,16 @@ public class ChatInteractor implements ChatInputBoundary {
                         SwingUtilities.invokeLater(() -> {
                             chatPresenter.updateChat("..[DONE WRITING TO CSV]...", false);
                         });
+                        // attempt to open CSV file
+                        try {
+                            File csvFile = new File(csvFileManagementDataAccessObject.getOutputDirectory() + csvData.get(0) + ".csv");
+                            if (Desktop.isDesktopSupported()) {
+                                Desktop.getDesktop().open(csvFile);
+                            } else {
+                                System.out.println("Cannot open CSV for user.");
+                            }
+                        } catch (IOException ignored) {
+                        }
                         System.out.println("RESPONSE");
                         String aiResponse = chatGPTChatDataAccessObject.messageGPT("CSV file has been written to the ../reports directory", fdaData, true);
                         chatPresenter.updateChat(aiResponse, false);
