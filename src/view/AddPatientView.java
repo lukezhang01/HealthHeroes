@@ -16,6 +16,7 @@ import java.util.List;
 public class AddPatientView extends JFrame {
     private PatientListInteractor interactor;
 
+    private final Dimension DIMENSION = new Dimension(300, 600);
     private JTextField nameField;
     private JTextField heightField;
     private JTextField weightField;
@@ -34,6 +35,8 @@ public class AddPatientView extends JFrame {
         setTitle("Add New Patient");
         setSize(400, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setMaximumSize(DIMENSION);
+        setMinimumSize(DIMENSION);
 
         // Create the main panel with a box layout
         JPanel mainPanel = new JPanel();
