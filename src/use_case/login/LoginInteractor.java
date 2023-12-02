@@ -12,7 +12,7 @@ public class LoginInteractor implements LoginInputBoundary {
     }
 
     @Override
-    public void execute(LoginInputData loginInputData) {
+    public void executeLogin(LoginInputData loginInputData) {
         String username = loginInputData.getUsername();
         String password = loginInputData.getPassword();
         if (!userDataAccessObject.existsByName(username)) {
@@ -29,5 +29,10 @@ public class LoginInteractor implements LoginInputBoundary {
                 loginPresenter.prepareSuccessView(loginOutputData);
             }
         }
+    }
+
+    @Override
+    public void executeSignup() {
+        loginPresenter.prepareSignupView();
     }
 }

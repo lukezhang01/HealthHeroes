@@ -13,12 +13,12 @@ public class LoginController {
 
 
     public void handleLogin(String username, String password) {
-        LoginInputData loginInputData = new LoginInputData(
-                username, password);
+        LoginInputData loginInputData = new LoginInputData(username, password);
 
-        loginUseCaseInteractor.execute(loginInputData);
+        loginUseCaseInteractor.executeLogin(loginInputData);
     }
     public void handleSignup(){
         // TODO: open signup window
+        loginUseCaseInteractor.executeSignup();
     }
 }

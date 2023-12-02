@@ -10,11 +10,12 @@ public class SignupController {
     public void handleSubmit(String username, String password, String repeatPassword, String country) {
         SignupInputData signupInputData = new SignupInputData(username, password, repeatPassword, country);
 
-        userSignupUseCaseInteractor.execute(signupInputData);
+        userSignupUseCaseInteractor.executeSubmit(signupInputData);
     }
 
     public void handleCancel() {
-        // TODO: close the signup window and open login window
+        // close the signup window and open login window
+        userSignupUseCaseInteractor.executeCancel();
     }
 
 }
