@@ -23,6 +23,10 @@ public class PatientListController {
         patientListPresenter.present(patientData);
     }
 
+    public ArrayList<PatientListOutputData> getPatients() {
+        return patientListInteractor.fetchPatients();
+    }
+
     public void handleAddPatient() {
         /*
         needs to call view manager to pull up new view for adding a new patient
