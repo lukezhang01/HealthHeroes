@@ -2,10 +2,13 @@ package test;
 
 import data_access.CSVDatabaseAccessInterface;
 import data_access.CSVDatabaseAccessObject;
+import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.patientList.PatientListController;
 import interface_adapter.patientList.PatientListPresenter;
 import use_case.patientList.*;
+import view.HomeView;
 import view.PatientListView;
+import view.SandwichBar;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,7 +18,13 @@ public class TestPatientListFactory {
         try {
             CSVDatabaseAccessObject databaseAccessObject = new CSVDatabaseAccessObject("data/Doctor1.csv");
             PatientListView view = new PatientListView();
-            view.addLeftPanel();
+            LoggedInViewModel login = new LoggedInViewModel();
+            login.setLoggedInUser("asd");
+            HomeView homeView = new HomeView(login);
+            homeView.setPatientListView(view);
+            homeView.setVisible(false);
+            view.setHomeView(homeView);
+            view.setSandwichBar(new SandwichBar(view,homeView,view));
             ArrayList<PatientListOutputData> testArray = new ArrayList<>();
             view.display(testArray);
 
