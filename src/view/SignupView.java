@@ -16,7 +16,7 @@ import java.beans.PropertyChangeListener;
 import javax.swing.*;
 import java.awt.*;
 
-public class SignupView extends JFrame implements ActionListener, PropertyChangeListener{
+public class SignupView extends JPanel implements ActionListener, PropertyChangeListener{
     public final String viewName = "sign up";
     private JTextField usernameField;
     private JPasswordField passwordField;
@@ -27,12 +27,11 @@ public class SignupView extends JFrame implements ActionListener, PropertyChange
     private final SignupController controller;
 
     public SignupView(SignupViewModel viewModel, SignupController controller) {
-        super("Signup Screen");
         this.controller = controller;
         this.viewModel = viewModel;
+        viewModel.addPropertyChangeListener(this);
 
         // Set the default close operation and layout
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -91,7 +90,6 @@ public class SignupView extends JFrame implements ActionListener, PropertyChange
         setPreferredSize(new Dimension(300, 200));
 
         // Pack and display the window
-        pack();
         setVisible(true);
     }
 

@@ -13,7 +13,6 @@ public class LoginController {
 
 
     public void handleLogin(String username, String password) {
-        System.out.println("login controller passed");
         LoginInputData loginInputData = new LoginInputData(username, password);
 
         loginUseCaseInteractor.executeLogin(loginInputData);
