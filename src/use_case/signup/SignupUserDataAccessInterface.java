@@ -9,6 +9,6 @@ public interface SignupUserDataAccessInterface {
      */
     boolean existsByName(String identifier);
 
-    void saveNewDoctor();
+    void saveNewDoctor(String username, String password);
 
 }

@@ -21,4 +21,5 @@ public interface LoginUserDataAccessInterface {
      */
     boolean passwordMatch(String username, String password);
 
+    Doctor get(String username);
 }
