@@ -19,14 +19,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Locale;
 
-public class PatientListView extends JFrame {
+public class PatientListView extends JPanel {
 
     // COLORS
     private JPanel patientPanel;
 
-    private SandwichBar sandwichBar;
 
-    private HomeView homeView;
+    public final String viewName = "Patients";
     private JScrollPane scrollPane;
 
     private final String[] filterOptions = {"All Patients", "Appointments Today", "Appointments This Week"};
@@ -37,7 +36,6 @@ public class PatientListView extends JFrame {
     private PatientListController patientListController;
     private JPanel container;
 
-    private DrugsView drugsView;
 
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -124,8 +122,6 @@ public class PatientListView extends JFrame {
     }
 
     public PatientListView() {
-        super("Patient List View");
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(new BorderLayout());
 
         this.container = new JPanel();
@@ -292,60 +288,6 @@ public class PatientListView extends JFrame {
         //this.container.add(bottomPanel);
         this.add(bottomPanel, BorderLayout.SOUTH);
 
-
-        JPanel leftPanel = new JPanel();
-        leftPanel.setLayout(new BoxLayout(leftPanel,BoxLayout.Y_AXIS));
-        leftPanel.setBackground(new Color(73, 93, 135));
-        JButton homeButton = new JButton("🏠Home");
-        JButton patientButton = new JButton("☺Patients");
-        JButton drugsButton = new JButton("\uD83D\uDC8A Drugs");
-        homeButton.setBackground(new Color(99, 255, 147));
-        homeButton.setForeground(new Color(45, 46, 45));
-        homeButton.setFont(ViewModel.HEADING_FONT_BOLD);
-        homeButton.setOpaque(true);
-        homeButton.setContentAreaFilled(true);
-        homeButton.setBorderPainted(false);
-        homeButton.setFocusPainted(false);
-        patientButton.setBackground(new Color(99, 255, 147));
-        patientButton.setForeground(new Color(45, 46, 45));
-        patientButton.setFont(ViewModel.HEADING_FONT_BOLD);
-        patientButton.setOpaque(true);
-        patientButton.setContentAreaFilled(true);
-        patientButton.setBorderPainted(false);
-        patientButton.setFocusPainted(false);
-
-
-        homeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                homeView.setPatientListView(PatientListView.this);
-                homeView.setDrugsView(drugsView);
-                homeView.setVisible(true);
-                PatientListView.this.setVisible(false);
-                homeView.revalidate();
-                homeView.repaint();
-            }
-        });
-
-        drugsButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                drugsView.setHomeView(homeView);
-                drugsView.setPatientListView(PatientListView.this);
-                drugsView.setVisible(true);
-                PatientListView.this.setVisible(false);
-                drugsView.revalidate();
-                drugsView.repaint();
-            }
-        });
-
-
-        leftPanel.add(homeButton);
-        leftPanel.add(patientButton);
-        leftPanel.add(drugsButton);
-        //this.add(container, BorderLayout.CENTER);
-        this.add(leftPanel, BorderLayout.WEST);
-
         this.revalidate();
         this.repaint();
         this.setSize(600, 400);
@@ -390,15 +332,5 @@ public class PatientListView extends JFrame {
         updatePatientsByFilter(filterOptions[0]);
         updateDisplayBySort(sortOptions[0]);
     }
-    public void setHomeView(HomeView homeView){
-        this.homeView = homeView;
-    }
 
-    public void setDrugsView(DrugsView drugsView){
-        this.drugsView = drugsView;
-    }
-
-    public void setSandwichBar(SandwichBar sandwichBar){
-        this.sandwichBar = sandwichBar;
-    }
 }
