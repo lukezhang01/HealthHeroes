@@ -1,5 +1,6 @@
 package app;
 
+import entity.DoctorFactory;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
@@ -39,7 +40,7 @@ public class SignupUseCaseFactory {
 
         SignupOutputBoundary signupOutputBoundary = new SignupPresenter(viewManagerModel, signupViewModel, loginViewModel);
 
-        UserFactory userFactory = new CommonUserFactory();
+        UserFactory userFactory = new DoctorFactory();
 
         SignupInputBoundary userSignupInteractor = new SignupInteractor(
                 userDataAccessObject, signupOutputBoundary, userFactory);
