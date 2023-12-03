@@ -6,6 +6,7 @@ import interface_adapter.patientList.PatientListController;
 import interface_adapter.patientList.PatientListPresenter;
 import use_case.addPatient.AddPatientUseCase;
 import use_case.patientList.*;
+import view.DrugsView;
 import view.HomeView;
 import view.PatientListView;
 import view.SandwichBar;
@@ -19,11 +20,14 @@ public class TestPatientListFactory {
             CSVDatabaseAccessObject databaseAccessObject = new CSVDatabaseAccessObject("data/Doctor1.csv");
             PatientListView view = new PatientListView();
             LoggedInViewModel login = new LoggedInViewModel();
+
             login.setLoggedInUser("asd");
             HomeView homeView = new HomeView(login);
-            homeView.setPatientListView(view);
             homeView.setVisible(false);
+            DrugsView drugs = new DrugsView();
+            drugs.setVisible(false);
             view.setHomeView(homeView);
+            view.setDrugsView(drugs);
             view.setSandwichBar(new SandwichBar(view,homeView,view));
             ArrayList<PatientListOutputData> testArray = new ArrayList<>();
             view.display(testArray);
