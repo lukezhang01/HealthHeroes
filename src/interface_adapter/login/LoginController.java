@@ -13,12 +13,13 @@ public class LoginController {
 
 
     public void handleLogin(String username, String password) {
+        System.out.println("login controller passed");
         LoginInputData loginInputData = new LoginInputData(username, password);
 
         loginUseCaseInteractor.executeLogin(loginInputData);
     }
     public void handleSignup(){
-        System.out.println("login controller passed");
+
         loginUseCaseInteractor.executeSignup();
     }
 }
