@@ -1,9 +1,9 @@
 package view;
 
 import entity.Drug;
-import interface_adapter.patientList.PatientListController;
-import use_case.patientList.AddPatientUseCase;
-import use_case.patientList.PatientListInteractor;
+import interface_adapter.ViewModel;
+import interface_adapter.addPatient.AddPatientController;
+import interface_adapter.addPatient.AddPatientViewModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,19 +14,30 @@ import java.util.List;
 
 
 public class AddPatientView extends JFrame {
-    private PatientListInteractor interactor;
-
+    private AddPatientController controller;
+    private AddPatientViewModel model;
+    private ArrayList<DrugEntry> drugEntries;
     private final Dimension DIMENSION = new Dimension(300, 600);
     private JTextField nameField;
     private JTextField heightField;
     private JTextField weightField;
+    private JTextField dateOfBirthField;
+    private JTextField genderField;
+    private JComboBox<String> isPregnantField;
+    private JTextField appointmentDatesField;
+    private JTextField allergiesField;
+    private JTextField illnessesField;
+    private JTextField symptomsField;
+    private JTextField lifestyleInformationField;
+    private JTextField additionalNotesField;
     private JPanel drugsPanel;
     private JScrollPane drugsScrollPane;
     private JButton addDrugButton;
-    private List<DrugEntry> drugEntries;
+    private final int FIELD_SIZE = 20;
 
-    public AddPatientView(PatientListInteractor interactor) {
-        this.interactor = interactor;
+    public AddPatientView(AddPatientController controller, AddPatientViewModel model) {
+        this.controller = controller;
+        this.model = model;
 
         // Initialize the list for drug entries
         drugEntries = new ArrayList<>();
@@ -37,28 +48,66 @@ public class AddPatientView extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setMaximumSize(DIMENSION);
         setMinimumSize(DIMENSION);
+        setSize(DIMENSION);
 
         // Create the main panel with a box layout
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        mainPanel.setBackground(ViewModel.BACKGROUND_COLOR);
+        // add input fields with labels on the same line
+        JLabel fullNameLabel = new JLabel("Full Name:");
+        fullNameLabel.setFont(ViewModel.HEADING_FONT_BOLD);
+        fullNameLabel.setForeground(ViewModel.TEXT_COLOR);
+        nameField = new JTextField(FIELD_SIZE);
 
-        // Add input fields with labels on the same line
-        mainPanel.add(createLabeledField("Full Name:", 20));
-        mainPanel.add(createLabeledField("Height:", 20));
-        mainPanel.add(createLabeledField("Weight:", 20));
+        JLabel heightLabel = new JLabel("Height:");
+        heightField = new JTextField(FIELD_SIZE);
 
-        // Set up drugs panel with a dynamic layout
+        JLabel weightLabel = new JLabel("Weight:");
+        weightField = new JTextField(FIELD_SIZE);
+
+        JLabel dateOfBirthLabel = new JLabel("Date of Birth:");
+        dateOfBirthField = new JTextField(FIELD_SIZE);
+
+        JLabel genderLabel = new JLabel("Gender:");
+        genderField = new JTextField(FIELD_SIZE);
+
+        JLabel appointmentDatesLabel = new JLabel("Appointment Dates:");
+        appointmentDatesField = new JTextField(FIELD_SIZE);
+
+        JLabel allergiesLabel = new JLabel("Allergies:");
+        allergiesField = new JTextField(FIELD_SIZE);
+
+        JLabel symptomsLabel = new JLabel("Symptoms:");
+        symptomsField = new JTextField(FIELD_SIZE);
+
+        JLabel lifestyleInformationLabel = new JLabel("Lifestyle Information:");
+        lifestyleInformationField = new JTextField(FIELD_SIZE);
+
+        JLabel additionalNotesLabel = new JLabel("Additional Notes:");
+        additionalNotesField = new JTextField(FIELD_SIZE);
+
+        JLabel illnessesLabel = new JLabel("Illnesses:");
+        illnessesField = new JTextField(FIELD_SIZE);
+
+        mainPanel.add(createLabeledField(fullNameLabel, nameField));
+        mainPanel.add(createLabeledField(heightLabel, heightField));
+        mainPanel.add(createLabeledField(weightLabel, weightField));
+        mainPanel.add(createLabeledField(appointmentDatesLabel, appointmentDatesField));
+
+
+        // set up drugs panel with a dynamic layout
         drugsPanel = new JPanel();
         drugsPanel.setLayout(new BoxLayout(drugsPanel, BoxLayout.Y_AXIS));
         addDrugFields(); // add the initial set of drug fields
 
-        // Create a scroll pane for drugs
+        // create a scroll pane for drugs
         drugsScrollPane = new JScrollPane(drugsPanel);
         drugsScrollPane.setPreferredSize(new Dimension(350, 100));
         drugsScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        mainPanel.add(drugsScrollPane);
+        // mainPanel.add(drugsScrollPane);
 
-        // Add button to add more drug fields
+        // add button to add more drug fields
         addDrugButton = new JButton("+");
         addDrugButton.addActionListener(new ActionListener() {
             @Override
@@ -68,8 +117,58 @@ public class AddPatientView extends JFrame {
         });
         drugsPanel.add(addDrugButton);
 
+        JPanel drugsPanelWrapper = new JPanel();
+        drugsPanelWrapper.setLayout(new BoxLayout(drugsPanelWrapper, BoxLayout.LINE_AXIS)); // Use BoxLayout for horizontal alignment
+
+        JLabel drugsLabel = new JLabel("Drugs:");
+        drugsPanelWrapper.add(drugsLabel); // Add the label to the wrapper
+
+        // Add the scroll pane that contains the drugs panel
+        drugsScrollPane = new JScrollPane(drugsPanel);
+        drugsScrollPane.setPreferredSize(new Dimension(350, 50));
+        drugsScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        drugsPanelWrapper.add(drugsScrollPane); // Add the scroll pane to the wrapper next to the label
+
+        mainPanel.add(drugsPanelWrapper);
+
+        JLabel isPregnantLabel = new JLabel("Is Pregnant:");
+        String[] options = {"True", "False"};
+        isPregnantField = new JComboBox<>(options);
+        JPanel tempPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        isPregnantField.setMaximumSize(new Dimension(Integer.MAX_VALUE, isPregnantField.getPreferredSize().height));
+        tempPanel.add(isPregnantLabel);
+        tempPanel.add(isPregnantField);
+
+        mainPanel.add(tempPanel);
+        mainPanel.add(createLabeledField(allergiesLabel, allergiesField));
+        mainPanel.add(createLabeledField(illnessesLabel, illnessesField));
+        mainPanel.add(createLabeledField(symptomsLabel, symptomsField));
+        mainPanel.add(createLabeledField(lifestyleInformationLabel, lifestyleInformationField));
+        mainPanel.add(createLabeledField(additionalNotesLabel, additionalNotesField));
+
         // Add patient button
         JButton addPatientButton = new JButton("Add Patient");
+        addPatientButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String fullName = nameField.getText();
+                String height = heightField.getText();
+                String weight = weightField.getText();
+                String dateOfBirth = dateOfBirthField.getText();
+                String gender = genderField.getText();
+                String[] appointmentDates = appointmentDatesField.getText().split(",");
+                ArrayList<String[]> prescribedDrugs = getDrugsAsString();
+                String[] allergies = allergiesField.getText().split(",");
+                String[] illnesses = illnessesField.getText().split(",");
+                String[] symptoms = symptomsField.getText().split(",");
+                String lifestyleInformation = lifestyleInformationField.getText();
+                String isPregnant = (String) isPregnantField.getSelectedItem();
+                String additionalNotes = additionalNotesField.getText();
+
+                controller.execute(fullName, height, weight, dateOfBirth, gender, appointmentDates, prescribedDrugs,
+                        allergies, illnesses, symptoms, lifestyleInformation, isPregnant, additionalNotes);
+            }
+        });
         mainPanel.add(addPatientButton);
 
         // Add the main panel to the frame
@@ -79,14 +178,28 @@ public class AddPatientView extends JFrame {
         setVisible(true);
     }
 
-    private JPanel createLabeledField(String labelText, int fieldSize) {
+    private ArrayList<String[]> getDrugsAsString() {
+        ArrayList<String[]> data = new ArrayList<>();
+        for (DrugEntry entry : drugEntries) {
+            data.add(entry.getEntryData());
+        }
+        return data;
+    }
+
+    private JPanel createLabeledField(JLabel label, JTextField textField) {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        JLabel label = new JLabel(labelText);
-        JTextField textField = new JTextField(fieldSize);
         textField.setMaximumSize(new Dimension(Integer.MAX_VALUE, textField.getPreferredSize().height));
         panel.add(label);
         panel.add(textField);
         return panel;
+    }
+
+    private ArrayList<Object[]> getDrugsData() {
+        ArrayList<Object[]> data = new ArrayList<>();
+        for (DrugEntry entry : drugEntries) {
+            data.add(entry.getEntryData());
+        }
+        return data;
     }
 
     private void addDrugFields() {
@@ -97,6 +210,11 @@ public class AddPatientView extends JFrame {
         drugsPanel.repaint();
     }
 
+    private boolean getIsPregnant() {
+        String selection = (String) isPregnantField.getSelectedItem();
+        assert selection != null;
+        return selection.equals("True");
+    }
 
 
 }

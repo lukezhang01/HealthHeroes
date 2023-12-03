@@ -13,6 +13,8 @@ public class Patient implements User {
     public String fullName;
     private float height;
     private float weight;
+    private LocalDate dateOfBirth;
+    private String gender;
     private ArrayList<LocalDate> appointment_dates;
     private LocalDate date_added;
     private ArrayList<Drug> prescribed_drugs;
@@ -23,7 +25,7 @@ public class Patient implements User {
     private boolean isPregnant;
     private String additionalNotes;
 
-    public Patient(int id, String fullName, float height, float weight, ArrayList<LocalDate> appointment_dates,
+    public Patient(int id, String fullName, float height, float weight, LocalDate dateOfBirth, String gender, ArrayList<LocalDate> appointment_dates,
                    LocalDate date_added, ArrayList<Drug> prescribed_drugs,
                    ArrayList<String> allergies, ArrayList<String> illnesses, ArrayList<String> symptoms,
                    String lifestyleInformation, boolean isPregnant, String additionalNotes) {
@@ -31,6 +33,8 @@ public class Patient implements User {
         this.fullName = fullName;
         this.height = height;
         this.weight = weight;
+        this.dateOfBirth = dateOfBirth;
+        this.gender = gender;
         this.appointment_dates = appointment_dates;
         this.date_added = date_added;
         this.prescribed_drugs = prescribed_drugs;
@@ -85,6 +89,14 @@ public class Patient implements User {
 
     public float getHeight() {
         return this.height;
+    }
+
+    public String getGender() {
+        return this.gender;
+    }
+
+    public String getBirthDateAsString() {
+        return this.dateOfBirth.toString();
     }
 
     // getters for chatgpt data
@@ -157,6 +169,10 @@ public class Patient implements User {
 
     public void updateAdditionalNotes(String newNotes) {
         this.additionalNotes = newNotes;
+    }
+
+    public void changeGender(String newGender) {
+        this.gender = newGender;
     }
 
 }

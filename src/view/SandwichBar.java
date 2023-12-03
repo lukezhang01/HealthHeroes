@@ -9,12 +9,16 @@ import java.awt.event.ActionListener;
 
 public class SandwichBar extends JPanel {
     private JFrame mainFrame;
+    private HomeView home;
+    private PatientListView patientList;
     public JPanel sandwich;
 
-    public SandwichBar(JFrame mainFrame) {
+    public SandwichBar(JFrame mainFrame, HomeView home, PatientListView patientList) {
         setLayout(new BorderLayout());
         this.sandwich = createNavigationPanel();
         this.mainFrame = mainFrame;
+        this.home = home;
+        this.patientList = patientList;
     }
 
     private void createAndShowMainFrame() {
@@ -64,11 +68,9 @@ public class SandwichBar extends JPanel {
         mainFrame.getContentPane().add(navigationPanel, BorderLayout.WEST);
 
         if ("Home".equals(view)) {
-            HomeView homeView = new HomeView(new LoggedInViewModel());
-            mainFrame.getContentPane().add(createPanelForFrame(homeView), BorderLayout.CENTER);
+            mainFrame.getContentPane().add(createPanelForFrame(home), BorderLayout.CENTER);
         } else if ("Patients".equals(view)) {
-            PatientListView patientsListView = new PatientListView();
-            mainFrame.getContentPane().add(createPanelForFrame(patientsListView), BorderLayout.CENTER);
+            mainFrame.getContentPane().add(createPanelForFrame(patientList), BorderLayout.CENTER);
         }
 
         mainFrame.revalidate();
@@ -78,6 +80,14 @@ public class SandwichBar extends JPanel {
     private JPanel createPanelForFrame(JFrame frame) {
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(frame.getContentPane(), BorderLayout.CENTER);
+        panel.revalidate();
+        panel.repaint();
+        return panel;
+    }
+
+    private JPanel createPanelForView(JPanel view) {
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.add(view, BorderLayout.CENTER);
         return panel;
     }
 
