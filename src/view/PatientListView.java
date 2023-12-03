@@ -37,6 +37,8 @@ public class PatientListView extends JFrame {
     private PatientListController patientListController;
     private JPanel container;
 
+    private DrugsView drugsView;
+
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     private ArrayList<PatientListOutputData> getPatientsSortedAlphabetically(){
@@ -296,6 +298,7 @@ public class PatientListView extends JFrame {
         leftPanel.setBackground(new Color(73, 93, 135));
         JButton homeButton = new JButton("🏠Home");
         JButton patientButton = new JButton("☺Patients");
+        JButton drugsButton = new JButton("\uD83D\uDC8A Drugs");
         homeButton.setBackground(new Color(99, 255, 147));
         homeButton.setForeground(new Color(45, 46, 45));
         homeButton.setFont(ViewModel.HEADING_FONT_BOLD);
@@ -316,6 +319,7 @@ public class PatientListView extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 homeView.setPatientListView(PatientListView.this);
+                homeView.setDrugsView(drugsView);
                 homeView.setVisible(true);
                 PatientListView.this.setVisible(false);
                 homeView.revalidate();
@@ -323,9 +327,22 @@ public class PatientListView extends JFrame {
             }
         });
 
+        drugsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                drugsView.setHomeView(homeView);
+                drugsView.setPatientListView(PatientListView.this);
+                drugsView.setVisible(true);
+                PatientListView.this.setVisible(false);
+                drugsView.revalidate();
+                drugsView.repaint();
+            }
+        });
+
 
         leftPanel.add(homeButton);
         leftPanel.add(patientButton);
+        leftPanel.add(drugsButton);
         //this.add(container, BorderLayout.CENTER);
         this.add(leftPanel, BorderLayout.WEST);
 
@@ -375,6 +392,10 @@ public class PatientListView extends JFrame {
     }
     public void setHomeView(HomeView homeView){
         this.homeView = homeView;
+    }
+
+    public void setDrugsView(DrugsView drugsView){
+        this.drugsView = drugsView;
     }
 
     public void setSandwichBar(SandwichBar sandwichBar){

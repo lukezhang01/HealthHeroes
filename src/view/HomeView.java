@@ -24,6 +24,8 @@ public class HomeView extends JFrame implements ActionListener, PropertyChangeLi
 
     final JButton logOut;
 
+    private DrugsView drugsView;
+
 
     /**
      * A window with a title and a JButton.
@@ -73,6 +75,7 @@ public class HomeView extends JFrame implements ActionListener, PropertyChangeLi
         leftPanel.setBackground(new Color(73, 93, 135));
         JButton homeButton = new JButton("🏠Home");
         JButton patientButton = new JButton("☺Patients");
+        JButton drugsButton = new JButton("\uD83D\uDC8A Drugs");
         homeButton.setBackground(new Color(99, 255, 147));
         homeButton.setForeground(new Color(45, 46, 45));
         homeButton.setFont(ViewModel.HEADING_FONT_BOLD);
@@ -89,16 +92,30 @@ public class HomeView extends JFrame implements ActionListener, PropertyChangeLi
         patientButton.setFocusPainted(false);
         leftPanel.add(homeButton);
         leftPanel.add(patientButton);
+        leftPanel.add(drugsButton);
         this.add(leftPanel, BorderLayout.WEST);
 
         patientButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 patientListView.setHomeView(HomeView.this);
+                patientListView.setDrugsView(drugsView);
                 patientListView.setVisible(true);
                 HomeView.this.setVisible(false);
                 patientListView.revalidate();
                 patientListView.repaint();
+            }
+        });
+
+        drugsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                drugsView.setHomeView(HomeView.this);
+                drugsView.setPatientListView(patientListView);
+                drugsView.setVisible(true);
+                HomeView.this.setVisible(false);
+                drugsView.revalidate();
+                drugsView.repaint();
             }
         });
 
@@ -125,6 +142,10 @@ public class HomeView extends JFrame implements ActionListener, PropertyChangeLi
 
     public void setPatientListView(PatientListView view){
         this.patientListView = view;
+    }
+
+    public void setDrugsView(DrugsView drugsView){
+        this.drugsView = drugsView;
     }
 
     public static void main(String[] args) {
