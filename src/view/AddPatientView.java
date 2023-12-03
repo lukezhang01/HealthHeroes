@@ -1,11 +1,13 @@
 package view;
 
 import entity.Drug;
+import interface_adapter.ViewModel;
 import interface_adapter.patientList.PatientListController;
 import use_case.patientList.AddPatientUseCase;
 import use_case.patientList.PatientListInteractor;
 
 import javax.swing.*;
+import javax.swing.text.View;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,6 +36,13 @@ public class AddPatientView extends JFrame {
     private JButton addDrugButton;
     private final int FIELD_SIZE = 20;
 
+    private JTextField getInputField() {
+        JTextField field = new JTextField(FIELD_SIZE);
+        field.setBackground(new Color(80, 104, 143));
+        field.setForeground(new Color(255, 255, 255));
+        return field;
+    }
+
     public AddPatientView(PatientListInteractor interactor) {
         this.interactor = interactor;
 
@@ -46,14 +55,17 @@ public class AddPatientView extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setMaximumSize(DIMENSION);
         setMinimumSize(DIMENSION);
+        setSize(DIMENSION);
 
         // Create the main panel with a box layout
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-
+        mainPanel.setBackground(ViewModel.BACKGROUND_COLOR);
         // add input fields with labels on the same line
         JLabel fullNameLabel = new JLabel("Full Name:");
-        nameField = new JTextField(FIELD_SIZE);
+        fullNameLabel.setFont(ViewModel.HEADING_FONT_BOLD);
+        fullNameLabel.setForeground(ViewModel.TEXT_COLOR);
+        nameField = getInputField();
 
         JLabel heightLabel = new JLabel("Height:");
         heightField = new JTextField(FIELD_SIZE);
@@ -171,6 +183,7 @@ public class AddPatientView extends JFrame {
         textField.setMaximumSize(new Dimension(Integer.MAX_VALUE, textField.getPreferredSize().height));
         panel.add(label);
         panel.add(textField);
+        panel.setBackground(ViewModel.BACKGROUND_COLOR);
         return panel;
     }
 
