@@ -34,8 +34,14 @@ public class CSVDatabaseAccessObject implements CSVDatabaseAccessInterface {
                 this.password = String.valueOf(reader.readLine());
                 reader.readLine();
                 String[] patientList = String.valueOf(reader.readLine()).split(",");
-                for (String patientID : patientList) {
-                    patients.put(Integer.parseInt(patientID), readPatientFromCSV(new File("data/Patient " + patientID + ".csv")));
+//                System.out.println(Arrays.toString(patientList));
+//                System.out.println(patientList.length);
+                if (Arrays.toString(patientList).equals("[]")) {
+                    // System.out.println("if clause passed");
+                } else {
+                    for (String patientID : patientList) {
+                        patients.put(Integer.parseInt(patientID), readPatientFromCSV(new File("data/Patient " + patientID + ".csv")));
+                    }
                 }
             }
         }
@@ -133,6 +139,7 @@ public class CSVDatabaseAccessObject implements CSVDatabaseAccessInterface {
                     writer.write(patient_headers[i]);
                     writer.newLine();
                     writer.write(patientData[i]);
+                    writer.newLine();
                 }
                 writer.close();
             }
