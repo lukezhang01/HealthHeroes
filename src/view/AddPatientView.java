@@ -1,18 +1,16 @@
 package view;
 
 import entity.Drug;
-import interface_adapter.patientList.PatientListController;
-import use_case.patientList.AddPatientUseCase;
-import use_case.patientList.PatientListInteractor;
+import interface_adapter.ViewModel;
+import interface_adapter.addPatient.AddPatientController;
+import interface_adapter.addPatient.AddPatientViewModel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 
 public class AddPatientView extends JFrame {
@@ -60,7 +58,7 @@ public class AddPatientView extends JFrame {
         JLabel fullNameLabel = new JLabel("Full Name:");
         fullNameLabel.setFont(ViewModel.HEADING_FONT_BOLD);
         fullNameLabel.setForeground(ViewModel.TEXT_COLOR);
-        nameField = getInputField();
+        nameField = new JTextField(FIELD_SIZE);
 
         JLabel heightLabel = new JLabel("Height:");
         heightField = new JTextField(FIELD_SIZE);

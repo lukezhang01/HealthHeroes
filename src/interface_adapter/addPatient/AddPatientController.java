@@ -14,9 +14,9 @@ public class AddPatientController {
 
     public void execute(String fullName, String height, String weight, String dateOfBirth, String gender,
                         String[] appointmentDates, ArrayList<String[]> prescribedDrugs, String[] allergies,
-                        String[] illnesses, String[] symptoms, String lifestyleInformation, String additionalNotes) {
+                        String[] illnesses, String[] symptoms, String lifestyleInformation, String isPregnant, String additionalNotes) {
         AddPatientInputData inputData = new AddPatientInputData(fullName, height, weight, dateOfBirth, gender,
-                appointmentDates, prescribedDrugs, allergies, illnesses, symptoms, lifestyleInformation, additionalNotes);
+                appointmentDates, prescribedDrugs, allergies, illnesses, symptoms, lifestyleInformation, isPregnant, additionalNotes);
         this.addPatientInteractor.execute(inputData);
     }
 }
