@@ -43,16 +43,16 @@ public class Main {
         DirectoryDatabaseAccessObject userDataAccessObject;
         userDataAccessObject = new DirectoryDatabaseAccessObject();
 
-        SignupView signupView = SignupUseCaseFactory.create(viewManagerModel, loginViewModel, signupViewModel, userDataAccessObject);
-        views.add(signupView, signupView.viewName);
-
         LoginView loginView = LoginUseCaseFactory.create(viewManagerModel, loginViewModel, loggedInViewModel, userDataAccessObject);
         views.add(loginView, loginView.viewName);
+
+        SignupView signupView = SignupUseCaseFactory.create(viewManagerModel, loginViewModel, signupViewModel, userDataAccessObject);
+        views.add(signupView, signupView.viewName);
 
         LoggedInView loggedInView = new LoggedInView(loggedInViewModel);
         views.add(loggedInView, loggedInView.viewName);
 
-        viewManagerModel.setActiveView(signupView.viewName);
+        viewManagerModel.setActiveView(loginView.viewName);
         viewManagerModel.firePropertyChanged();
 
         application.pack();
@@ -60,7 +60,7 @@ public class Main {
 
 
 //        // TEST PATIENT
-//        CSVDatabaseAccessObject databaseAccessObject = new CSVDatabaseAccessObject("data/Doctor1.csv");
+//        CSVDatabaseAccessObject databaseAccessObject = new CSVDatabaseAccessObject("data/Doctor 1.csv");
 //        PatientListView view = new PatientListView();
 //        LoggedInViewModel login = new LoggedInViewModel();
 //        login.setLoggedInUser("asd");
