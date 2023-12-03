@@ -29,4 +29,5 @@ public class SignupViewModel extends ViewModel {
     public SignupState getState() {
         return state;
     }
+
 }

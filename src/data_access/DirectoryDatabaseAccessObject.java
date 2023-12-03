@@ -1,15 +1,14 @@
 package data_access;
 
 import entity.Doctor;
+import entity.Patient;
 import use_case.login.LoginUserDataAccessInterface;
 import use_case.signup.SignupUserDataAccessInterface;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 public class DirectoryDatabaseAccessObject implements LoginUserDataAccessInterface, SignupUserDataAccessInterface {
+    private final String[] headers = {"username", "password", "patients"};
     public DirectoryDatabaseAccessObject() {
 
     }
@@ -48,7 +47,21 @@ public class DirectoryDatabaseAccessObject implements LoginUserDataAccessInterfa
      */
     @Override
     public void saveNewDoctor(String username, String password) {
-
+        BufferedWriter writer;
+        String[] info = {username, password, ""};
+        try {
+            String filePath = "data/Doctor " + username + ".csv";
+            writer = new BufferedWriter(new FileWriter(filePath, false));
+            for (int i = 0; i < headers.length; i++) {
+                writer.write(headers[i]);
+                writer.newLine();
+                writer.write(info[i]);
+                writer.newLine();
+            }
+            writer.close();
+        } catch (IOException e) {
+            System.out.println(e);
+        }
     }
 
     /**
@@ -80,11 +93,14 @@ public class DirectoryDatabaseAccessObject implements LoginUserDataAccessInterfa
     @Override
     public Doctor get(String username) {
         try {
+            //System.out.println("test1");
             CSVDatabaseAccessObject databaseAccessObject = new CSVDatabaseAccessObject("data/Doctor " + username + ".csv");
+            //System.out.println(databaseAccessObject.getUsername()+", "+databaseAccessObject.getPassword()+", "+databaseAccessObject.getPatients());
             return new Doctor(databaseAccessObject.getUsername(), databaseAccessObject.getPassword(), databaseAccessObject.getPatients());
         } catch (IOException e) {
             return null;
         }
+
     }
 
 

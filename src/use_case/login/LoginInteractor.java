@@ -15,6 +15,7 @@ public class LoginInteractor implements LoginInputBoundary {
     public void executeLogin(LoginInputData loginInputData) {
         String username = loginInputData.getUsername();
         String password = loginInputData.getPassword();
+        System.out.println(username+password);
         if (!userDataAccessObject.existsByName(username)) {
             loginPresenter.prepareFailView(username + ": Account does not exist.");
         } else {
@@ -33,6 +34,7 @@ public class LoginInteractor implements LoginInputBoundary {
 
     @Override
     public void executeSignup() {
+        System.out.println("login interactor passed");
         loginPresenter.prepareSignupView();
     }
 }

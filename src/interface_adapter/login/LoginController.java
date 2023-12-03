@@ -18,7 +18,7 @@ public class LoginController {
         loginUseCaseInteractor.executeLogin(loginInputData);
     }
     public void handleSignup(){
-        // TODO: open signup window
+
         loginUseCaseInteractor.executeSignup();
     }
 }

@@ -19,4 +19,8 @@ public class AddPatientController {
                 appointmentDates, prescribedDrugs, allergies, illnesses, symptoms, lifestyleInformation, isPregnant, additionalNotes);
         this.addPatientInteractor.execute(inputData);
     }
+
+    public void handleAddPatient() {
+        addPatientInteractor.display();
+    }
 }

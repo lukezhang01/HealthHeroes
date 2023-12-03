@@ -33,7 +33,7 @@ public class PatientListController {
          */
         System.out.println("reached controller");
 //        AddPatientView addPatientView = new AddPatientView(this.patientListInteractor);
-        // this.patientListInteractor.addPatient();
+//        this.patientListInteractor.addPatient();
     }
 
     public void handleDeletePatient(PatientListOutputData patient) {

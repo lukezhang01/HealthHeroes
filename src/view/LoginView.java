@@ -16,7 +16,8 @@ import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-public class LoginView extends JFrame implements ActionListener, PropertyChangeListener {
+public class LoginView extends JPanel implements ActionListener, PropertyChangeListener {
+        public final String viewName = "log in";
 
         private JTextField usernameField;
         private JPasswordField passwordField;
@@ -24,12 +25,10 @@ public class LoginView extends JFrame implements ActionListener, PropertyChangeL
         private final LoginController controller;
 
         public LoginView(LoginViewModel viewModel, LoginController controller) {
-            super("Login View");
             this.viewModel = viewModel;
             this.controller = controller;
+            viewModel.addPropertyChangeListener(this);
 
-            // Set the default close operation and layout
-            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             setLayout(new GridBagLayout());
             GridBagConstraints constraints = new GridBagConstraints();
 
@@ -79,10 +78,6 @@ public class LoginView extends JFrame implements ActionListener, PropertyChangeL
 
             // Set the frame size
             setPreferredSize(new Dimension(350, 200));
-
-            // Pack and display the window
-            pack();
-            setLocationRelativeTo(null); // Center on screen
             setVisible(true);
         }
 
@@ -101,7 +96,7 @@ public class LoginView extends JFrame implements ActionListener, PropertyChangeL
 
         private void onSignUp() {
             // Print the message
-            System.out.println("Sign Up button clicked - Redirect to Sign Up View");
+            System.out.println("Sign Up button clicked");
 
             controller.handleSignup();
         }
@@ -113,6 +108,13 @@ public class LoginView extends JFrame implements ActionListener, PropertyChangeL
     public void propertyChange(PropertyChangeEvent evt) {
         LoginState state = (LoginState) evt.getNewValue();
         setFields(state);
+        // check if there is an error state
+        System.out.println(state);
+        System.out.println(state.getDialogMessage());
+        if (!state.getDialogMessage().isEmpty()) {
+            JOptionPane.showMessageDialog(this, state.getDialogMessage());
+            state.setDialogMessage("");
+        }
     }
 
     private void setFields(LoginState state) {
