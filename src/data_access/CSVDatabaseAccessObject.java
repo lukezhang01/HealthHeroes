@@ -1,8 +1,6 @@
 package data_access;
 import entity.*;
 import entity.Drug;
-import use_case.login.LoginUserDataAccessInterface;
-import use_case.signup.SignupUserDataAccessInterface;
 
 
 import java.io.*;
@@ -16,9 +14,7 @@ public class CSVDatabaseAccessObject implements CSVDatabaseAccessInterface {
 
     private final String[] patient_headers = {"id", "full_name", "height", "weight", "date_of_birth", "gender", "appointment_date", "date_added", "prescribed_drugs",
             "allergies", "illnesses", "symptoms", "lifestyle_information", "isPregnant", "additional_notes"};
-    private final String[] doctor_headers = {"username", "password", "patients"};
     private Map<Integer, Patient> patients = new HashMap<>();
-    private String[] allPatientIDs;
     private final String filePath;
     private String username;
     private String password;
@@ -208,6 +204,18 @@ public class CSVDatabaseAccessObject implements CSVDatabaseAccessInterface {
     public void addPatient(Patient patient) {
         this.patients.put(patient.getID(), patient);
         this.savePatients();
+    }
+
+    public String getUsername() {
+        return this.username;
+    }
+
+    public String getPassword() {
+        return this.password;
+    }
+
+    public ArrayList<Patient> getPatients() {
+        return new ArrayList<>(this.patients.values());
     }
 }
 

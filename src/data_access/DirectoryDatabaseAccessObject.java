@@ -47,7 +47,7 @@ public class DirectoryDatabaseAccessObject implements LoginUserDataAccessInterfa
      * saves a new doctor to the directory in a new csv file
      */
     @Override
-    public void saveNewDoctor() {
+    public void saveNewDoctor(String username, String password) {
 
     }
 
@@ -76,5 +76,16 @@ public class DirectoryDatabaseAccessObject implements LoginUserDataAccessInterfa
         }
         return false;
     }
+
+    @Override
+    public Doctor get(String username) {
+        try {
+            CSVDatabaseAccessObject databaseAccessObject = new CSVDatabaseAccessObject("data/Doctor " + username + ".csv");
+            return new Doctor(databaseAccessObject.getUsername(), databaseAccessObject.getPassword(), databaseAccessObject.getPatients());
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
 
 }
