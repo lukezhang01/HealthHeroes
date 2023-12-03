@@ -14,7 +14,7 @@ import java.time.LocalDate;
 public class CSVDatabaseAccessObject implements CSVDatabaseAccessInterface {
 
 
-    private final String[] patient_headers = {"id", "full_name", "height", "weight", "appointment_date", "date_added", "prescribed_drugs",
+    private final String[] patient_headers = {"id", "full_name", "height", "weight", "date_of_birth", "gender", "appointment_date", "date_added", "prescribed_drugs",
             "allergies", "illnesses", "symptoms", "lifestyle_information", "isPregnant", "additional_notes"};
     private final String[] doctor_headers = {"username", "password", "patients"};
     private Map<Integer, Patient> patients = new HashMap<>();
@@ -57,6 +57,10 @@ public class CSVDatabaseAccessObject implements CSVDatabaseAccessInterface {
             reader.readLine();
             float weight = Float.parseFloat(String.valueOf(reader.readLine()));
             reader.readLine();
+            LocalDate dateOfBirth = LocalDate.parse(String.valueOf(reader.readLine()), formatter);
+            reader.readLine();
+            String gender = String.valueOf(reader.readLine());
+            reader.readLine();
             String[] appointmentDates = String.valueOf(reader.readLine()).split(",");
             reader.readLine();
             LocalDate dateAdded = LocalDate.parse(String.valueOf(reader.readLine()), formatter);
@@ -74,7 +78,8 @@ public class CSVDatabaseAccessObject implements CSVDatabaseAccessInterface {
             boolean isPregnant = Boolean.parseBoolean(String.valueOf(reader.readLine()));
             reader.readLine();
             String additionalNotes = String.valueOf(reader.readLine());
-            return new Patient(id, fullName, height, weight, getDates(appointmentDates), dateAdded, getDrugs(drugs),
+            return new Patient(id, fullName, height, weight, dateOfBirth, gender,
+                    getDates(appointmentDates), dateAdded, getDrugs(drugs),
                     new ArrayList<>(List.of(allergies)),
                     new ArrayList<>(List.of(illnesses)),
                     new ArrayList<>(List.of(symptoms)),
