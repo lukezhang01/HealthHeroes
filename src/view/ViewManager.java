@@ -17,11 +17,7 @@ public class ViewManager implements PropertyChangeListener {
         this.viewManagerModel = viewManagerModel;
         this.viewManagerModel.addPropertyChangeListener(this);
 
-        // Initial view setup
-        viewManagerModel.setActiveView("LoginView");
-        viewManagerModel.firePropertyChanged();
     }
-
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
