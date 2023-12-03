@@ -1,9 +1,10 @@
-package use_case.patientList;
+package use_case.addPatient;
 
 import data_access.CSVDatabaseAccessInterface;
 import data_access.CSVDatabaseAccessObject;
 import entity.Drug;
 import entity.Patient;
+import use_case.patientList.PatientListInputBoundary;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

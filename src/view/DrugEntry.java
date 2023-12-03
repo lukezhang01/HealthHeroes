@@ -102,8 +102,8 @@ public class DrugEntry {
         return panel;
     }
 
-    public Object[] getEntryData() {
-        Object[] data = {
+    public String[] getEntryData() {
+        String[] data = {
           nameField.getText(), dosageField.getText(), startField.getText(), endField.getText()
         };
         return data;
