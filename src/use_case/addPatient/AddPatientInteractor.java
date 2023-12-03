@@ -1,5 +1,6 @@
 package use_case.addPatient;
 
+import data_access.CSVDatabaseAccessInterface;
 import data_access.CSVDatabaseAccessObject;
 import entity.Drug;
 import entity.Patient;
@@ -10,11 +11,12 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 public class AddPatientInteractor implements AddPatientInputBoundary {
-    private CSVDatabaseAccessObject databaseAccessObject;
+    private CSVDatabaseAccessInterface databaseAccessObject;
+    private AddPatientOutputBoundary presenter;
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    public AddPatientInteractor(CSVDatabaseAccessObject databaseAccessObject) {
+    public AddPatientInteractor(CSVDatabaseAccessInterface databaseAccessObject, AddPatientOutputBoundary presenter) {
         this.databaseAccessObject = databaseAccessObject;
-
+        this.presenter = presenter;
     }
     @Override
     public void execute(AddPatientInputData addPatientInputData) {
@@ -36,6 +38,11 @@ public class AddPatientInteractor implements AddPatientInputBoundary {
         Patient newPatient = new Patient(id, fullName, height, weight, dateOfBirth, gender, appointmentDates, date_added, prescribedDrugs,
                 allergies, illnesses, symptoms, lifestyleInformation, isPregnant, additionalNotes);
         databaseAccessObject.addPatient(newPatient);
+    }
+
+    @Override
+    public void display() {
+        presenter.display();
     }
 
     private int generateGUID() {
