@@ -19,17 +19,74 @@ public class DrugsView extends JPanel {
     private FdaDatabaseAccessObject fdaObject;
 
     public DrugsView(){
-        this.setLayout(new BorderLayout());
+        this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         this.setMaximumSize(ViewModel.VIEW_DIMENSION);
         this.setMinimumSize(ViewModel.VIEW_DIMENSION);
         this.fdaObject = new FdaDatabaseAccessObject();
 
-        JPanel centerPanel = new JPanel();
+        JPanel left = new JPanel(new GridBagLayout());
+        JPanel right = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.WEST;
+
+
+
         String[] dropdownValues = {"Warnings","Description","Interactions","Pregnancy","Nursing(Mothers)","Usage","Abuse","Handling","Reactions"};
+        JLabel recallTitle = new JLabel("Recent Recalls");
+        recallTitle.setFont(new Font("Arial", Font.BOLD, 16));
+        right.add(recallTitle, gbc);
+        gbc.gridwidth = 1;
+        gbc.gridy++;
+
+
+
+
+
+        List<String> recalls = new ArrayList<>();
+        List<Map<String,Object>> recallsMap = fdaObject.recentlyRecalled(5);
+        for(int i=0;i<5;i++){
+            recalls.add(recallsMap.get(i).get("product_description").toString());
+        }
+
+
+        addField(right,gbc,recalls.get(0));
+        addField(right,gbc,recalls.get(1));
+        addField(right,gbc,recalls.get(2));
+        addField(right,gbc,recalls.get(3));
+        addField(right,gbc,recalls.get(4));
+
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.WEST;
+
+        JLabel titleLabel = new JLabel("Drug Info");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 16));
+
+
+        gbc.gridwidth = 1;
+        gbc.gridy++;
+
         JComboBox<String> dropdown = new JComboBox<>(dropdownValues);
-        JTextField inputField = new JTextField(20);
+        JTextField inputField = new JTextField("Search",20);
         JButton submitButton = new JButton("Submit");
         JTextArea outputLabel = new JTextArea("");
+        JScrollPane scrollPane = new JScrollPane(outputLabel);
+
+        left.add(titleLabel);
+        left.add(Box.createRigidArea(new Dimension(10, 0)));
+        left.add(inputField);
+        left.add(Box.createRigidArea(new Dimension(10, 0)));
+        left.add(dropdown);
+        left.add(Box.createRigidArea(new Dimension(10, 0)));
+        left.add(submitButton);
+        left.add(Box.createRigidArea(new Dimension(10, 0)));
+        left.add(scrollPane);
+        left.add(Box.createRigidArea(new Dimension(50, 0)));
 
 
         submitButton.addActionListener(new ActionListener() {
@@ -69,50 +126,30 @@ public class DrugsView extends JPanel {
         });
         outputLabel.setLineWrap(true);
         outputLabel.setWrapStyleWord(true);
-        JScrollPane scrollPane = new JScrollPane(outputLabel);
-        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        scrollPane.setPreferredSize(new Dimension(200, 100));
 
-        JLabel recallTitle = new JLabel("Recent Recalls");
-        List<String> recalls = new ArrayList<>();
-        List<Map<String,Object>> recallsMap = fdaObject.recentlyRecalled(5);
-        for(int i=0;i<5;i++){
-            recalls.add(recallsMap.get(i).get("product_description").toString());
-        }
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setPreferredSize(new Dimension(500, 300));
 
-        JTextArea recallText1 = new JTextArea(recalls.get(0));
-        JTextArea recallText2 = new JTextArea(recalls.get(1));
-        JTextArea recallText3 = new JTextArea(recalls.get(2));
-        JTextArea recallText4 = new JTextArea(recalls.get(3));
-        JTextArea recallText5 = new JTextArea(recalls.get(4));
+        right.setBackground(new Color(224, 224, 229));
 
-        recallText1.setLineWrap(true);
-        recallText2.setLineWrap(true);
-        recallText3.setLineWrap(true);
-        recallText4.setLineWrap(true);
-        recallText5.setLineWrap(true);
-
-        centerPanel.add(inputField);
-        centerPanel.add(submitButton);
-        centerPanel.add(dropdown);
-        centerPanel.add(scrollPane);
-        centerPanel.add(recallTitle);
-        centerPanel.add(recallText1);
-        centerPanel.add(recallText2);
-        centerPanel.add(recallText3);
-        centerPanel.add(recallText4);
-        centerPanel.add(recallText5);
-        this.add(centerPanel,BorderLayout.CENTER);
-
-
-
-
+        this.add(left,BorderLayout.WEST);
+        this.add(right,BorderLayout.EAST);
 
         this.revalidate();
         this.repaint();
         this.setSize(600, 400);
         this.setVisible(true);
     }
+
+    private void addField(JPanel panel, GridBagConstraints gbc, String labelText) {
+        gbc.gridx = 0;
+        JLabel label = new JLabel(labelText);
+        panel.add(label, gbc);
+
+        gbc.gridy++;
+    }
+
+
 
 
     public void setPatientListView(PatientListView patientListView) {
