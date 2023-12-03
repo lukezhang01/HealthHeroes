@@ -17,6 +17,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 public class LoginView extends JFrame implements ActionListener, PropertyChangeListener {
+        public final String viewName = "log in";
 
         private JTextField usernameField;
         private JPasswordField passwordField;
@@ -101,7 +102,7 @@ public class LoginView extends JFrame implements ActionListener, PropertyChangeL
 
         private void onSignUp() {
             // Print the message
-            System.out.println("Sign Up button clicked - Redirect to Sign Up View");
+            System.out.println("Sign Up button clicked");
 
             controller.handleSignup();
         }

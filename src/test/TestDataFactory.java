@@ -23,7 +23,7 @@ public class TestDataFactory {
         appointmentDates.add(LocalDate.of(2023, 9, 4));
         // set date added as right now
         LocalDate dateAdded = LocalDate.now(); // Current date as date added
-
+        LocalDate dateOfBirth = LocalDate.now();
         ArrayList<Drug> prescribedDrugs = new ArrayList<>();
         // PRESCRIBED DRUGS
         prescribedDrugs.add(new Drug("Paracetamol", 500.0f, LocalDate.of(2023, 11, 1), LocalDate.of(2023, 11, 10)));
@@ -45,7 +45,8 @@ public class TestDataFactory {
         boolean isPregnant = true;
         String additionalNotes = "";
 
-        return new Patient(id, fullName, height, weight, appointmentDates, dateAdded, prescribedDrugs, allergies, illnesses, symptoms, lifestyleInformation, isPregnant, additionalNotes);
+        return new Patient(id, fullName, height, weight, dateOfBirth, "female", appointmentDates, dateAdded, prescribedDrugs,
+                allergies, illnesses, symptoms, lifestyleInformation, isPregnant, additionalNotes);
     }
 
 
