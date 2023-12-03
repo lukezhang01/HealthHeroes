@@ -1,5 +1,6 @@
 package view;
 
+import interface_adapter.ViewModel;
 import interface_adapter.logged_in.LoggedInState;
 import interface_adapter.logged_in.LoggedInViewModel;
 
@@ -17,9 +18,13 @@ public class HomeView extends JFrame implements ActionListener, PropertyChangeLi
 
     JLabel username;
 
+    private PatientListView patientListView;
+
     private JPanel container;
 
     final JButton logOut;
+
+    private DrugsView drugsView;
 
 
     /**
@@ -32,6 +37,8 @@ public class HomeView extends JFrame implements ActionListener, PropertyChangeLi
 
         this.loggedInViewModel = loggedInViewModel;
         this.container = new JPanel();
+        this.setMaximumSize(ViewModel.VIEW_DIMENSION);
+        this.setMinimumSize(ViewModel.VIEW_DIMENSION);
         this.loggedInViewModel.addPropertyChangeListener(this);
 
 
@@ -63,15 +70,61 @@ public class HomeView extends JFrame implements ActionListener, PropertyChangeLi
         centerPanel.add(usernameInfo);
         this.add(centerPanel, BorderLayout.CENTER);
 
-        this.setSize(600, 400);
-    }
-
-    public void addLeftPanel(){
         JPanel leftPanel = new JPanel();
-        leftPanel = new SandwichBar(this).sandwich;
+        leftPanel.setLayout(new BoxLayout(leftPanel,BoxLayout.Y_AXIS));
+        leftPanel.setBackground(new Color(73, 93, 135));
+        JButton homeButton = new JButton("🏠Home");
+        JButton patientButton = new JButton("☺Patients");
+        JButton drugsButton = new JButton("\uD83D\uDC8A Drugs");
+        homeButton.setBackground(new Color(99, 255, 147));
+        homeButton.setForeground(new Color(45, 46, 45));
+        homeButton.setFont(ViewModel.HEADING_FONT_BOLD);
+        homeButton.setOpaque(true);
+        homeButton.setContentAreaFilled(true);
+        homeButton.setBorderPainted(false);
+        homeButton.setFocusPainted(false);
+        patientButton.setBackground(new Color(99, 255, 147));
+        patientButton.setForeground(new Color(45, 46, 45));
+        patientButton.setFont(ViewModel.HEADING_FONT_BOLD);
+        patientButton.setOpaque(true);
+        patientButton.setContentAreaFilled(true);
+        patientButton.setBorderPainted(false);
+        patientButton.setFocusPainted(false);
+        leftPanel.add(homeButton);
+        leftPanel.add(patientButton);
+        leftPanel.add(drugsButton);
         this.add(leftPanel, BorderLayout.WEST);
+
+        patientButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                patientListView.setHomeView(HomeView.this);
+                patientListView.setDrugsView(drugsView);
+                patientListView.setVisible(true);
+                HomeView.this.setVisible(false);
+                patientListView.revalidate();
+                patientListView.repaint();
+            }
+        });
+
+        drugsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                drugsView.setHomeView(HomeView.this);
+                drugsView.setPatientListView(patientListView);
+                drugsView.setVisible(true);
+                HomeView.this.setVisible(false);
+                drugsView.revalidate();
+                drugsView.repaint();
+            }
+        });
+
+        this.revalidate();
+        this.repaint();
+        this.setSize(600, 400);
         this.setVisible(true);
     }
+
 
     /**
      * React to a button click that results in evt.
@@ -87,9 +140,18 @@ public class HomeView extends JFrame implements ActionListener, PropertyChangeLi
         username.setText(state.getUsername());
     }
 
+    public void setPatientListView(PatientListView view){
+        this.patientListView = view;
+    }
+
+    public void setDrugsView(DrugsView drugsView){
+        this.drugsView = drugsView;
+    }
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-        new HomeView(new LoggedInViewModel()).addLeftPanel();
+        new HomeView(new LoggedInViewModel());
         });
     }
+
 }

@@ -16,4 +16,7 @@ public interface CSVDatabaseAccessInterface {
 
     void addPatient(Patient patient);
 
+    void savePatients();
+
+    void save();
 }

@@ -5,7 +5,6 @@ import use_case.patientList.PatientListOutputData;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicScrollBarUI;
-import javax.swing.text.View;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,25 +12,37 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalField;
+import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Locale;
 
 public class PatientListView extends JFrame {
 
     // COLORS
     private JPanel patientPanel;
+
+    private SandwichBar sandwichBar;
+
+    private HomeView homeView;
     private JScrollPane scrollPane;
+
+    private final String[] filterOptions = {"All Patients", "Appointments Today", "Appointments This Week"};
+    private final String[] sortOptions = {"Alphabetically", "Last Appointment Date", "Date Added"};
     private JButton addButton;
-    private JComboBox<String> sortBy;
+    private JComboBox<String> sortBy, filterBy;
     private ArrayList<PatientListOutputData> patients;
     private PatientListController patientListController;
     private JPanel container;
 
+    private DrugsView drugsView;
+
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     private ArrayList<PatientListOutputData> getPatientsSortedAlphabetically(){
-        ArrayList<PatientListOutputData> patients = this.patientListController.getPatients();
+        ArrayList<PatientListOutputData> patients = this.patients;
         Collections.sort(patients, new Comparator<PatientListOutputData>() {
             public int compare(PatientListOutputData v1, PatientListOutputData v2) {
                 return v1.getFullName().compareTo(v2.getFullName());
@@ -41,7 +52,7 @@ public class PatientListView extends JFrame {
     }
 
     private ArrayList<PatientListOutputData> getPatientsSortedByAddedDate(){
-        ArrayList<PatientListOutputData> patients = this.patientListController.getPatients();
+        ArrayList<PatientListOutputData> patients = this.patients;
         Collections.sort(patients, new Comparator<PatientListOutputData>() {
             public int compare(PatientListOutputData v1, PatientListOutputData v2) {
                 return  LocalDate.parse(v1.getDateAdded(), formatter).compareTo(LocalDate.parse(v2.getDateAdded(), formatter));
@@ -50,8 +61,49 @@ public class PatientListView extends JFrame {
         return patients;
     }
 
-    private ArrayList<PatientListOutputData> getPatientsSortedByAppointmentDate(){
+    public void updatePatientsByFilter(String filter) {
         ArrayList<PatientListOutputData> patients = this.patientListController.getPatients();
+        ArrayList<PatientListOutputData> result = new ArrayList<>();
+        if (!filter.equals("All Patients")){
+            LocalDate currentDate = LocalDate.now();
+            for (PatientListOutputData patient: patients) {
+                if (!patient.getDateAdded().isEmpty()) {
+                    LocalDate appointmentDate = LocalDate.parse(patient.getDateAdded(), formatter);
+                    if (filter.equals("Appointments This Week")) {
+                        TemporalField weekOfYear = WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear();
+                        int currentWeek = currentDate.get(weekOfYear);
+                        int appointmentWeek = appointmentDate.get(weekOfYear);
+                        if (currentWeek == appointmentWeek) {
+                            // appointment week is in the same week
+                            result.add(patient);
+                        }
+                    }else if(filter.equals("Appointments Today")) {
+                        if (currentDate.equals(appointmentDate)) {
+                            // appointment is today
+                            result.add(patient);
+                        }
+                    }
+                }
+            }
+            this.patients = result;
+        }else {
+            this.patients = patients;
+        }
+    }
+
+    public void updateDisplayBySort(String sort) {
+        if(sort.equals("Alphabetically")) {
+            // sort alphabetically
+            display(getPatientsSortedAlphabetically());
+        }else if (sort.equals("Date Added")){
+            display(getPatientsSortedByAddedDate());
+        }else{
+            display(getPatientsSortedByAppointmentDate());
+        }
+    }
+
+    private ArrayList<PatientListOutputData> getPatientsSortedByAppointmentDate(){
+        ArrayList<PatientListOutputData> patients = this.patients;
         Collections.sort(patients, new Comparator<PatientListOutputData>() {
             public int compare(PatientListOutputData v1, PatientListOutputData v2) {
                 return  LocalDate.parse(v1.getAppointmentDate(), formatter).compareTo(LocalDate.parse(v2.getAppointmentDate(), formatter));
@@ -62,9 +114,9 @@ public class PatientListView extends JFrame {
 
     private ArrayList<PatientListOutputData> getPatientsBySearchString(String search) {
         ArrayList<PatientListOutputData> result = new ArrayList<>();
-        ArrayList<PatientListOutputData> patients = this.patientListController.getPatients();
+        ArrayList<PatientListOutputData> patients = this.patients;
         for (PatientListOutputData patient: patients) {
-            if (patient.getFullName().contains(search)) {
+            if (patient.getFullName().toLowerCase().contains(search.toLowerCase())) {
                 result.add(patient);
             }
         }
@@ -98,29 +150,41 @@ public class PatientListView extends JFrame {
         JPanel sortPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         // Add the "Sort by" label and combo box to the sub-panel
         sortPanel.setBackground(ViewModel.BACKGROUND_COLOR);
-        JLabel sortByLabel = new JLabel("SORT BY");
+        JLabel sortByLabel = new JLabel("Sort");
         sortByLabel.setFont(ViewModel.HEADING_FONT_BOLD);
-        sortByLabel.setForeground(ViewModel.TEXT_COLOR);
+        sortByLabel.setForeground(ViewModel.TEXT_HIGHLIGHT_COLOR);
         sortByLabel.setBackground(ViewModel.BACKGROUND_COLOR);
         sortPanel.add(sortByLabel);
-        String[] sortOptions = {"Alphabetically", "Last Appointment Date", "Date Added"};
         sortBy = new JComboBox<>(sortOptions);
-        sortBy.setForeground(ViewModel.BACKGROUND_COLOR);
+        sortBy.setForeground(ViewModel.TEXT_COLOR);
         sortBy.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String selectedOption = (String) sortBy.getSelectedItem();
-                if(selectedOption.equals("Alphabetically")) {
-                    // sort alphabetically
-                    display(getPatientsSortedAlphabetically());
-                }else if (selectedOption.equals("Date Added")){
-                    display(getPatientsSortedByAddedDate());
-                }else{
-                    display(getPatientsSortedByAppointmentDate());
-                }
+                updateDisplayBySort(selectedOption);
             }
         });
         sortBy.setFont(ViewModel.HEADING_FONT_BOLD);
+        JLabel filterByLabel = new JLabel("Show");
+        filterByLabel.setFont(ViewModel.HEADING_FONT_BOLD);
+        filterByLabel.setForeground(ViewModel.TEXT_HIGHLIGHT_COLOR);
+        filterByLabel.setBackground(ViewModel.BACKGROUND_COLOR);
+        sortPanel.add(filterByLabel);
+        filterBy = new JComboBox<>(filterOptions);
+        filterBy.setForeground(ViewModel.TEXT_COLOR);
+        filterBy.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String selectedOption = (String) filterBy.getSelectedItem();
+                updatePatientsByFilter(selectedOption);
+                // update sort
+                updateDisplayBySort((String) sortBy.getSelectedItem());
+            }
+        });
+        // add filters / sorts
+        filterBy.setFont(ViewModel.HEADING_FONT_BOLD);
+        sortPanel.add(filterBy, BorderLayout.CENTER);
+        sortPanel.add(sortByLabel, BorderLayout.CENTER);
         sortPanel.add(sortBy, BorderLayout.CENTER);
         // add search bar
         JPanel searchPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -128,42 +192,50 @@ public class PatientListView extends JFrame {
         searchPanel.setForeground(ViewModel.TEXT_COLOR);
         // search input
         JTextArea searchInput = new JTextArea(1, 30);
-        searchInput.setBackground(new Color(34, 39, 48));
+        searchInput.setBackground(ViewModel.HEADER_COLOR);
         searchInput.setForeground(ViewModel.TEXT_COLOR);
-        searchInput.setFont(new Font("Lato", Font.BOLD, 14));
+        searchInput.setFont(new Font("Lato", Font.PLAIN, 14));
         searchInput.setLineWrap(true);
         searchPanel.add(searchInput);
         // search button
         JButton searchPatientButton = new JButton();
         searchPatientButton.setOpaque(false);
-        searchPatientButton.setBackground(new Color(194, 112, 103));
+        searchPatientButton.setBackground(new Color(69, 130, 222));
+        searchPatientButton.setForeground(new Color(255, 255, 255));
         searchPatientButton.setFont(ViewModel.HEADING_FONT_BOLD);
-        searchPatientButton.setForeground(ViewModel.HEADER_COLOR);
-        searchPatientButton.setMinimumSize(new Dimension(80, 70));
+        searchPatientButton.setForeground(new Color(255, 255, 255));
+        searchPatientButton.setMinimumSize(new Dimension(30, 70));
+        searchPatientButton.setMaximumSize(new Dimension(30, 70));
         searchPatientButton.setText("🔎 Search Patient");
+        searchPatientButton.setOpaque(true);
+        searchPatientButton.setContentAreaFilled(true);
+        searchPatientButton.setBorderPainted(false);
+        searchPatientButton.setFocusPainted(false);
         searchPanel.add(Box.createHorizontalStrut(8));
         searchPanel.add(searchPatientButton);
 
         searchInput.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
-                // restore results when empty
-                if (searchInput.getText().isEmpty()) {
-                    display(getPatientsBySearchString(""));
-                }
              }
 
             @Override
             public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    // enter key
-                    display(getPatientsBySearchString(searchInput.getText()));
-                }
+
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
-
+                // restore results when empty
+                if (searchInput.getText().isEmpty()) {
+                    // reset results
+                    updatePatientsByFilter((String) filterBy.getSelectedItem());
+                    updateDisplayBySort((String) sortBy.getSelectedItem());
+                }
+                if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+                    // reset results
+                    updatePatientsByFilter((String) filterBy.getSelectedItem());
+                }
             }
         });
         searchPatientButton.addActionListener(new ActionListener() {
@@ -178,19 +250,12 @@ public class PatientListView extends JFrame {
         // this.container.add(topPanel, BorderLayout.CENTER);
         this.add(topPanel, BorderLayout.NORTH);
         // add header for added patients
-        JLabel addedPatientsTitle = new JLabel("Added Patients");
-        addedPatientsTitle.setFont(new Font("Lato", Font.BOLD, 20));
-        addedPatientsTitle.setSize(ViewModel.VIEW_DIMENSION.width / 2, 80);
-        addedPatientsTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
-        addedPatientsTitle.setOpaque(false);
-        addedPatientsTitle.setForeground(ViewModel.TEXT_COLOR);
-        topPanel.add(addedPatientsTitle);
         topPanel.add(Box.createVerticalStrut(5));
         topPanel.add(searchPanel, BorderLayout.CENTER);
         // scrollable view for patients
         patientPanel = new JPanel();
         patientPanel.setLayout(new BoxLayout(patientPanel, BoxLayout.Y_AXIS));
-        patientPanel.setBackground(new Color(36, 45, 64));
+        patientPanel.setBackground(new Color(212, 213, 214));
         this.scrollPane = new JScrollPane(patientPanel);
         this.scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         this.scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -200,17 +265,17 @@ public class PatientListView extends JFrame {
         this.scrollPane.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
             @Override
             protected void configureScrollBarColors() {
-                this.thumbColor = ViewModel.TEXT_COLOR;
-                this.trackColor = new Color(36, 45, 64);
+                this.thumbColor = new Color(72, 108, 150);
+                this.trackColor = new Color(212, 213, 214);
                 this.scrollBarWidth = 8;
             }
         });
         // Create the bottom panel with add button
         JPanel bottomPanel = new JPanel();
-        bottomPanel.setBackground(new Color(73, 93, 135));
-        JButton addButton = new JButton("➕ ADD PATIENT");
-        addButton.setBackground(new Color(99, 255, 147));
-        addButton.setForeground(new Color(45, 46, 45));
+        bottomPanel.setBackground(ViewModel.BACKGROUND_COLOR);
+        JButton addButton = new JButton("ADD PATIENT");
+        addButton.setBackground(new Color(69, 130, 222));
+        addButton.setForeground(new Color(255, 255, 255));
         addButton.setFont(ViewModel.HEADING_FONT_BOLD);
         addButton.setOpaque(true);
         addButton.setContentAreaFilled(true);
@@ -227,28 +292,82 @@ public class PatientListView extends JFrame {
         //this.container.add(bottomPanel);
         this.add(bottomPanel, BorderLayout.SOUTH);
 
-        //this.add(container, BorderLayout.CENTER);
 
-        this.setSize(600, 400);
-    }
-
-    public void addLeftPanel(){
         JPanel leftPanel = new JPanel();
-        leftPanel = new SandwichBar(this).sandwich;
+        leftPanel.setLayout(new BoxLayout(leftPanel,BoxLayout.Y_AXIS));
+        leftPanel.setBackground(new Color(73, 93, 135));
+        JButton homeButton = new JButton("🏠Home");
+        JButton patientButton = new JButton("☺Patients");
+        JButton drugsButton = new JButton("\uD83D\uDC8A Drugs");
+        homeButton.setBackground(new Color(99, 255, 147));
+        homeButton.setForeground(new Color(45, 46, 45));
+        homeButton.setFont(ViewModel.HEADING_FONT_BOLD);
+        homeButton.setOpaque(true);
+        homeButton.setContentAreaFilled(true);
+        homeButton.setBorderPainted(false);
+        homeButton.setFocusPainted(false);
+        patientButton.setBackground(new Color(99, 255, 147));
+        patientButton.setForeground(new Color(45, 46, 45));
+        patientButton.setFont(ViewModel.HEADING_FONT_BOLD);
+        patientButton.setOpaque(true);
+        patientButton.setContentAreaFilled(true);
+        patientButton.setBorderPainted(false);
+        patientButton.setFocusPainted(false);
+
+
+        homeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                homeView.setPatientListView(PatientListView.this);
+                homeView.setDrugsView(drugsView);
+                homeView.setVisible(true);
+                PatientListView.this.setVisible(false);
+                homeView.revalidate();
+                homeView.repaint();
+            }
+        });
+
+        drugsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                drugsView.setHomeView(homeView);
+                drugsView.setPatientListView(PatientListView.this);
+                drugsView.setVisible(true);
+                PatientListView.this.setVisible(false);
+                drugsView.revalidate();
+                drugsView.repaint();
+            }
+        });
+
+
+        leftPanel.add(homeButton);
+        leftPanel.add(patientButton);
+        leftPanel.add(drugsButton);
+        //this.add(container, BorderLayout.CENTER);
         this.add(leftPanel, BorderLayout.WEST);
+
+        this.revalidate();
+        this.repaint();
+        this.setSize(600, 400);
         this.setVisible(true);
     }
+
     public void display(ArrayList<PatientListOutputData> patients) {
         patientPanel.removeAll();
         this.patients = patients;
         patientPanel.add(Box.createVerticalStrut(30));
-
-        for (PatientListOutputData patient : patients) {
-            JPanel patientComponent = PatientListComponentBuilder.build(patient, this.patientListController);
-            patientPanel.add(patientComponent);
-            patientPanel.add(Box.createVerticalStrut(8));
+        if (!this.patients.isEmpty()) {
+            // if we have patients to display
+            patientPanel.add(PatientListComponentBuilder.buildHeader());
+            patientPanel.add(Box.createVerticalStrut(15));
+            for (PatientListOutputData patient : patients) {
+                JPanel patientComponent = PatientListComponentBuilder.build(patient);
+                patientPanel.add(patientComponent);
+                patientPanel.add(Box.createVerticalStrut(8));
+            }
+        }else {
+            patientPanel.add(PatientListComponentBuilder.buildEmptyHeader());
         }
-
         patientPanel.revalidate();
         patientPanel.repaint();
         // this.container.add(patientPanel, BorderLayout.CENTER);
@@ -259,7 +378,7 @@ public class PatientListView extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            new PatientListView().addLeftPanel();
+            new PatientListView();
 
         });
     }
@@ -267,5 +386,19 @@ public class PatientListView extends JFrame {
 
     public void setController(PatientListController controller) {
         this.patientListController = controller;
+        this.patients = controller.getPatients();
+        updatePatientsByFilter(filterOptions[0]);
+        updateDisplayBySort(sortOptions[0]);
+    }
+    public void setHomeView(HomeView homeView){
+        this.homeView = homeView;
+    }
+
+    public void setDrugsView(DrugsView drugsView){
+        this.drugsView = drugsView;
+    }
+
+    public void setSandwichBar(SandwichBar sandwichBar){
+        this.sandwichBar = sandwichBar;
     }
 }
