@@ -1,13 +1,11 @@
 package view;
 
 import entity.Drug;
-import interface_adapter.ViewModel;
 import interface_adapter.patientList.PatientListController;
 import use_case.patientList.AddPatientUseCase;
 import use_case.patientList.PatientListInteractor;
 
 import javax.swing.*;
-import javax.swing.text.View;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,7 +16,8 @@ import java.util.Objects;
 
 
 public class AddPatientView extends JFrame {
-    private PatientListInteractor interactor;
+    private AddPatientController controller;
+    private AddPatientViewModel model;
     private ArrayList<DrugEntry> drugEntries;
     private final Dimension DIMENSION = new Dimension(300, 600);
     private JTextField nameField;
@@ -38,15 +37,9 @@ public class AddPatientView extends JFrame {
     private JButton addDrugButton;
     private final int FIELD_SIZE = 20;
 
-    private JTextField getInputField() {
-        JTextField field = new JTextField(FIELD_SIZE);
-        field.setBackground(new Color(80, 104, 143));
-        field.setForeground(new Color(255, 255, 255));
-        return field;
-    }
-
-    public AddPatientView(PatientListInteractor interactor) {
-        this.interactor = interactor;
+    public AddPatientView(AddPatientController controller, AddPatientViewModel model) {
+        this.controller = controller;
+        this.model = model;
 
         // Initialize the list for drug entries
         drugEntries = new ArrayList<>();
@@ -161,22 +154,21 @@ public class AddPatientView extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String fullName = nameField.getText();
-                float height = Float.parseFloat(heightField.getText());
-                float weight = Float.parseFloat(weightField.getText());
+                String height = heightField.getText();
+                String weight = weightField.getText();
                 String dateOfBirth = dateOfBirthField.getText();
                 String gender = genderField.getText();
                 String[] appointmentDates = appointmentDatesField.getText().split(",");
-                ArrayList<Object[]> prescribedDrugs = getDrugsData();
+                ArrayList<String[]> prescribedDrugs = getDrugsAsString();
                 String[] allergies = allergiesField.getText().split(",");
                 String[] illnesses = illnessesField.getText().split(",");
                 String[] symptoms = symptomsField.getText().split(",");
                 String lifestyleInformation = lifestyleInformationField.getText();
-                boolean isPregnant = getIsPregnant();
+                String isPregnant = (String) isPregnantField.getSelectedItem();
                 String additionalNotes = additionalNotesField.getText();
 
-//                interactor.addPatient(fullName, height, weight, appointmentDates, prescribedDrugs,
-//                        new ArrayList<>(List.of(allergies)), new ArrayList<>(List.of(illnesses)),
-//                        new ArrayList<>(List.of(symptoms)), lifestyleInformation, isPregnant, additionalNotes);
+                controller.execute(fullName, height, weight, dateOfBirth, gender, appointmentDates, prescribedDrugs,
+                        allergies, illnesses, symptoms, lifestyleInformation, isPregnant, additionalNotes);
             }
         });
         mainPanel.add(addPatientButton);
@@ -188,12 +180,19 @@ public class AddPatientView extends JFrame {
         setVisible(true);
     }
 
+    private ArrayList<String[]> getDrugsAsString() {
+        ArrayList<String[]> data = new ArrayList<>();
+        for (DrugEntry entry : drugEntries) {
+            data.add(entry.getEntryData());
+        }
+        return data;
+    }
+
     private JPanel createLabeledField(JLabel label, JTextField textField) {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         textField.setMaximumSize(new Dimension(Integer.MAX_VALUE, textField.getPreferredSize().height));
         panel.add(label);
         panel.add(textField);
-        panel.setBackground(ViewModel.BACKGROUND_COLOR);
         return panel;
     }
 

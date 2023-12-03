@@ -1,5 +1,6 @@
 package use_case.patientList;
 import entity.Drug;
+import use_case.addPatient.AddPatientUseCase;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
