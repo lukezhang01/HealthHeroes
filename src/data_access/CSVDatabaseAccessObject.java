@@ -33,12 +33,12 @@ public class CSVDatabaseAccessObject implements CSVDatabaseAccessInterface {
                 reader.readLine();
                 this.password = String.valueOf(reader.readLine());
                 reader.readLine();
-                String[] patientList = String.valueOf(reader.readLine()).split(",");
-//                System.out.println(Arrays.toString(patientList));
-//                System.out.println(patientList.length);
-                if (Arrays.toString(patientList).equals("[]")) {
+                String patientsLine = String.valueOf(reader.readLine());
+                System.out.println(patientsLine);
+                if (patientsLine.equals("") || patientsLine.equals("null")) {
                     // System.out.println("if clause passed");
                 } else {
+                    String[] patientList = patientsLine.split(",");
                     for (String patientID : patientList) {
                         patients.put(Integer.parseInt(patientID), readPatientFromCSV(new File("data/Patient " + patientID + ".csv")));
                     }
