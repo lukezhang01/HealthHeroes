@@ -33,6 +33,7 @@ public class LoginInteractor implements LoginInputBoundary {
 
     @Override
     public void executeSignup() {
+        System.out.println("login interactor passed");
         loginPresenter.prepareSignupView();
     }
 }
