@@ -10,7 +10,7 @@ import entity.Patient;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class FetchPatientsUseCase {
+public class FetchPatientsUseCase implements PatientListOutputBoundary {
     private CSVDatabaseAccessInterface dataAccessObject;
 
     public FetchPatientsUseCase(CSVDatabaseAccessInterface dataAccessObject) {

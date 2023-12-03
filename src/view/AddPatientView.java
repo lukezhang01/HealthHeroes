@@ -16,12 +16,15 @@ import java.util.Objects;
 
 
 public class AddPatientView extends JFrame {
-    private PatientListInteractor interactor;
+    private AddPatientController controller;
+    private AddPatientViewModel model;
     private ArrayList<DrugEntry> drugEntries;
     private final Dimension DIMENSION = new Dimension(300, 600);
     private JTextField nameField;
     private JTextField heightField;
     private JTextField weightField;
+    private JTextField dateOfBirthField;
+    private JTextField genderField;
     private JComboBox<String> isPregnantField;
     private JTextField appointmentDatesField;
     private JTextField allergiesField;
@@ -34,8 +37,9 @@ public class AddPatientView extends JFrame {
     private JButton addDrugButton;
     private final int FIELD_SIZE = 20;
 
-    public AddPatientView(PatientListInteractor interactor) {
-        this.interactor = interactor;
+    public AddPatientView(AddPatientController controller, AddPatientViewModel model) {
+        this.controller = controller;
+        this.model = model;
 
         // Initialize the list for drug entries
         drugEntries = new ArrayList<>();
@@ -46,20 +50,29 @@ public class AddPatientView extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setMaximumSize(DIMENSION);
         setMinimumSize(DIMENSION);
+        setSize(DIMENSION);
 
         // Create the main panel with a box layout
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-
+        mainPanel.setBackground(ViewModel.BACKGROUND_COLOR);
         // add input fields with labels on the same line
         JLabel fullNameLabel = new JLabel("Full Name:");
-        nameField = new JTextField(FIELD_SIZE);
+        fullNameLabel.setFont(ViewModel.HEADING_FONT_BOLD);
+        fullNameLabel.setForeground(ViewModel.TEXT_COLOR);
+        nameField = getInputField();
 
         JLabel heightLabel = new JLabel("Height:");
         heightField = new JTextField(FIELD_SIZE);
 
         JLabel weightLabel = new JLabel("Weight:");
         weightField = new JTextField(FIELD_SIZE);
+
+        JLabel dateOfBirthLabel = new JLabel("Date of Birth:");
+        dateOfBirthField = new JTextField(FIELD_SIZE);
+
+        JLabel genderLabel = new JLabel("Gender:");
+        genderField = new JTextField(FIELD_SIZE);
 
         JLabel appointmentDatesLabel = new JLabel("Appointment Dates:");
         appointmentDatesField = new JTextField(FIELD_SIZE);
@@ -141,20 +154,21 @@ public class AddPatientView extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String fullName = nameField.getText();
-                float height = Float.parseFloat(heightField.getText());
-                float weight = Float.parseFloat(weightField.getText());
+                String height = heightField.getText();
+                String weight = weightField.getText();
+                String dateOfBirth = dateOfBirthField.getText();
+                String gender = genderField.getText();
                 String[] appointmentDates = appointmentDatesField.getText().split(",");
-                ArrayList<Object[]> prescribedDrugs = getDrugsData();
+                ArrayList<String[]> prescribedDrugs = getDrugsAsString();
                 String[] allergies = allergiesField.getText().split(",");
                 String[] illnesses = illnessesField.getText().split(",");
                 String[] symptoms = symptomsField.getText().split(",");
                 String lifestyleInformation = lifestyleInformationField.getText();
-                boolean isPregnant = getIsPregnant();
+                String isPregnant = (String) isPregnantField.getSelectedItem();
                 String additionalNotes = additionalNotesField.getText();
 
-                interactor.addPatient(fullName, height, weight, appointmentDates, prescribedDrugs,
-                        new ArrayList<>(List.of(allergies)), new ArrayList<>(List.of(illnesses)),
-                        new ArrayList<>(List.of(symptoms)), lifestyleInformation, isPregnant, additionalNotes);
+                controller.execute(fullName, height, weight, dateOfBirth, gender, appointmentDates, prescribedDrugs,
+                        allergies, illnesses, symptoms, lifestyleInformation, isPregnant, additionalNotes);
             }
         });
         mainPanel.add(addPatientButton);
@@ -164,6 +178,14 @@ public class AddPatientView extends JFrame {
 
         // Set the frame's visibility
         setVisible(true);
+    }
+
+    private ArrayList<String[]> getDrugsAsString() {
+        ArrayList<String[]> data = new ArrayList<>();
+        for (DrugEntry entry : drugEntries) {
+            data.add(entry.getEntryData());
+        }
+        return data;
     }
 
     private JPanel createLabeledField(JLabel label, JTextField textField) {
