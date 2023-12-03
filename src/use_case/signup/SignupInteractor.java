@@ -26,8 +26,7 @@ public class SignupInteractor implements SignupInputBoundary {
             userPresenter.prepareFailView("No country selected.");
         } else {
             Doctor doctor = userFactory.create(signupInputData.getUsername(), signupInputData.getPassword(), signupInputData.getCountry(), new ArrayList<>());
-            userDataAccessObject.save();
-
+            userDataAccessObject.saveNewDoctor(doctor.getName(), doctor.getPassword());
             SignupOutputData signupOutputData = new SignupOutputData(doctor.getName());
             userPresenter.prepareLoginView();
         }

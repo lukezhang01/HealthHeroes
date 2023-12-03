@@ -4,7 +4,7 @@ import use_case.patientList.FetchPatientsUseCase;
 import use_case.patientList.PatientListInputData;
 import use_case.patientList.PatientListInteractor;
 import use_case.patientList.PatientListOutputData;
-import view.AddPatientView;
+//import view.AddPatientView;
 
 import java.util.ArrayList;
 
@@ -32,7 +32,7 @@ public class PatientListController {
         needs to call view manager to pull up new view for adding a new patient
          */
         System.out.println("reached controller");
-        AddPatientView addPatientView = new AddPatientView(this.patientListInteractor);
+//        AddPatientView addPatientView = new AddPatientView(this.patientListInteractor);
         // this.patientListInteractor.addPatient();
     }
 

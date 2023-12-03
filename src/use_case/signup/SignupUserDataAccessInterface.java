@@ -10,4 +10,5 @@ public interface SignupUserDataAccessInterface {
     boolean existsByName(String identifier);
 
     void saveNewDoctor();
+
 }
