@@ -35,9 +35,9 @@ public class AddPatientView extends JFrame {
     private JButton addDrugButton;
     private final int FIELD_SIZE = 20;
 
-    public AddPatientView(AddPatientController controller, AddPatientViewModel model) {
+    public AddPatientView(AddPatientController controller) {
         this.controller = controller;
-        this.model = model;
+        //this.model = model;
 
         // Initialize the list for drug entries
         drugEntries = new ArrayList<>();
@@ -175,7 +175,7 @@ public class AddPatientView extends JFrame {
         add(mainPanel);
 
         // Set the frame's visibility
-        setVisible(true);
+        // setVisible(true);
     }
 
     private ArrayList<String[]> getDrugsAsString() {
