@@ -139,7 +139,7 @@ public class CSVDatabaseAccessObject implements CSVDatabaseAccessInterface {
 
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println(e);
         }
     }
 
