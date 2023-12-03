@@ -54,7 +54,9 @@ public class DirectoryDatabaseAccessObject implements LoginUserDataAccessInterfa
             writer = new BufferedWriter(new FileWriter(filePath, false));
             for (int i = 0; i < headers.length; i++) {
                 writer.write(headers[i]);
+                writer.newLine();
                 writer.write(info[i]);
+                writer.newLine();
             }
             writer.close();
         } catch (IOException e) {
@@ -91,9 +93,9 @@ public class DirectoryDatabaseAccessObject implements LoginUserDataAccessInterfa
     @Override
     public Doctor get(String username) {
         try {
-            System.out.println("test1");
+            //System.out.println("test1");
             CSVDatabaseAccessObject databaseAccessObject = new CSVDatabaseAccessObject("data/Doctor " + username + ".csv");
-            System.out.println(databaseAccessObject.getUsername()+", "+databaseAccessObject.getPassword()+", "+databaseAccessObject.getPatients());
+            //System.out.println(databaseAccessObject.getUsername()+", "+databaseAccessObject.getPassword()+", "+databaseAccessObject.getPatients());
             return new Doctor(databaseAccessObject.getUsername(), databaseAccessObject.getPassword(), databaseAccessObject.getPatients());
         } catch (IOException e) {
             return null;
