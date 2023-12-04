@@ -56,7 +56,7 @@ public class CSVDatabaseAccessObject implements CSVDatabaseAccessInterface {
 
     public Patient readPatientFromCSV(File csvFile) throws  IOException {
         try (BufferedReader reader = new BufferedReader(new FileReader(csvFile))) {
-            reader.readLine();
+            System.out.println(reader.readLine()+ " " +csvFile);
             int id = Integer.parseInt(String.valueOf(reader.readLine()));
             reader.readLine();
             String fullName = String.valueOf(reader.readLine());
@@ -73,7 +73,9 @@ public class CSVDatabaseAccessObject implements CSVDatabaseAccessInterface {
             reader.readLine();
             LocalDate dateAdded = LocalDate.parse(String.valueOf(reader.readLine()), formatter);
             reader.readLine();
-            String[] drugs = String.valueOf(reader.readLine()).split(",");
+            String[] drugs = parseDrugBcOfLi(String.valueOf(reader.readLine()));
+            // String[] drugs = String.valueOf(reader.readLine()).split("\\n");
+            // System.out.println(Arrays.toString(drugs));
             reader.readLine();
             String[] allergies = String.valueOf(reader.readLine()).split(",");
             reader.readLine();
@@ -93,6 +95,21 @@ public class CSVDatabaseAccessObject implements CSVDatabaseAccessInterface {
                     new ArrayList<>(List.of(symptoms)),
                     lifestyleInfomation, isPregnant, additionalNotes);
         }
+    }
+
+    public String[] parseDrugBcOfLi(String line) {
+//        String sampleString = "Drug Name: drug| Dosage: 10.0mL| Start Date: 2020-02-02| End Date: 2020-02-02\nDrug Name: drug2| Dosage: 10.0mL| Start Date: 2020-02-02| End Date: 2020-02-02\n";
+//
+//        // Splitting the string by the newline character
+//        String[] lines = sampleString.split("\\n");
+//
+//        // Iterating through the resulting array to print each line
+//        System.out.println(Arrays.toString(lines));
+        //System.out.println(line);
+        String newLine = line.replace("\\n", ",");
+        String[] lines = newLine.split(",");
+        //System.out.println(Arrays.toString(lines));
+        return lines;
     }
 
 

@@ -160,6 +160,15 @@ public class PatientView extends JFrame {
                 String gender = genderField.getText();
                 String[] appointmentDates = appointmentDatesField.getText().split(",");
                 ArrayList<String[]> prescribedDrugs = getDrugsAsString();
+                for (String[] array : prescribedDrugs) {
+                    for (int i = 0; i < array.length; i++) {
+                        System.out.print(array[i]);
+                        if (i < array.length - 1) {
+                            System.out.print(", "); // Separator between strings
+                        }
+                    }
+                    System.out.println(); // New line after each array
+                }
                 String[] allergies = allergiesField.getText().split(",");
                 String[] illnesses = illnessesField.getText().split(",");
                 String[] symptoms = symptomsField.getText().split(",");
@@ -226,7 +235,9 @@ public class PatientView extends JFrame {
         for (DrugEntryView entry : drugEntries) {
             String[] subData = entry.getEntryData();
             System.out.println(Arrays.toString(subData));
-            subData[1] = subData[1].substring(0, subData[1].length() - 2);
+            if (subData[1].contains("mL")){
+                subData[1] = subData[1].substring(0, subData[1].length() - 2);
+            }
             data.add(subData);
         }
         return data;
