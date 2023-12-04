@@ -93,7 +93,7 @@ public abstract class ChatGPTDataAccessObject implements ChatGPTHealthDataAccess
                 URL url = new URL(COMPLETION_URL);
                 HttpURLConnection connection = (HttpURLConnection)url.openConnection();
                 connection.setRequestMethod("POST");
-                String API_KEY = "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";
+                String API_KEY = "";
                 connection.setRequestProperty("Authorization", "Bearer " + API_KEY);
                 connection.setRequestProperty("Content-Type", "application/json");
                 // gpt-4-turbo
