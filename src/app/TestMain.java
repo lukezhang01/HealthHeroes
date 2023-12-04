@@ -14,7 +14,6 @@ import interface_adapter.login.LoginViewModel;
 import interface_adapter.patientList.PatientListController;
 import interface_adapter.patientList.PatientListPresenter;
 import interface_adapter.signup.SignupViewModel;
-import test.TestDataFactory;
 import use_case.addPatient.AddPatientUseCase;
 import use_case.chat.ChatInteractor;
 import use_case.patientList.DeletePatientUseCase;
@@ -50,7 +49,8 @@ public class TestMain {
         application.setSize(ViewModel.VIEW_DIMENSION);
     }
 
-    public static void main(String[] args) throws IOException {
+    public
+    static void main(String[] args) throws IOException {
 
         // create main application
         JFrame application = new JFrame("");
