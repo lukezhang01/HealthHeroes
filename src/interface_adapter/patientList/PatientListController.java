@@ -32,7 +32,7 @@ public class PatientListController {
         needs to call view manager to pull up new view for adding a new patient
          */
         System.out.println("reached controller");
-//        AddPatientView addPatientView = new AddPatientView(this.patientListInteractor);
+        // AddPatientView addPatientView = new AddPatientView(this.patientListInteractor);
         // this.patientListInteractor.addPatient();
     }
 
