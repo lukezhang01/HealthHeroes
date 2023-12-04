@@ -1,5 +1,6 @@
 package interface_adapter.patient;
 
+import entity.Patient;
 import use_case.addPatient.AddPatientInputData;
 import use_case.patient.PatientInputBoundary;
 import use_case.patient.PatientInputData;
@@ -14,6 +15,8 @@ import java.util.regex.Pattern;
 public class PatientController {
     private Map<String, String> outputData;
 
+    private int currentId;
+
     private final PatientInputBoundary patientUseCaseInteractor;
     private ArrayList<String[]> drugs;
 
@@ -22,6 +25,7 @@ public class PatientController {
     }
 
     public void execute(int id) {
+        currentId = id;
         PatientInputData patientInputData = new PatientInputData(id);
         this.outputData = patientUseCaseInteractor.execute(patientInputData);
         System.out.println(outputData.keySet());
@@ -31,15 +35,19 @@ public class PatientController {
         PatientView view = new PatientView(this, id);
     }
 
+    public Patient getPatientById(int id){
+        return this.patientUseCaseInteractor.getPatientById(id);
+    }
+
     public void update(String fullName, String height, String weight, String dateOfBirth, String gender,
                        String[] appointmentDates, ArrayList<String[]> prescribedDrugs, String[] allergies,
                        String[] illnesses, String[] symptoms, String lifestyleInformation, String isPregnant, String additionalNotes) {
         // check appointment dates is formatted right
         String trimmedHeight = extractNumber(height);
         String trimmedWeight = extractNumber(weight);
-        System.out.println(outputData.get("id"));
         AddPatientInputData data = new AddPatientInputData(fullName, trimmedHeight, trimmedWeight, dateOfBirth, gender,
                 appointmentDates, prescribedDrugs, allergies, illnesses, symptoms, lifestyleInformation, isPregnant, additionalNotes);
+        // create patient
         this.patientUseCaseInteractor.update(outputData.get("id"), data);
     }
 
