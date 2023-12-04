@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
-public class PatientViewDrugEntry {
+public class PatientViewDrugEntry extends DrugEntryView {
     private JTextField nameField;
     private String nameText = "";
     private JTextField dosageField;
@@ -17,45 +17,22 @@ public class PatientViewDrugEntry {
     private JPanel panel;
     public PatientViewDrugEntry(String existingName, String existingDosage, String existingStart, String existingEnd) {
         panel = new JPanel(new GridLayout(0, 4));
-        nameField = new JTextField("Name");
-        nameField.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                nameText = nameField.getText();
-            }
-        });
+        nameField = new JTextField(existingName);
 
-        dosageField = new JTextField();
-        dosageField.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                dosageText = dosageField.getText();
-            }
-        });
+        dosageField = new JTextField(existingDosage);
 
-        startField = new JTextField();
-        startField.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                startText = startField.getText();
-            }
-        });
+        startField = new JTextField(existingStart);
 
-        endField = new JTextField();
-        endField.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                endText = endField.getText();
-            }
-        });
+        endField = new JTextField(existingEnd);
         panel.add(nameField);
         panel.add(dosageField);
         panel.add(startField);
         panel.add(endField);
     }
 
-    public String[] getInfo() {
-        return new String[]{nameText, dosageText, startText, endText};
+    public String[] getEntryData() {
+        return new String[]{nameField.getText(),
+                dosageField.getText(), startField.getText(), endField.getText()};
     }
 
     public JPanel getPanel() {

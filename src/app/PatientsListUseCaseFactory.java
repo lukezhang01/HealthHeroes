@@ -9,6 +9,7 @@ import interface_adapter.patientList.PatientListController;
 import interface_adapter.patientList.PatientListPresenter;
 import use_case.addPatient.AddPatientInteractor;
 import use_case.addPatient.AddPatientUseCase;
+import use_case.patient.PatientInteractor;
 import use_case.patientList.DeletePatientUseCase;
 import use_case.patientList.FetchPatientsUseCase;
 import use_case.patientList.PatientListInteractor;
@@ -23,7 +24,11 @@ public class PatientsListUseCaseFactory {
         FetchPatientsUseCase fetch = new FetchPatientsUseCase(databaseAccessObject);
         AddPatientUseCase add = new AddPatientUseCase(databaseAccessObject);
         DeletePatientUseCase delete = new DeletePatientUseCase(databaseAccessObject);
-        PatientListView view = new PatientListView();
+
+        PatientInteractor patientInteractor = new PatientInteractor(databaseAccessObject);
+        PatientController patientController = new PatientController(patientInteractor);
+
+        PatientListView view = new PatientListView(patientController);
         PatientListController patientListController = createPatientListController(view, fetch, add, delete);
         // load the patients
         patientListController.loadPatients();
@@ -34,6 +39,8 @@ public class PatientsListUseCaseFactory {
         AddPatientInteractor addPatientInteractor = new AddPatientInteractor(databaseAccessObject, addPatientPresenter);
         AddPatientController addPatientController = new AddPatientController(addPatientInteractor);
         view.addPatientController(addPatientController);
+
+
         return view;
     }
 
