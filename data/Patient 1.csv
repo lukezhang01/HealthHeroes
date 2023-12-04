@@ -1,21 +1,21 @@
-﻿id
+id
 1
 full_name
 dushaun lewis
 height
-155
-weight 
-65
+155.0
+weight
+65.0
 date_of_birth
 2004-05-06
 gender
 male
 appointment_date
-2023-11-28,2023-11-29
+2023-11-28
 date_added
 2023-11-29
 prescribed_drugs
-melatonin 20 2022-11-12 2023-11-30
+Drug Name: melatonin| Dosage: 20.0mL| Start Date: 2022-11-12| End Date: 2023-11-30\n
 allergies
 dust,pollen
 illnesses
@@ -27,3 +27,4 @@ plays basketball
 isPregnant
 false
 additional_notes
+null

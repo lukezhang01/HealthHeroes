@@ -2,6 +2,7 @@ package interface_adapter.addPatient;
 
 import use_case.addPatient.AddPatientInputBoundary;
 import use_case.addPatient.AddPatientInputData;
+import view.AddPatientView;
 
 import java.util.ArrayList;
 
@@ -21,6 +22,7 @@ public class AddPatientController {
     }
 
     public void handleAddPatient() {
+        AddPatientView view = new AddPatientView(this);
         addPatientInteractor.display();
     }
 }

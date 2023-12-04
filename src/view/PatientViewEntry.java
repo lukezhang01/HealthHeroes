@@ -4,11 +4,11 @@ import javax.swing.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
-public class PatientViewEntryBuilder extends JTextField {
+public class PatientViewEntry extends JTextField {
     // private JTextField input;
     private String text;
     private String name;
-    public PatientViewEntryBuilder(String name, String originalText) {
+    public PatientViewEntry(String name, String originalText) {
         super(20);
         this.name = name;
         this.text = originalText;

@@ -1,5 +1,6 @@
 package view;
 import interface_adapter.ViewModel;
+import interface_adapter.addPatient.AddPatientController;
 import interface_adapter.patientList.PatientListController;
 import use_case.patientList.PatientListOutputData;
 
@@ -38,6 +39,7 @@ public class PatientListView extends JPanel {
 
 
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private AddPatientController addPatientController;
 
     private ArrayList<PatientListOutputData> getPatientsSortedAlphabetically(){
         ArrayList<PatientListOutputData> patients = this.patients;
@@ -213,7 +215,7 @@ public class PatientListView extends JPanel {
         searchInput.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
-             }
+            }
 
             @Override
             public void keyPressed(KeyEvent e) {
@@ -278,11 +280,11 @@ public class PatientListView extends JPanel {
         addButton.setBorderPainted(false);
         addButton.setFocusPainted(false);
 
-        addButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                patientListController.handleAddPatient();
-            }
+        addButton.addActionListener(e -> {
+            addPatientController.handleAddPatient();
+            SwingUtilities.invokeLater(() -> {
+                display(patientListController.getPatients());
+            });
         });
         bottomPanel.add(addButton);
         //this.container.add(bottomPanel);
@@ -318,19 +320,16 @@ public class PatientListView extends JPanel {
         this.repaint();
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new PatientListView();
-
-        });
-    }
-
 
     public void setController(PatientListController controller) {
         this.patientListController = controller;
         this.patients = controller.getPatients();
         updatePatientsByFilter(filterOptions[0]);
         updateDisplayBySort(sortOptions[0]);
+    }
+
+    public void addPatientController(AddPatientController controller) {
+        this.addPatientController = controller;
     }
 
 }

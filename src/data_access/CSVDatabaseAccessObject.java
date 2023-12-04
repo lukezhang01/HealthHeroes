@@ -7,6 +7,8 @@ import java.io.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.time.LocalDate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class CSVDatabaseAccessObject implements CSVDatabaseAccessInterface {
@@ -25,18 +27,20 @@ public class CSVDatabaseAccessObject implements CSVDatabaseAccessInterface {
         this.filePath = doctorFilePath;
         File doctorFile = new File(doctorFilePath);
         if (doctorFile.length() == 0) {
-            save();
+            System.out.println("Need to enter doctor file path");
         } else {
             try (BufferedReader reader = new BufferedReader(new FileReader(doctorFile))) {
                 reader.readLine();
                 this.username = String.valueOf(reader.readLine());
+                System.out.println(username);
                 reader.readLine();
                 this.password = String.valueOf(reader.readLine());
+                System.out.println(password);
                 reader.readLine();
                 String patientsLine = String.valueOf(reader.readLine());
                 System.out.println(patientsLine);
                 if (patientsLine.equals("") || patientsLine.equals("null")) {
-                    // System.out.println("if clause passed");
+                    System.out.println("no patients");
                 } else {
                     String[] patientList = patientsLine.split(",");
                     for (String patientID : patientList) {
@@ -95,6 +99,9 @@ public class CSVDatabaseAccessObject implements CSVDatabaseAccessInterface {
     public ArrayList<LocalDate> getDates(String[] dates) {
         ArrayList<LocalDate> localDates = new ArrayList<>();
         for (String date : dates) {
+            if (date.isEmpty()) {
+                continue;
+            }
             localDates.add(LocalDate.parse(date, formatter));
         }
         return localDates;
@@ -104,15 +111,42 @@ public class CSVDatabaseAccessObject implements CSVDatabaseAccessInterface {
     public ArrayList<Drug> getDrugs(String[] drugs) {
         ArrayList<Drug> drugsList = new ArrayList<>();
         for (String drug : drugs) {
-            String[] drug_info = drug.split(" ");
-            // System.out.println(Arrays.toString(drug_info));
-            drugsList.add(new Drug(drug_info[0], Float.parseFloat(drug_info[1]),
-                    LocalDate.parse(drug_info[2]),
-                    LocalDate.parse(drug_info[3])));
+            if (drug.isEmpty()) {
+                continue;
+            }
+            ArrayList<String> drug_info = extractInfo(drug);
+            System.out.println(drug_info);
+            drugsList.add(new Drug(drug_info.get(0), Float.parseFloat(drug_info.get(1)),
+                    LocalDate.parse(drug_info.get(2)),
+                    LocalDate.parse(drug_info.get(3))));
         }
         return drugsList;
     }
 
+    public ArrayList<String> extractInfo(String inputString) {
+        // Define the regex pattern
+        String patternString = "Drug Name: (\\w+)| Dosage: (\\d+\\.\\d+)| Start Date: (\\d{4}-\\d{2}-\\d{2})| End Date: (\\d{4}-\\d{2}-\\d{2})";
+
+        // Compile the regex
+        Pattern pattern = Pattern.compile(patternString);
+
+        // Create a matcher for the input string
+        Matcher matcher = pattern.matcher(inputString);
+
+        // ArrayList to hold the extracted data
+        ArrayList<String> extractedData = new ArrayList<>();
+
+        // Find and extract the data
+        while (matcher.find()) {
+            for (int i = 1; i <= matcher.groupCount(); i++) {
+                if (matcher.group(i) != null) {
+                    extractedData.add(matcher.group(i));
+                }
+            }
+        }
+
+        return extractedData;
+    }
 
     @Override
     public Patient getPatient(int id) {
@@ -130,10 +164,10 @@ public class CSVDatabaseAccessObject implements CSVDatabaseAccessInterface {
         BufferedWriter writer;
         try {
             for (Patient patient: patients.values()) {
-                String file_path = "Patient " + patient.getID();
+                String file_path = "data/Patient " + patient.getID() + ".csv";
                 writer = new BufferedWriter(new FileWriter(file_path, false));
                 String[] patientData = new String[]{String.valueOf(patient.getID()), patient.fullName, String.valueOf(patient.getHeight()),
-                        String.valueOf(patient.getWeight()), patient.getAppointmentDatesAsString(), patient.getDateAdded().toString(),
+                        String.valueOf(patient.getWeight()), patient.getBirthDateAsString(), patient.getGender(), patient.getAppointmentDatesAsString(), patient.getDateAdded().toString(),
                         patient.getPrescribedDrugsAsString(), patient.getAllergiesAsString(), patient.getIllnessesAsString(),
                         patient.getSymptomsAsString(), patient.getLifestyleInformation(), String.valueOf(patient.getIsPregnant()),
                         patient.getAdditionalNotes()};
@@ -162,12 +196,13 @@ public class CSVDatabaseAccessObject implements CSVDatabaseAccessInterface {
     @Override
     public void save() {
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, false));
             writer.write("username");
             writer.newLine();
             writer.write(username);
             writer.newLine();
             writer.write("password");
+            writer.newLine();
             writer.write(password);
             writer.newLine();
             writer.write("patients");
@@ -176,9 +211,9 @@ public class CSVDatabaseAccessObject implements CSVDatabaseAccessInterface {
             for (int id : patients.keySet()) {
                 temp += "," + id;
             }
-            writer.write(temp);
-
-
+            writer.write(temp.substring(1));
+            writer.newLine();
+            writer.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -213,6 +248,7 @@ public class CSVDatabaseAccessObject implements CSVDatabaseAccessInterface {
     public void addPatient(Patient patient) {
         this.patients.put(patient.getID(), patient);
         this.savePatients();
+        this.save();
     }
 
     public String getUsername() {
@@ -225,6 +261,10 @@ public class CSVDatabaseAccessObject implements CSVDatabaseAccessInterface {
 
     public ArrayList<Patient> getPatients() {
         return new ArrayList<>(this.patients.values());
+    }
+
+    public Map<String, String> getPatientData(int id) {
+        return null;
     }
 }
 
