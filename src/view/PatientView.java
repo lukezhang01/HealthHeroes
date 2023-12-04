@@ -175,7 +175,7 @@ public class PatientView extends JFrame {
                 String lifestyleInformation = lifestyleInformationField.getText();
                 String isPregnant = (String) isPregnantField.getSelectedItem();
                 String additionalNotes = additionalNotesField.getText();
-
+                System.out.println(allergiesField.getText());
                 controller.update(fullName, height, weight, dateOfBirth, gender, appointmentDates, prescribedDrugs,
                         allergies, illnesses, symptoms, lifestyleInformation, isPregnant, additionalNotes);
                 close();

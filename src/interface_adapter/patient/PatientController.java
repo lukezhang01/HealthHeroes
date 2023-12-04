@@ -49,6 +49,11 @@ public class PatientController {
                 appointmentDates, prescribedDrugs, allergies, illnesses, symptoms, lifestyleInformation, isPregnant, additionalNotes);
         // create patient
         this.patientUseCaseInteractor.update(outputData.get("id"), data);
+        this.drugs = this.patientUseCaseInteractor.getDrugs(currentId);
+        PatientInputData patientInputData = new PatientInputData(currentId);
+        this.outputData = patientUseCaseInteractor.execute(patientInputData);
+        this.outputData.put("allergies", String.join(" ", allergies));
+        // execute(currentId);
     }
 
     private static String extractNumber(String str) {
