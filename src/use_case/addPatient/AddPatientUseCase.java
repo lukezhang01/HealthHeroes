@@ -9,7 +9,7 @@ import use_case.patientList.PatientListInputBoundary;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class AddPatientUseCase implements PatientListInputBoundary {
+public class  AddPatientUseCase implements PatientListInputBoundary {
     private CSVDatabaseAccessObject databaseAccessObject;
     public AddPatientUseCase(CSVDatabaseAccessObject databaseAccessObject) {
         this.databaseAccessObject = databaseAccessObject;
