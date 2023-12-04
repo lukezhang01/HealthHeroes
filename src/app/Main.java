@@ -1,128 +1,100 @@
 package app;
 
-import data_access.CSVDatabaseAccessInterface;
-import data_access.CSVDatabaseAccessObject;
-import data_access.DirectoryDatabaseAccessObject;
-import entity.DoctorFactory;
+import data_access.*;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.ViewModel;
-import interface_adapter.addPatient.AddPatientController;
-import interface_adapter.addPatient.AddPatientPresenter;
-import interface_adapter.addPatient.AddPatientViewModel;
+import interface_adapter.logged_in.LoggedInState;
 import interface_adapter.logged_in.LoggedInViewModel;
-import interface_adapter.login.LoginController;
-import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
-import interface_adapter.patientList.PatientListController;
-import interface_adapter.patientList.PatientListPresenter;
 import interface_adapter.signup.SignupViewModel;
-import use_case.addPatient.AddPatientInteractor;
-import use_case.addPatient.AddPatientUseCase;
-import use_case.patientList.*;
 import view.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
 
-//        JFrame application = new JFrame("Login Example");
-//        application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-//
-//        CardLayout cardLayout = new CardLayout();
-//
-//        JPanel views = new JPanel(cardLayout);
-//        application.add(views);
-//
-//        ViewManagerModel viewManagerModel = new ViewManagerModel();
-//        new ViewManager(views, cardLayout, viewManagerModel);
-//
-//        LoginViewModel loginViewModel = new LoginViewModel();
-//        LoggedInViewModel loggedInViewModel = new LoggedInViewModel();
-//        SignupViewModel signupViewModel = new SignupViewModel();
-//
-//        DirectoryDatabaseAccessObject userDataAccessObject;
-//        userDataAccessObject = new DirectoryDatabaseAccessObject();
-//
-//        SignupView signupView = SignupUseCaseFactory.create(viewManagerModel, loginViewModel, signupViewModel, userDataAccessObject);
-//        views.add(signupView, signupView.viewName);
-//
-//        LoginView loginView = LoginUseCaseFactory.create(viewManagerModel, loginViewModel, loggedInViewModel, userDataAccessObject);
-//        views.add(loginView, loginView.viewName);
-//
-//
-//
-//        LoggedInView loggedInView = new LoggedInView(loggedInViewModel);
-//        views.add(loggedInView, signupView.viewName);
-//
-//        viewManagerModel.setActiveView(loginView.viewName);
-//        viewManagerModel.firePropertyChanged();
-//
-//        application.pack();
-//        application.setVisible(true);
+    private static void setApplicationToLoggedIn(JFrame application) {
+        application.setTitle("[HEALTH HEROES] Log In");
+        application.setMaximumSize(ViewModel.LOGIN_DIMENSION);
+        application.setMinimumSize(ViewModel.LOGIN_DIMENSION);
+        application.setSize(ViewModel.LOGIN_DIMENSION);
+    }
 
+    private static void setApplicationToUI(JFrame application) {
+        application.setMaximumSize(ViewModel.VIEW_DIMENSION);
+        application.setMinimumSize(ViewModel.VIEW_DIMENSION);
+        application.setSize(ViewModel.VIEW_DIMENSION);
+    }
 
-//        // TEST PATIENT
-//        CSVDatabaseAccessObject databaseAccessObject = new CSVDatabaseAccessObject("data/Doctor 1.csv");
-//        PatientListView view = new PatientListView();
-//        LoggedInViewModel login = new LoggedInViewModel();
-//        login.setLoggedInUser("asd");
-//        ArrayList<PatientListOutputData> testArray = new ArrayList<>();
-//        FetchPatientsUseCase fetch = new FetchPatientsUseCase(databaseAccessObject);
-//
-//        AddPatientViewModel addPatientViewModel = new AddPatientViewModel("Add Patient View");
-//        AddPatientPresenter addPatientPresenter = new AddPatientPresenter(addPatientViewModel);
-//        AddPatientUseCase add = new AddPatientUseCase(databaseAccessObject);
-//        DeletePatientUseCase delete = new DeletePatientUseCase(databaseAccessObject);
-//
-//        PatientListInteractor interactor = new PatientListInteractor(fetch, add, delete);
-//
-//        PatientListPresenter presenter = new PatientListPresenter(view);
-//        PatientListController controller = new PatientListController(interactor, presenter);
-//
-//
-//        AddPatientInteractor addPatientInteractor = new AddPatientInteractor(databaseAccessObject, addPatientPresenter);
-//        AddPatientController addPatientController = new AddPatientController(addPatientInteractor);
-//
-//        view.setController(controller);
-//        view.addPatientController(addPatientController);
-//        controller.loadPatients();
-//        ///
-//        JFrame application = new JFrame("Health Hero");
-//        application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-//        CardLayout cardLayout = new CardLayout();
-//
-//        JPanel views = new JPanel(cardLayout);
-//        application.add(views, BorderLayout.CENTER);
-//        application.setMaximumSize(ViewModel.VIEW_DIMENSION);
-//        application.setMinimumSize(ViewModel.VIEW_DIMENSION);
-//
-//        ViewManagerModel viewManagerModel = new ViewManagerModel();
-//        NavigationBar navBar = new NavigationBar(viewManagerModel);
-//        new ViewManager(views, cardLayout, viewManagerModel);
-//        // add patient list
-//        views.add(view, view.viewName);
-//        // add home view
-//        LoggedInViewModel loggedInViewModel = new LoggedInViewModel();
-//        HomeView homeView = new HomeView(loggedInViewModel);
-//        views.add(homeView, homeView.viewName);
-//        // add drugs view
-//        DrugsView drugsView = new DrugsView();
-//        views.add(drugsView, drugsView.viewName);
-//        // add nav buttons
-//        navBar.addNavigationButton(homeView.viewName, "home_icon.png");
-//        navBar.addNavigationButton(view.viewName, "patients_icon.png");
-//        navBar.addNavigationButton(drugsView.viewName, "drugs_icon.png");
-//        application.add(navBar, BorderLayout.NORTH);
-//        //  add buttons
-//
-//
-//        navBar.setActiveView(homeView.viewName);
-//
-//        application.pack();
-//        application.setVisible(true);
+    public
+    static void main(String[] args) throws IOException {
+
+        // create main application
+        JFrame application = new JFrame("");
+        application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        ViewManagerModel viewManagerModel = new ViewManagerModel();
+        // create view manager and nav bar
+        ViewManager viewManager = new ViewManager(viewManagerModel);
+        NavigationBar navBar = new NavigationBar(viewManagerModel, "Home");
+        // set login size
+        setApplicationToLoggedIn(application);
+        // log in data
+        LoginViewModel loginViewModel = new LoginViewModel();
+        LoggedInViewModel loggedInViewModel = new LoggedInViewModel();
+        SignupViewModel signupViewModel = new SignupViewModel();
+
+        DirectoryDatabaseAccessObject userDataAccessObject = new DirectoryDatabaseAccessObject();
+
+        LoginView loginView = LoginUseCaseFactory.create(viewManagerModel, loginViewModel, loggedInViewModel, userDataAccessObject);
+        SignupView signupView = SignupUseCaseFactory.create(viewManagerModel, loginViewModel, signupViewModel, userDataAccessObject);
+
+        // detect when we are back to sign in view.
+        viewManagerModel.addPropertyChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                if (viewManagerModel.getActiveView().equals(loginView.viewName)){
+                    // we switched to signupview
+                    navBar.setVisible(false);
+                    // change size
+                    setApplicationToLoggedIn(application);
+                }
+            }
+        });
+        loggedInViewModel.addPropertyChangeListener(new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                LoggedInState state = (LoggedInState) evt.getNewValue();
+                // we have logged in
+                if (state.getUsername() != null) {
+                    ApplicationFactory.initializeApplicationViews(viewManagerModel, viewManager, loggedInViewModel, state.getUsername(), navBar);
+                    navBar.setVisible(true);
+                    navBar.setActiveView(navBar.getDefaultView());
+                    // set size
+                    setApplicationToUI(application);
+                    application.setTitle("[HEALTH HEROES] LOGGED IN AS: " + state.getUsername());
+                }
+            }
+        });
+
+        // add views to view manager
+        viewManager.addView(signupView, signupView.viewName);
+        viewManager.addView(loginView, loginView.viewName);
+
+        // add components to the frame
+        application.add(viewManager.getViews(), BorderLayout.CENTER);
+        application.add(navBar, BorderLayout.NORTH);
+
+        // set the initial active view
+        viewManagerModel.setActiveView(loginView.viewName);
+        viewManagerModel.firePropertyChanged();
+
+        // pack and center the application
+        application.pack();
+        application.setLocationRelativeTo(null); // center the application window
+        application.setVisible(true);
     }
 }
