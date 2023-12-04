@@ -58,6 +58,10 @@ public class Patient implements User {
         return drugs_list.trim();
     }
 
+    public ArrayList<Drug> getDrugs() {
+        return this.prescribed_drugs;
+    }
+
     public void addDrug(Drug drug) {
         this.prescribed_drugs.add(drug);
     }
@@ -173,6 +177,26 @@ public class Patient implements User {
 
     public void changeGender(String newGender) {
         this.gender = newGender;
+    }
+
+    public String[] getAllData() {
+        return new String[] {
+                Integer.toString(this.getID()),
+                this.fullName,
+                this.getHeightAsString(),
+                this.getWeightAsString(),
+                this.getBirthDateAsString(),
+                this.getGender(),
+                this.getAppointmentDatesAsString(),
+                this.getDateAdded().toString(),
+                this.getPrescribedDrugsAsString(),
+                this.getAllergiesAsString(),
+                this.getIllnessesAsString(),
+                this.getSymptomsAsString(),
+                this.getLifestyleInformation(),
+                Boolean.toString(this.getIsPregnant()),
+                this.getAdditionalNotes()
+        };
     }
 
 }

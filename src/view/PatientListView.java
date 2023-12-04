@@ -1,6 +1,7 @@
 package view;
 import interface_adapter.ViewModel;
 import interface_adapter.addPatient.AddPatientController;
+import interface_adapter.patient.PatientController;
 import interface_adapter.patientList.PatientListController;
 import use_case.patientList.PatientListOutputData;
 
@@ -43,6 +44,7 @@ public class PatientListView extends JPanel {
 
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private AddPatientController addPatientController;
+    private PatientController patientController;
 
     private ArrayList<PatientListOutputData> getPatientsSortedAlphabetically(){
         ArrayList<PatientListOutputData> patients = this.patients;
@@ -126,9 +128,9 @@ public class PatientListView extends JPanel {
         return result;
     }
 
-    public PatientListView() {
+    public PatientListView(PatientController patientController) {
         this.setLayout(new BorderLayout());
-
+        this.patientController = patientController;
         this.container = new JPanel();
         this.setMaximumSize(ViewModel.VIEW_DIMENSION);
         this.setMinimumSize(ViewModel.VIEW_DIMENSION);
@@ -311,6 +313,7 @@ public class PatientListView extends JPanel {
 
 
     public void display(ArrayList<PatientListOutputData> patients) {
+        System.out.println("call display");
         patientPanel.removeAll();
         this.patients = patients;
         patientPanel.add(Box.createVerticalStrut(30));
@@ -319,7 +322,7 @@ public class PatientListView extends JPanel {
             patientPanel.add(PatientListComponentBuilder.buildHeader());
             patientPanel.add(Box.createVerticalStrut(15));
             for (PatientListOutputData patient : patients) {
-                JPanel patientComponent = PatientListComponentBuilder.build(patient);
+                JPanel patientComponent = PatientListComponentBuilder.build(patient, this.patientController);
                 patientPanel.add(patientComponent);
                 patientPanel.add(Box.createVerticalStrut(8));
             }
@@ -345,6 +348,11 @@ public class PatientListView extends JPanel {
 
     public void addPatientController(AddPatientController controller) {
         this.addPatientController = controller;
+    }
+
+    public void addPatientViewController(PatientController controller) {
+        System.out.println("add controller");
+        this.patientController = controller;
     }
 
 }

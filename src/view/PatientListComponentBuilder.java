@@ -1,6 +1,7 @@
 package view;
 
 import interface_adapter.ViewModel;
+import interface_adapter.patient.PatientController;
 import interface_adapter.patientList.PatientListController;
 import use_case.patientList.PatientListOutputData;
 
@@ -10,6 +11,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class PatientListComponentBuilder {
+    private PatientController controller;
 
     private static final Dimension PATIENT_CELL_SIZE = new Dimension(750, 30);
     private static final Dimension NAME_LABEL_SIZE = new Dimension(150, 30);
@@ -60,7 +62,7 @@ public class PatientListComponentBuilder {
         panel.setMinimumSize(PATIENT_CELL_SIZE);
         return panel;
     }
-    public static JPanel build(PatientListOutputData patient) {
+    public static JPanel build(PatientListOutputData patient, PatientController controller) {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
         panel.setBackground(ViewModel.HEADER_COLOR);
@@ -81,6 +83,7 @@ public class PatientListComponentBuilder {
         idLabel.setMinimumSize(NAME_LABEL_SIZE);
         idLabel.setMaximumSize(NAME_LABEL_SIZE);
 
+
         // AI chat button
         JButton aiChatButton = new JButton("\uD83E\uDD16 AI CHAT");
         configureButton(aiChatButton, ViewModel.HEADING_FONT_BOLD, new Color(126, 149, 238));
@@ -90,6 +93,27 @@ public class PatientListComponentBuilder {
         configureButton(viewPatientButton, ViewModel.HEADING_FONT_BOLD, new Color(18, 82, 161));
 
         // Add components to panel
+
+        // view patient button
+        JButton viewPatientButton = new JButton();
+        viewPatientButton.setOpaque(false);
+        viewPatientButton.setFont(ViewModel.HEADING_FONT_BOLD);
+        viewPatientButton.setBackground(new Color(18, 82, 161));
+        viewPatientButton.setForeground(new Color(255, 255, 255  ));
+        viewPatientButton.setMinimumSize(VIEW_BUTTON_SIZE);
+        viewPatientButton.setText("🔎 View Patient");
+        viewPatientButton.setOpaque(true);
+        viewPatientButton.setContentAreaFilled(true);
+        viewPatientButton.setBorderPainted(false);
+        viewPatientButton.setFocusPainted(false);
+        viewPatientButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.execute(patient.getId());
+            }
+        });
+        // add to panel
+
         panel.add(Box.createHorizontalStrut(5));
         panel.add(idLabel);
         panel.add(Box.createHorizontalStrut(5));

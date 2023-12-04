@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
-public class DrugEntry {
+public class DrugEntry extends DrugEntryView {
     private JTextField nameField;
     private JTextField dosageField;
     private JTextField startField;
