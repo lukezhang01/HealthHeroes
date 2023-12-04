@@ -23,6 +23,12 @@ public class PatientController {
         this.outputData = patientUseCaseInteractor.execute(patientInputData);
     }
 
+    public void update(String fullName, String height, String weight, String dateOfBirth, String gender,
+                       String[] appointmentDates, ArrayList<String[]> prescribedDrugs, String[] allergies,
+                       String[] illnesses, String[] symptoms, String lifestyleInformation, String isPregnant, String additionalNotes) {
+
+    }
+
     public String getNameField() {
         return outputData.get("fullName");
     }

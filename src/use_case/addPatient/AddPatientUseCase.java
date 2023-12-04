@@ -14,7 +14,7 @@ public class AddPatientUseCase implements AddPatientInputBoundary {
     private CSVDatabaseAccessInterface databaseAccessObject;
     private AddPatientOutputBoundary presenter;
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    public AddPatientUseCase(CSVDatabaseAccessInterface databaseAccessObject, AddPatientOutputBoundary presenter) {
+    public AddPatientUseCase(CSVDatabaseAccessInterface databaseAccessObject) {
         this.databaseAccessObject = databaseAccessObject;
         this.presenter = presenter;
     }

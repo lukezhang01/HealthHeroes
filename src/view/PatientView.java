@@ -160,8 +160,8 @@ public class PatientView extends JFrame {
                 String isPregnant = (String) isPregnantField.getSelectedItem();
                 String additionalNotes = additionalNotesField.getText();
 
-//                controller.execute(fullName, height, weight, dateOfBirth, gender, appointmentDates, prescribedDrugs,
-//                        allergies, illnesses, symptoms, lifestyleInformation, isPregnant, additionalNotes);
+                controller.update(fullName, height, weight, dateOfBirth, gender, appointmentDates, prescribedDrugs,
+                        allergies, illnesses, symptoms, lifestyleInformation, isPregnant, additionalNotes);
                 close();
             }
         });

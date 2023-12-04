@@ -66,63 +66,63 @@ public class Main {
 
 
 //        // TEST PATIENT
-        CSVDatabaseAccessObject databaseAccessObject = new CSVDatabaseAccessObject("data/Doctor 1.csv");
-        PatientListView view = new PatientListView();
-        LoggedInViewModel login = new LoggedInViewModel();
-        login.setLoggedInUser("asd");
-        ArrayList<PatientListOutputData> testArray = new ArrayList<>();
-        FetchPatientsUseCase fetch = new FetchPatientsUseCase(databaseAccessObject);
-
-        AddPatientViewModel addPatientViewModel = new AddPatientViewModel("Add Patient View");
-        AddPatientPresenter addPatientPresenter = new AddPatientPresenter(addPatientViewModel);
-        AddPatientUseCase add = new AddPatientUseCase(databaseAccessObject, addPatientPresenter);
-        DeletePatientUseCase delete = new DeletePatientUseCase(databaseAccessObject);
-
-        PatientListInteractor interactor = new PatientListInteractor(fetch, add, delete);
-
-        PatientListPresenter presenter = new PatientListPresenter(view);
-        PatientListController controller = new PatientListController(interactor, presenter);
-
-
-        AddPatientInteractor addPatientInteractor = new AddPatientInteractor(databaseAccessObject, addPatientPresenter);
-        AddPatientController addPatientController = new AddPatientController(addPatientInteractor);
-
-        view.setController(controller);
-        view.addPatientController(addPatientController);
-        controller.loadPatients();
-        ///
-        JFrame application = new JFrame("Health Hero");
-        application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        CardLayout cardLayout = new CardLayout();
-
-        JPanel views = new JPanel(cardLayout);
-        application.add(views, BorderLayout.CENTER);
-        application.setMaximumSize(ViewModel.VIEW_DIMENSION);
-        application.setMinimumSize(ViewModel.VIEW_DIMENSION);
-
-        ViewManagerModel viewManagerModel = new ViewManagerModel();
-        NavigationBar navBar = new NavigationBar(viewManagerModel);
-        new ViewManager(views, cardLayout, viewManagerModel);
-        // add patient list
-        views.add(view, view.viewName);
-        // add home view
-        LoggedInViewModel loggedInViewModel = new LoggedInViewModel();
-        HomeView homeView = new HomeView(loggedInViewModel);
-        views.add(homeView, homeView.viewName);
-        // add drugs view
-        DrugsView drugsView = new DrugsView();
-        views.add(drugsView, drugsView.viewName);
-        // add nav buttons
-        navBar.addNavigationButton(homeView.viewName, "home_icon.png");
-        navBar.addNavigationButton(view.viewName, "patients_icon.png");
-        navBar.addNavigationButton(drugsView.viewName, "drugs_icon.png");
-        application.add(navBar, BorderLayout.NORTH);
-        //  add buttons
-
-
-        navBar.setActiveView(homeView.viewName);
-
-        application.pack();
-        application.setVisible(true);
+//        CSVDatabaseAccessObject databaseAccessObject = new CSVDatabaseAccessObject("data/Doctor 1.csv");
+//        PatientListView view = new PatientListView();
+//        LoggedInViewModel login = new LoggedInViewModel();
+//        login.setLoggedInUser("asd");
+//        ArrayList<PatientListOutputData> testArray = new ArrayList<>();
+//        FetchPatientsUseCase fetch = new FetchPatientsUseCase(databaseAccessObject);
+//
+//        AddPatientViewModel addPatientViewModel = new AddPatientViewModel("Add Patient View");
+//        AddPatientPresenter addPatientPresenter = new AddPatientPresenter(addPatientViewModel);
+//        AddPatientUseCase add = new AddPatientUseCase(databaseAccessObject);
+//        DeletePatientUseCase delete = new DeletePatientUseCase(databaseAccessObject);
+//
+//        PatientListInteractor interactor = new PatientListInteractor(fetch, add, delete);
+//
+//        PatientListPresenter presenter = new PatientListPresenter(view);
+//        PatientListController controller = new PatientListController(interactor, presenter);
+//
+//
+//        AddPatientInteractor addPatientInteractor = new AddPatientInteractor(databaseAccessObject, addPatientPresenter);
+//        AddPatientController addPatientController = new AddPatientController(addPatientInteractor);
+//
+//        view.setController(controller);
+//        view.addPatientController(addPatientController);
+//        controller.loadPatients();
+//        ///
+//        JFrame application = new JFrame("Health Hero");
+//        application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+//        CardLayout cardLayout = new CardLayout();
+//
+//        JPanel views = new JPanel(cardLayout);
+//        application.add(views, BorderLayout.CENTER);
+//        application.setMaximumSize(ViewModel.VIEW_DIMENSION);
+//        application.setMinimumSize(ViewModel.VIEW_DIMENSION);
+//
+//        ViewManagerModel viewManagerModel = new ViewManagerModel();
+//        NavigationBar navBar = new NavigationBar(viewManagerModel);
+//        new ViewManager(views, cardLayout, viewManagerModel);
+//        // add patient list
+//        views.add(view, view.viewName);
+//        // add home view
+//        LoggedInViewModel loggedInViewModel = new LoggedInViewModel();
+//        HomeView homeView = new HomeView(loggedInViewModel);
+//        views.add(homeView, homeView.viewName);
+//        // add drugs view
+//        DrugsView drugsView = new DrugsView();
+//        views.add(drugsView, drugsView.viewName);
+//        // add nav buttons
+//        navBar.addNavigationButton(homeView.viewName, "home_icon.png");
+//        navBar.addNavigationButton(view.viewName, "patients_icon.png");
+//        navBar.addNavigationButton(drugsView.viewName, "drugs_icon.png");
+//        application.add(navBar, BorderLayout.NORTH);
+//        //  add buttons
+//
+//
+//        navBar.setActiveView(homeView.viewName);
+//
+//        application.pack();
+//        application.setVisible(true);
     }
 }
