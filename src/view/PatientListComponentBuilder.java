@@ -1,6 +1,9 @@
 package view;
 
+import app.ChatUseCaseFactory;
+import entity.Patient;
 import interface_adapter.ViewModel;
+import interface_adapter.chat.ChatViewModel;
 import interface_adapter.patient.PatientController;
 import interface_adapter.patientList.PatientListController;
 import use_case.patientList.PatientListOutputData;
@@ -94,22 +97,18 @@ public class PatientListComponentBuilder {
 
         // Add components to panel
 
-        // view patient button
-        JButton viewPatientButton = new JButton();
-        viewPatientButton.setOpaque(false);
-        viewPatientButton.setFont(ViewModel.HEADING_FONT_BOLD);
-        viewPatientButton.setBackground(new Color(18, 82, 161));
-        viewPatientButton.setForeground(new Color(255, 255, 255  ));
-        viewPatientButton.setMinimumSize(VIEW_BUTTON_SIZE);
-        viewPatientButton.setText("🔎 View Patient");
-        viewPatientButton.setOpaque(true);
-        viewPatientButton.setContentAreaFilled(true);
-        viewPatientButton.setBorderPainted(false);
-        viewPatientButton.setFocusPainted(false);
         viewPatientButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 controller.execute(patient.getId());
+            }
+        });
+        aiChatButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // ai chat was created
+                ChatViewModel chatViewModel = new ChatViewModel();
+                ChatView chatView = ChatUseCaseFactory.create(chatViewModel, controller.getPatientById(patient.getId()));
             }
         });
         // add to panel

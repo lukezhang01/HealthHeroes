@@ -67,7 +67,7 @@ public class ChatView extends JDialog implements ActionListener, PropertyChangeL
         messageInput.setLineWrap(true);
         sendButton = new JButton(chatViewModel.CHAT_LABEL);
         sendButton.setBackground(chatViewModel.SEND_BUTTON_COLOR);
-        sendButton.setForeground(chatViewModel.MESSAGE_COLOR);
+        sendButton.setForeground(new Color(255, 255, 255));
         sendButton.setOpaque(true);
         sendButton.setContentAreaFilled(true);
         sendButton.setBorderPainted(false);
@@ -88,11 +88,6 @@ public class ChatView extends JDialog implements ActionListener, PropertyChangeL
     public void addMessage(String message, boolean isUser){
         // create indicator label
         JLabel indicatorLabel = new JLabel(isUser ? "\uD83D\uDC64 User" : "\uD83E\uDD16 Assistant");
-        if (isUser) {
-            indicatorLabel.setForeground(chatViewModel.USER_HEADER_COLOR);
-        } else{
-            indicatorLabel.setForeground(chatViewModel.AI_HEADER_COLOR);
-        }
         indicatorLabel.setFont(new Font("Monospace", Font.PLAIN, 14));
         indicatorLabel.setBackground(chatViewModel.BACKGROUND_COLOR);
         JTextArea messageArea = new JTextArea();
@@ -100,7 +95,13 @@ public class ChatView extends JDialog implements ActionListener, PropertyChangeL
         messageArea.setWrapStyleWord(true);
         messageArea.setLineWrap(true);
         messageArea.setText(message);
-        messageArea.setForeground(chatViewModel.MESSAGE_COLOR);
+        if (isUser) {
+            indicatorLabel.setForeground(chatViewModel.USER_HEADER_COLOR);
+            messageArea.setForeground(chatViewModel.USER_HEADER_COLOR);
+        } else{
+            messageArea.setForeground(chatViewModel.AI_HEADER_COLOR);
+            indicatorLabel.setForeground(chatViewModel.AI_HEADER_COLOR);
+        }
         // set icon
         ImageIcon icon = new ImageIcon(getClass().getResource("/icons/chat_icon.png"));
         if (icon.getImage() != null) {
