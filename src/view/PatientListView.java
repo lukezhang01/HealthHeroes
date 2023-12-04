@@ -19,6 +19,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Locale;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class PatientListView extends JPanel {
 
@@ -30,7 +33,7 @@ public class PatientListView extends JPanel {
     private JScrollPane scrollPane;
 
     private final String[] filterOptions = {"All Patients", "Appointments Today", "Appointments This Week"};
-    private final String[] sortOptions = {"Alphabetically", "Last Appointment Date", "Date Added"};
+    private final String[] sortOptions = {"Alphabetically", "Latest Appointment Date", "Date Added"};
     private JButton addButton;
     private JComboBox<String> sortBy, filterBy;
     private ArrayList<PatientListOutputData> patients;
@@ -68,7 +71,7 @@ public class PatientListView extends JPanel {
             LocalDate currentDate = LocalDate.now();
             for (PatientListOutputData patient: patients) {
                 if (!patient.getDateAdded().isEmpty()) {
-                    LocalDate appointmentDate = LocalDate.parse(patient.getDateAdded(), formatter);
+                    LocalDate appointmentDate = LocalDate.parse(patient.getAppointmentDate(), formatter);
                     if (filter.equals("Appointments This Week")) {
                         TemporalField weekOfYear = WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear();
                         int currentWeek = currentDate.get(weekOfYear);
@@ -78,7 +81,7 @@ public class PatientListView extends JPanel {
                             result.add(patient);
                         }
                     }else if(filter.equals("Appointments Today")) {
-                        if (currentDate.equals(appointmentDate)) {
+                        if (currentDate.toString().equals(patient.getAppointmentDate())) {
                             // appointment is today
                             result.add(patient);
                         }
@@ -279,22 +282,33 @@ public class PatientListView extends JPanel {
         addButton.setContentAreaFilled(true);
         addButton.setBorderPainted(false);
         addButton.setFocusPainted(false);
-
         addButton.addActionListener(e -> {
-            addPatientController.handleAddPatient();
-            SwingUtilities.invokeLater(() -> {
-                display(patientListController.getPatients());
+            AddPatientView addPatientView = addPatientController.handleAddPatient();
+            addPatientView.addPatientButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // add patient was pressed
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                    patients = patientListController.getPatients();
+                    updatePatientsByFilter(filterOptions[0]);
+                    updateDisplayBySort(sortOptions[0]);
+                }
             });
         });
         bottomPanel.add(addButton);
         //this.container.add(bottomPanel);
         this.add(bottomPanel, BorderLayout.SOUTH);
-
         this.revalidate();
         this.repaint();
         this.setSize(600, 400);
         this.setVisible(true);
+
     }
+
 
     public void display(ArrayList<PatientListOutputData> patients) {
         patientPanel.removeAll();
@@ -326,6 +340,7 @@ public class PatientListView extends JPanel {
         this.patients = controller.getPatients();
         updatePatientsByFilter(filterOptions[0]);
         updateDisplayBySort(sortOptions[0]);
+
     }
 
     public void addPatientController(AddPatientController controller) {

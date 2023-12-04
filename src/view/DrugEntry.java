@@ -35,7 +35,7 @@ public class DrugEntry {
         dosageField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                if (dosageField.getText().equals("Dosage")) {
+                if (dosageField.getText().equals("Dosage (mg)")) {
                     dosageField.setText("");
                 }
             }
@@ -43,17 +43,17 @@ public class DrugEntry {
             @Override
             public void focusLost(FocusEvent e) {
                 if (dosageField.getText().isEmpty()) {
-                    dosageField.setText("Dosage");
+                    dosageField.setText("Dosage (mg)");
                 }
             }
         });
 
 
-        startField = new JTextField("Start");
+        startField = new JTextField("Start (YYYY-MM-DD)");
         startField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                if (startField.getText().equals("Start")) {
+                if (startField.getText().equals("Start (YYYY-MM-DD)")) {
                     startField.setText("");
                 }
             }
@@ -61,16 +61,16 @@ public class DrugEntry {
             @Override
             public void focusLost(FocusEvent e) {
                 if (startField.getText().isEmpty()) {
-                    startField.setText("Start");
+                    startField.setText("Start (YYYY-MM-DD)");
                 }
             }
         });
 
-        endField = new JTextField("End");
+        endField = new JTextField("End (YYYY-MM-DD)");
         endField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                if (endField.getText().equals("End")) {
+                if (endField.getText().equals("End (YYYY-MM-DD)")) {
                     endField.setText("");
                 }
             }
@@ -78,7 +78,7 @@ public class DrugEntry {
             @Override
             public void focusLost(FocusEvent e) {
                 if (endField.getText().isEmpty()) {
-                    endField.setText("End");
+                    endField.setText("End (YYYY-MM-DD)");
                 }
             }
         });
