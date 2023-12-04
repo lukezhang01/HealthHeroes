@@ -26,6 +26,10 @@ public class PatientInteractor implements PatientInputBoundary {
         return databaseAccessObject.getPatientData(id);
     }
 
+    public Patient getPatientById(int id){
+        return databaseAccessObject.getPatient(id);
+    }
+
     @Override
     public ArrayList<String[]> getDrugs(int id) {
         return databaseAccessObject.getDrugsAsStringList(id);
