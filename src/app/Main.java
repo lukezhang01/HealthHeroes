@@ -6,6 +6,9 @@ import data_access.DirectoryDatabaseAccessObject;
 import entity.DoctorFactory;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.ViewModel;
+import interface_adapter.addPatient.AddPatientController;
+import interface_adapter.addPatient.AddPatientPresenter;
+import interface_adapter.addPatient.AddPatientViewModel;
 import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
@@ -13,6 +16,7 @@ import interface_adapter.login.LoginViewModel;
 import interface_adapter.patientList.PatientListController;
 import interface_adapter.patientList.PatientListPresenter;
 import interface_adapter.signup.SignupViewModel;
+import use_case.addPatient.AddPatientInteractor;
 import use_case.addPatient.AddPatientUseCase;
 import use_case.patientList.*;
 import view.*;
@@ -25,38 +29,40 @@ import java.util.ArrayList;
 public class Main {
     public static void main(String[] args) throws IOException {
 
-        JFrame application = new JFrame("Login Example");
-        application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-        CardLayout cardLayout = new CardLayout();
-
-        JPanel views = new JPanel(cardLayout);
-        application.add(views);
-
-        ViewManagerModel viewManagerModel = new ViewManagerModel();
-        new ViewManager(views, cardLayout, viewManagerModel);
-
-        LoginViewModel loginViewModel = new LoginViewModel();
-        LoggedInViewModel loggedInViewModel = new LoggedInViewModel();
-        SignupViewModel signupViewModel = new SignupViewModel();
-
-        DirectoryDatabaseAccessObject userDataAccessObject;
-        userDataAccessObject = new DirectoryDatabaseAccessObject();
-
-        LoginView loginView = LoginUseCaseFactory.create(viewManagerModel, loginViewModel, loggedInViewModel, userDataAccessObject);
-        views.add(loginView, loginView.viewName);
-
-        SignupView signupView = SignupUseCaseFactory.create(viewManagerModel, loginViewModel, signupViewModel, userDataAccessObject);
-        views.add(signupView, signupView.viewName);
-
-        LoggedInView loggedInView = new LoggedInView(loggedInViewModel);
-        views.add(loggedInView, loggedInView.viewName);
-
-        viewManagerModel.setActiveView(loginView.viewName);
-        viewManagerModel.firePropertyChanged();
-
-        application.pack();
-        application.setVisible(true);
+//        JFrame application = new JFrame("Login Example");
+//        application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+//
+//        CardLayout cardLayout = new CardLayout();
+//
+//        JPanel views = new JPanel(cardLayout);
+//        application.add(views);
+//
+//        ViewManagerModel viewManagerModel = new ViewManagerModel();
+//        new ViewManager(views, cardLayout, viewManagerModel);
+//
+//        LoginViewModel loginViewModel = new LoginViewModel();
+//        LoggedInViewModel loggedInViewModel = new LoggedInViewModel();
+//        SignupViewModel signupViewModel = new SignupViewModel();
+//
+//        DirectoryDatabaseAccessObject userDataAccessObject;
+//        userDataAccessObject = new DirectoryDatabaseAccessObject();
+//
+//        SignupView signupView = SignupUseCaseFactory.create(viewManagerModel, loginViewModel, signupViewModel, userDataAccessObject);
+//        views.add(signupView, signupView.viewName);
+//
+//        LoginView loginView = LoginUseCaseFactory.create(viewManagerModel, loginViewModel, loggedInViewModel, userDataAccessObject);
+//        views.add(loginView, loginView.viewName);
+//
+//
+//
+//        LoggedInView loggedInView = new LoggedInView(loggedInViewModel);
+//        views.add(loggedInView, signupView.viewName);
+//
+//        viewManagerModel.setActiveView(loginView.viewName);
+//        viewManagerModel.firePropertyChanged();
+//
+//        application.pack();
+//        application.setVisible(true);
 
 
 //        // TEST PATIENT
@@ -66,6 +72,9 @@ public class Main {
 //        login.setLoggedInUser("asd");
 //        ArrayList<PatientListOutputData> testArray = new ArrayList<>();
 //        FetchPatientsUseCase fetch = new FetchPatientsUseCase(databaseAccessObject);
+//
+//        AddPatientViewModel addPatientViewModel = new AddPatientViewModel("Add Patient View");
+//        AddPatientPresenter addPatientPresenter = new AddPatientPresenter(addPatientViewModel);
 //        AddPatientUseCase add = new AddPatientUseCase(databaseAccessObject);
 //        DeletePatientUseCase delete = new DeletePatientUseCase(databaseAccessObject);
 //
@@ -73,7 +82,13 @@ public class Main {
 //
 //        PatientListPresenter presenter = new PatientListPresenter(view);
 //        PatientListController controller = new PatientListController(interactor, presenter);
+//
+//
+//        AddPatientInteractor addPatientInteractor = new AddPatientInteractor(databaseAccessObject, addPatientPresenter);
+//        AddPatientController addPatientController = new AddPatientController(addPatientInteractor);
+//
 //        view.setController(controller);
+//        view.addPatientController(addPatientController);
 //        controller.loadPatients();
 //        ///
 //        JFrame application = new JFrame("Health Hero");

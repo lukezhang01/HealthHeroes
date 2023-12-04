@@ -1,12 +1,13 @@
 package view;
 
-import entity.Patient;
 import interface_adapter.ViewModel;
 import interface_adapter.patient.PatientController;
 import interface_adapter.patient.PatientViewModel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /**
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 public class PatientView extends JFrame {
     private PatientController controller;
     private PatientViewModel model;
-    private ArrayList<DrugEntry> drugEntries;
+    private ArrayList<Object> drugEntries;
     private final Dimension DIMENSION = new Dimension(300, 600);
     private JTextField nameField;
     private JTextField heightField;
@@ -57,42 +58,125 @@ public class PatientView extends JFrame {
         JLabel fullNameLabel = new JLabel("Full Name:");
         fullNameLabel.setFont(ViewModel.HEADING_FONT_BOLD);
         fullNameLabel.setForeground(ViewModel.TEXT_COLOR);
-        nameField = new PatientViewEntryBuilder("Full Name:", controller.getNameField());
+        nameField = new PatientViewEntry("Full Name:", controller.getNameField());
 
         JLabel heightLabel = new JLabel("Height:");
-        heightField = new PatientViewEntryBuilder("Height:", controller.getHeightField());
+        heightField = new PatientViewEntry("Height:", controller.getHeightField());
 
         JLabel weightLabel = new JLabel("Weight:");
-        weightField = new PatientViewEntryBuilder("Weight:", controller.getWeightField());
+        weightField = new PatientViewEntry("Weight:", controller.getWeightField());
 
         JLabel dateOfBirthLabel = new JLabel("Date of Birth:");
-        dateOfBirthField = new PatientViewEntryBuilder("Weight:", controller.getDateOfBirthField());
+        dateOfBirthField = new PatientViewEntry("Weight:", controller.getDateOfBirthField());
 
         JLabel genderLabel = new JLabel("Gender:");
-        genderField = new PatientViewEntryBuilder("Gender:", controller.getGenderField());
+        genderField = new PatientViewEntry("Gender:", controller.getGenderField());
 
         JLabel appointmentDatesLabel = new JLabel("Appointment Dates:");
-        appointmentDatesField = new PatientViewEntryBuilder("Appointment Dates:", controller.getAppointmentDatesField());
+        appointmentDatesField = new PatientViewEntry("Appointment Dates:", controller.getAppointmentDatesField());
 
         JLabel allergiesLabel = new JLabel("Allergies:");
-        allergiesField = new PatientViewEntryBuilder("Allergies:", controller.getAllergiesField());
+        allergiesField = new PatientViewEntry("Allergies:", controller.getAllergiesField());
 
         JLabel illnessesLabel = new JLabel("Illnesses:");
-        illnessesField = new PatientViewEntryBuilder("Illnesses:", controller.getIllnessesField());
+        illnessesField = new PatientViewEntry("Illnesses:", controller.getIllnessesField());
 
         JLabel symptomsLabel = new JLabel("Symptoms:");
-        symptomsField = new PatientViewEntryBuilder("Symptoms:", controller.getSymptomsField());
+        symptomsField = new PatientViewEntry("Symptoms:", controller.getSymptomsField());
 
         JLabel lifestyleInformationLabel = new JLabel("Lifestyle Information:");
-        lifestyleInformationField = new PatientViewEntryBuilder("Lifestyle Information:", controller.getLifestyleInformationField());
+        lifestyleInformationField = new PatientViewEntry("Lifestyle Information:", controller.getLifestyleInformationField());
 
         JLabel additionalNotesLabel = new JLabel("Additional Notes:");
-        additionalNotesField = new PatientViewEntryBuilder("Additional Notes:", controller.getAdditionalNotesField());
+        additionalNotesField = new PatientViewEntry("Additional Notes:", controller.getAdditionalNotesField());
 
         mainPanel.add(createLabeledField(fullNameLabel, nameField));
         mainPanel.add(createLabeledField(heightLabel, heightField));
         mainPanel.add(createLabeledField(weightLabel, weightField));
         mainPanel.add(createLabeledField(appointmentDatesLabel, appointmentDatesField));
+
+        drugsPanel = new JPanel();
+        drugsPanel.setLayout(new BoxLayout(drugsPanel, BoxLayout.Y_AXIS));
+        addExistingDrugFields(controller.getDrugs()); // add the existing set of drug fields
+
+        drugsScrollPane = new JScrollPane(drugsPanel);
+        drugsScrollPane.setPreferredSize(new Dimension(350, 100));
+        drugsScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+        JPanel drugsPanelWrapper = new JPanel();
+        drugsPanelWrapper.setLayout(new BoxLayout(drugsPanelWrapper, BoxLayout.LINE_AXIS)); // Use BoxLayout for horizontal alignment
+
+        JLabel drugsLabel = new JLabel("Drugs:");
+        drugsPanelWrapper.add(drugsLabel); // Add the label to the wrapper
+
+        // Add the scroll pane that contains the drugs panel
+        drugsScrollPane = new JScrollPane(drugsPanel);
+        drugsScrollPane.setPreferredSize(new Dimension(350, 50));
+        drugsScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        drugsPanelWrapper.add(drugsScrollPane);
+
+        mainPanel.add(drugsPanelWrapper);
+
+        addDrugButton = new JButton("+");
+        addDrugButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addDrugFields();
+            }
+        });
+
+        mainPanel.add(addDrugButton);
+
+        JLabel isPregnantLabel = new JLabel("Is Pregnant:");
+        String[] options = {"True", "False"};
+        isPregnantField = new JComboBox<>(options);
+        JPanel tempPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        isPregnantField.setMaximumSize(new Dimension(Integer.MAX_VALUE, isPregnantField.getPreferredSize().height));
+        tempPanel.add(isPregnantLabel);
+        tempPanel.add(isPregnantField);
+
+        mainPanel.add(tempPanel);
+        mainPanel.add(createLabeledField(allergiesLabel, allergiesField));
+        mainPanel.add(createLabeledField(illnessesLabel, illnessesField));
+        mainPanel.add(createLabeledField(symptomsLabel, symptomsField));
+        mainPanel.add(createLabeledField(lifestyleInformationLabel, lifestyleInformationField));
+        mainPanel.add(createLabeledField(additionalNotesLabel, additionalNotesField));
+
+        JButton doneButton = new JButton("Done");
+        doneButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String fullName = nameField.getText();
+                String height = heightField.getText();
+                String weight = weightField.getText();
+                String dateOfBirth = dateOfBirthField.getText();
+                String gender = genderField.getText();
+                String[] appointmentDates = appointmentDatesField.getText().split(",");
+                ArrayList<String[]> prescribedDrugs = getDrugsAsString();
+                String[] allergies = allergiesField.getText().split(",");
+                String[] illnesses = illnessesField.getText().split(",");
+                String[] symptoms = symptomsField.getText().split(",");
+                String lifestyleInformation = lifestyleInformationField.getText();
+                String isPregnant = (String) isPregnantField.getSelectedItem();
+                String additionalNotes = additionalNotesField.getText();
+
+                controller.update(fullName, height, weight, dateOfBirth, gender, appointmentDates, prescribedDrugs,
+                        allergies, illnesses, symptoms, lifestyleInformation, isPregnant, additionalNotes);
+                close();
+            }
+        });
+    }
+
+    private ArrayList<String[]> getDrugsAsString() {
+        ArrayList<String[]> data = new ArrayList<>();
+        for (Object entry : drugEntries) {
+//            data.add(entry.getEntryData());
+        }
+        return data;
+    }
+
+    private void close() {
+        this.dispose();
     }
 
     private JPanel createLabeledField(JLabel label, JTextField textField) {
@@ -101,5 +185,21 @@ public class PatientView extends JFrame {
         panel.add(label);
         panel.add(textField);
         return panel;
+    }
+
+    private void addDrugFields() {
+        DrugEntry drugEntry = new DrugEntry();
+        drugsPanel.add(drugEntry.getPanel());
+        drugEntries.add(drugEntry);
+        drugsPanel.revalidate();
+        drugsPanel.repaint();
+    }
+
+    private void addExistingDrugFields(ArrayList<String[]> drugs) {
+        for (String[] drug : drugs) {
+            PatientViewDrugEntry entry = new PatientViewDrugEntry(drug[0], drug[1], drug[2], drug[3]);
+            drugsPanel.add(entry.getPanel());
+            drugEntries.add(entry);
+        }
     }
 }
