@@ -5,6 +5,7 @@ import interface_adapter.patient.PatientController;
 import interface_adapter.patient.PatientViewModel;
 
 import javax.swing.*;
+import javax.swing.text.View;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,19 +20,19 @@ public class PatientView extends JFrame {
     private PatientController controller;
     private PatientViewModel model;
     private ArrayList<DrugEntryView> drugEntries;
-    private final Dimension DIMENSION = new Dimension(300, 600);
-    private JTextField nameField;
-    private JTextField heightField;
-    private JTextField weightField;
-    private JTextField dateOfBirthField;
-    private JTextField genderField;
+    private final Dimension DIMENSION = new Dimension(500, 600);
+    private JTextArea nameField;
+    private JTextArea heightField;
+    private JTextArea weightField;
+    private JTextArea dateOfBirthField;
+    private JTextArea genderField;
     private JComboBox<String> isPregnantField;
-    private JTextField appointmentDatesField;
-    private JTextField allergiesField;
-    private JTextField illnessesField;
-    private JTextField symptomsField;
-    private JTextField lifestyleInformationField;
-    private JTextField additionalNotesField;
+    private JTextArea appointmentDatesField;
+    private JTextArea allergiesField;
+    private JTextArea illnessesField;
+    private JTextArea symptomsField;
+    private JTextArea lifestyleInformationField;
+    private JTextArea additionalNotesField;
     private JPanel drugsPanel;
     private JScrollPane drugsScrollPane;
     private JButton addDrugButton;
@@ -59,37 +60,37 @@ public class PatientView extends JFrame {
         JLabel fullNameLabel = new JLabel("Full Name:");
         fullNameLabel.setFont(ViewModel.HEADING_FONT_BOLD);
         fullNameLabel.setForeground(ViewModel.TEXT_COLOR);
-        nameField = new JTextField(controller.getNameField());
+        nameField = getField(controller.getNameField());
 
         JLabel heightLabel = new JLabel("Height:");
-        heightField = new JTextField(controller.getHeightField());
+        heightField = getField(controller.getHeightField());
 
         JLabel weightLabel = new JLabel("Weight:");
-        weightField = new JTextField(controller.getWeightField());
+        weightField = getField(controller.getWeightField());
 
         JLabel dateOfBirthLabel = new JLabel("Date of Birth:");
-        dateOfBirthField = new JTextField(controller.getDateOfBirthField());
+        dateOfBirthField = getField(controller.getDateOfBirthField());
 
         JLabel genderLabel = new JLabel("Gender:");
-        genderField = new JTextField(controller.getGenderField());
+        genderField = getField(controller.getGenderField());
 
         JLabel appointmentDatesLabel = new JLabel("Appointment Dates:");
-        appointmentDatesField = new JTextField(controller.getAppointmentDatesField(), 20);
+        appointmentDatesField = getField(controller.getAppointmentDatesField());
 
         JLabel allergiesLabel = new JLabel("Allergies:");
-        allergiesField = new JTextField(controller.getAllergiesField(), 20);
+        allergiesField = getField(controller.getAllergiesField());
 
         JLabel illnessesLabel = new JLabel("Illnesses:");
-        illnessesField = new JTextField(controller.getIllnessesField(), 20);
+        illnessesField = getField(controller.getIllnessesField());
 
         JLabel symptomsLabel = new JLabel("Symptoms:");
-        symptomsField = new JTextField(controller.getSymptomsField(), 20);
+        symptomsField = getField(controller.getSymptomsField());
 
         JLabel lifestyleInformationLabel = new JLabel("Lifestyle Information:");
-        lifestyleInformationField = new JTextField(controller.getLifestyleInformationField(), 20);
+        lifestyleInformationField = getField(controller.getLifestyleInformationField());
 
         JLabel additionalNotesLabel = new JLabel("Additional Notes:");
-        additionalNotesField = new JTextField(controller.getAdditionalNotesField(), 20);
+        additionalNotesField = getField(controller.getAdditionalNotesField());
 
         mainPanel.add(createLabeledField(fullNameLabel, nameField));
         mainPanel.add(createLabeledField(heightLabel, heightField));
@@ -98,37 +99,19 @@ public class PatientView extends JFrame {
         mainPanel.add(createLabeledField(genderLabel, genderField));
         mainPanel.add(createLabeledField(appointmentDatesLabel, appointmentDatesField));
 
+        JLabel drugsLabel = new JLabel("Prescribed Drugs");
+        drugsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        mainPanel.add(drugsLabel);
+
         drugsPanel = new JPanel();
         drugsPanel.setLayout(new BoxLayout(drugsPanel, BoxLayout.Y_AXIS));
-        addExistingDrugFields(controller.getDrugs()); // add the existing set of drug fields
 
         drugsScrollPane = new JScrollPane(drugsPanel);
+        drugsScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         drugsScrollPane.setPreferredSize(new Dimension(350, 100));
-        drugsScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        addExistingDrugFields(controller.getDrugs());
+        mainPanel.add(drugsScrollPane);
 
-        JPanel drugsPanelWrapper = new JPanel();
-        drugsPanelWrapper.setLayout(new BoxLayout(drugsPanelWrapper, BoxLayout.LINE_AXIS)); // Use BoxLayout for horizontal alignment
-
-        JLabel drugsLabel = new JLabel("Drugs:");
-        drugsPanelWrapper.add(drugsLabel); // Add the label to the wrapper
-
-        // Add the scroll pane that contains the drugs panel
-        drugsScrollPane = new JScrollPane(drugsPanel);
-        drugsScrollPane.setPreferredSize(new Dimension(350, 50));
-        drugsScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        drugsPanelWrapper.add(drugsScrollPane);
-
-        mainPanel.add(drugsPanelWrapper);
-
-        addDrugButton = new JButton("+");
-        addDrugButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                addDrugFields();
-            }
-        });
-
-        mainPanel.add(addDrugButton);
 
         JLabel isPregnantLabel = new JLabel("Is Pregnant:");
         String[] options = {"True", "False"};
@@ -145,7 +128,15 @@ public class PatientView extends JFrame {
         mainPanel.add(createLabeledField(lifestyleInformationLabel, lifestyleInformationField));
         mainPanel.add(createLabeledField(additionalNotesLabel, additionalNotesField));
 
+
         JButton doneButton = new JButton("Done");
+        doneButton.setFont(ViewModel.HEADING_FONT_BOLD);
+        doneButton.setBackground(new Color(126, 175, 252));
+        doneButton.setForeground(new Color(255, 255, 255));
+        doneButton.setOpaque(true);
+        doneButton.setContentAreaFilled(true);
+        doneButton.setBorderPainted(false);
+        doneButton.setFocusPainted(false);
         doneButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -170,6 +161,13 @@ public class PatientView extends JFrame {
         });
 
         JButton deleteButton = new JButton("Delete");
+        deleteButton.setFont(ViewModel.HEADING_FONT_BOLD);
+        deleteButton.setBackground(new Color(229, 56, 56));
+        deleteButton.setForeground(new Color(255, 255, 255));
+        deleteButton.setOpaque(true);
+        deleteButton.setContentAreaFilled(true);
+        deleteButton.setBorderPainted(false);
+        deleteButton.setFocusPainted(false);
         deleteButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -177,15 +175,38 @@ public class PatientView extends JFrame {
                 close();
             }
         });
-        mainPanel.add(doneButton);
-        mainPanel.add(deleteButton);
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        buttonPanel.add(doneButton);
+        buttonPanel.add(deleteButton);
 
-        // Add the main panel to the frame
-        add(mainPanel);
 
-        // Set the frame's visibility
+        mainPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+
+
+        mainPanel.add(buttonPanel);
+
+        mainPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+
+        JScrollPane scrollPane = new JScrollPane(mainPanel);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+
+
+        setContentPane(scrollPane);
+
         setVisible(true);
     }
+
+    private JTextArea getField(String text) {
+        JTextArea nameField = new JTextArea(text);
+        nameField.setLineWrap(true);
+        nameField.setWrapStyleWord(true);
+        nameField.setBackground(ViewModel.HEADER_COLOR);
+        nameField.setForeground(ViewModel.TEXT_COLOR);
+        return nameField;
+    }
+
 
     private ArrayList<String[]> getDrugsAsString() {
         ArrayList<String[]> data = new ArrayList<>();
@@ -202,7 +223,7 @@ public class PatientView extends JFrame {
         this.dispose();
     }
 
-    private JPanel createLabeledField(JLabel label, JTextField textField) {
+    private JPanel createLabeledField(JLabel label, JTextArea textField) {
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         textField.setMaximumSize(new Dimension(Integer.MAX_VALUE, textField.getPreferredSize().height));
         panel.add(label);
