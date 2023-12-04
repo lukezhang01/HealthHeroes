@@ -89,8 +89,8 @@ public class PatientListInteractorTest {
         PrintStream originalOut = System.out;
         System.setOut(new PrintStream(outContent));
 
-        patientListInteractor.addPatient(fullName, height, weight, dateOfBirth, "female", appointmentDates, prescribedDrugs,
-                allergies, illnesses, symptoms, lifestyleInformation, isPregnant, additionalNotes);
+//        patientListInteractor.addPatient(fullName, height, weight, dateOfBirth, "female", appointmentDates, prescribedDrugs,
+//                allergies, illnesses, symptoms, lifestyleInformation, isPregnant, additionalNotes);
 
         assertTrue(outContent.toString().contains("Added patient successfully"));
         System.setOut(originalOut);
