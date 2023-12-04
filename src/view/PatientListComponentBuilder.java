@@ -1,6 +1,7 @@
 package view;
 
 import interface_adapter.ViewModel;
+import interface_adapter.patient.PatientController;
 import interface_adapter.patientList.PatientListController;
 import use_case.patientList.PatientListOutputData;
 
@@ -10,6 +11,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 public class PatientListComponentBuilder {
+    private PatientController controller;
 
     private static final Dimension PATIENT_CELL_SIZE = new Dimension(400, 30);
     private static final Dimension NAME_LABEL_SIZE = new Dimension(140, 30);
@@ -59,7 +61,7 @@ public class PatientListComponentBuilder {
         panel.setMinimumSize(PATIENT_CELL_SIZE);
         return panel;
     }
-    public static JPanel build(PatientListOutputData patient) {
+    public static JPanel build(PatientListOutputData patient, PatientController controller) {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
         JLabel nameLabel = new JLabel(patient.getFullName());
@@ -89,6 +91,12 @@ public class PatientListComponentBuilder {
         viewPatientButton.setContentAreaFilled(true);
         viewPatientButton.setBorderPainted(false);
         viewPatientButton.setFocusPainted(false);
+        viewPatientButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                controller.execute(patient.getId());
+            }
+        });
         // add to panel
         panel.add(Box.createHorizontalStrut(5));
         panel.add(idLabel);

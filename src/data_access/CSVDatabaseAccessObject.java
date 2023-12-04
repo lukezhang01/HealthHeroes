@@ -153,6 +153,28 @@ public class CSVDatabaseAccessObject implements CSVDatabaseAccessInterface {
         return patients.get(id);
     }
 
+    public void saveSinglePatient(String id, Patient patient) {
+        BufferedWriter writer;
+        try {
+            String file_path = "data/Patient " + id + ".csv";
+            writer = new BufferedWriter(new FileWriter(file_path, false));
+            String[] patientData = new String[]{String.valueOf(patient.getID()), patient.fullName, String.valueOf(patient.getHeight()),
+                    String.valueOf(patient.getWeight()), patient.getBirthDateAsString(), patient.getGender(), patient.getAppointmentDatesAsString(), patient.getDateAdded().toString(),
+                    patient.getPrescribedDrugsAsString(), patient.getAllergiesAsString(), patient.getIllnessesAsString(),
+                    patient.getSymptomsAsString(), patient.getLifestyleInformation(), String.valueOf(patient.getIsPregnant()),
+                    patient.getAdditionalNotes()};
+            for (int i = 0; i < patient_headers.length; i++) {
+                writer.write(patient_headers[i]);
+                writer.newLine();
+                writer.write(patientData[i]);
+                writer.newLine();
+            }
+            writer.close();
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+    }
+
 
     @Override
     public Map<Integer, Patient> getAllPatients() {
@@ -264,7 +286,25 @@ public class CSVDatabaseAccessObject implements CSVDatabaseAccessInterface {
     }
 
     public Map<String, String> getPatientData(int id) {
-        return null;
+        Patient patient = patients.get(id);
+        Map<String, String> data = new HashMap<>();
+        String[] allData = patient.getAllData();
+        for (int i = 0; i < patient_headers.length; i++) {
+            data.put(patient_headers[i], allData[i]);
+        }
+        return data;
+    }
+
+    public ArrayList<String[]> getDrugsAsStringList(int id) {
+        ArrayList<String[]> lst = new ArrayList<>();
+        System.out.println(id);
+        System.out.println(patients.keySet());
+        ArrayList<Drug> drugs = patients.get(id).getDrugs();
+        for (Drug drug : drugs) {
+            String[] sub = {drug.drug_name, drug.getDosageAsString(), drug.getStart_date().toString(), drug.getEnd_date().toString()};
+            lst.add(sub);
+        }
+        return lst;
     }
 }
 

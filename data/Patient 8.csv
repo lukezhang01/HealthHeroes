@@ -13,11 +13,11 @@ female
 appointment_date
 2023-12-01
 date_added
-2023-11-29
+2023-12-04
 prescribed_drugs
 Drug Name: fentanyl| Dosage: 100.0mL| Start Date: 2022-10-06| End Date: 2023-01-10\n
 allergies
-
+qq
 illnesses
 
 symptoms
@@ -25,6 +25,6 @@ eats fast food
 lifestyle_information
 false
 isPregnant
-false
+true
 additional_notes
 null
