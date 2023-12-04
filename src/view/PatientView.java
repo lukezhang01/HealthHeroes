@@ -103,6 +103,8 @@ public class PatientView extends JFrame {
         drugsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         mainPanel.add(drugsLabel);
 
+
+
         drugsPanel = new JPanel();
         drugsPanel.setLayout(new BoxLayout(drugsPanel, BoxLayout.Y_AXIS));
 
@@ -111,6 +113,17 @@ public class PatientView extends JFrame {
         drugsScrollPane.setPreferredSize(new Dimension(350, 100));
         addExistingDrugFields(controller.getDrugs());
         mainPanel.add(drugsScrollPane);
+
+        addDrugButton = new JButton("+ ADD DRUG");
+        addDrugButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        addDrugButton.setBackground(new Color(126, 175, 252));
+        addDrugButton.setForeground(new Color(255, 255, 255));
+        addDrugButton.setOpaque(true);
+        addDrugButton.setContentAreaFilled(true);
+        addDrugButton.setBorderPainted(false);
+        addDrugButton.setFocusPainted(false);
+        addDrugButton.addActionListener(e -> addDrugFields());
+        mainPanel.add(addDrugButton);
 
 
         JLabel isPregnantLabel = new JLabel("Is Pregnant:");
