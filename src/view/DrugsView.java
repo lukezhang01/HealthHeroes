@@ -151,7 +151,7 @@ public class DrugsView extends JPanel {
         outputLabel.setWrapStyleWord(true);
 
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setPreferredSize(new Dimension(500, 300));
+        scrollPane.setPreferredSize(new Dimension(500,100));
 
         titleLabel.setFont(ViewModel.TITLE_FONT);
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
