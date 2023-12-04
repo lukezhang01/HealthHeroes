@@ -271,6 +271,7 @@ public class CSVDatabaseAccessObject implements CSVDatabaseAccessInterface {
         this.patients.put(patient.getID(), patient);
         this.savePatients();
         this.save();
+        System.out.println("Added patient successfully");
     }
 
     public String getUsername() {
