@@ -1,7 +1,9 @@
 package use_case.chat;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 public interface ChatInputBoundary {
-    void execute(ChatInputData chatInputData);
+    AtomicReference<String> execute(ChatInputData chatInputData);
 
 
 }

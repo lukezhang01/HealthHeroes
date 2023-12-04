@@ -56,6 +56,10 @@ public class PatientListView extends JPanel {
         return patients;
     }
 
+    public ArrayList<PatientListOutputData> getPatients(){
+        return this.patientListController.getPatients();
+    }
+
     private ArrayList<PatientListOutputData> getPatientsSortedByAddedDate(){
         ArrayList<PatientListOutputData> patients = this.patients;
         Collections.sort(patients, new Comparator<PatientListOutputData>() {
@@ -289,15 +293,26 @@ public class PatientListView extends JPanel {
             addPatientView.addPatientButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    // add patient was pressed
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                    patients = patientListController.getPatients();
-                    updatePatientsByFilter(filterOptions[0]);
-                    updateDisplayBySort(sortOptions[0]);
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            // add patient was pressed
+                            try {
+                                Thread.sleep(1000);
+                            } catch (InterruptedException ex) {
+                                throw new RuntimeException(ex);
+                            }
+                            patients = patientListController.getPatients();
+                            // Update UI in the Event Dispatch Thread
+                            SwingUtilities.invokeLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    updatePatientsByFilter(filterOptions[0]);
+                                    updateDisplayBySort(sortOptions[0]);
+                                }
+                            });
+                        }
+                    }).start();
                 }
             });
         });

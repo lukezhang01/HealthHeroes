@@ -1,5 +1,6 @@
 package view;
 
+import entity.Doctor;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.ViewModel;
 import interface_adapter.logged_in.LoggedInState;
@@ -35,25 +36,20 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
 
     final JButton logOut;
 
-    ArrayList<PatientListOutputData> patients;
-
-    private ArrayList<PatientListOutputData> test = new ArrayList<>();
+    ArrayList<PatientListOutputData> patients = new ArrayList<>();
 
 
 
     /**
      * A window with a title and a JButton.
      */
-    public HomeView(ViewManagerModel viewManagerModel, LoggedInViewModel loggedInViewModel) {
+    public HomeView(ViewManagerModel viewManagerModel, LoggedInViewModel loggedInViewModel, ArrayList<PatientListOutputData> patients) {
         this.setLayout(new BorderLayout());
-
-        test.add(new PatientListOutputData("Deshaun Lewis",1,LocalDate.now().toString(),LocalDate.now().toString()));
-        test.add(new PatientListOutputData("g",1,LocalDate.now().toString(),LocalDate.now().toString()));
-        test.add(new PatientListOutputData("d",1,"2023-12-03",LocalDate.now().toString()));
 
         this.container = new JPanel();
         this.setMaximumSize(ViewModel.VIEW_DIMENSION);
         this.setMinimumSize(ViewModel.VIEW_DIMENSION);
+        this.patients = patients;
 
 
         setLayout(new BorderLayout());
@@ -68,9 +64,10 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
         JPanel centerPanel = new JPanel();
         centerPanel.setLayout(new BoxLayout(centerPanel,BoxLayout.Y_AXIS));
         // Welcome Label
-        JLabel welcomeLabel = new JLabel("Welcome, Dr."+loggedInViewModel.getLoggedInUser());
+        JLabel welcomeLabel = new JLabel("Welcome, Dr. "+loggedInViewModel.getLoggedInUser());
         welcomeLabel.setFont(new Font("Lato", Font.PLAIN, 16));
         welcomeLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        welcomeLabel.setForeground(ViewModel.TEXT_HIGHLIGHT_COLOR);
         welcomeLabel.setPreferredSize(new Dimension((int) ViewModel.VIEW_DIMENSION.getWidth(),40));
         centerPanel.add(welcomeLabel, BorderLayout.NORTH);
 
@@ -84,9 +81,10 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
 
         // Upcoming Appointments
         JTextArea upcomingAppointmentsTextArea = new JTextArea();
-        upcomingAppointmentsTextArea.setFont(new Font("Arial", Font.PLAIN, 14));
+        upcomingAppointmentsTextArea.setFont(new Font("Lato", Font.BOLD, 18));
         upcomingAppointmentsTextArea.setEditable(false);
         upcomingAppointmentsTextArea.setPreferredSize(new Dimension((int) ViewModel.VIEW_DIMENSION.getWidth()-40,100));
+
         for (String appointment : getAppointments()) {
             upcomingAppointmentsTextArea.append(appointment + "\n");
         }
@@ -109,6 +107,13 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
         // Create the bottom panel with add button
         JPanel bottomPanel = new JPanel();
         logOut = new JButton("Log Out");
+        logOut.setFont(ViewModel.HEADING_FONT_BOLD);
+        logOut.setBackground(new Color(229, 56, 56));
+        logOut.setForeground(new Color(255, 255, 255));
+        logOut.setOpaque(true);
+        logOut.setContentAreaFilled(true);
+        logOut.setBorderPainted(false);
+        logOut.setFocusPainted(false);
         logOut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -142,28 +147,23 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
         System.out.println("Click " + evt.getActionCommand());
     }
 
-    public void setController(PatientListController controller) {
-        this.patientListController = controller;
-        this.patients = patientListController.getPatients();
+    public void setPatients(ArrayList<PatientListOutputData> patients) {
+        this.patients = patients;
     }
 
 
     public ArrayList<String> getAppointments(){
-        try {
+        ArrayList<String> appointments = new ArrayList<>();
+        if (!this.patients.isEmpty()) {
             LocalDate currentDate = LocalDate.now();
-            ArrayList<String> appointments = new ArrayList<>();
-            for (PatientListOutputData patient : test) { // Replace test with patients
+            for (PatientListOutputData patient : this.patients) {
                 if (currentDate.toString().equals(patient.getAppointmentDate())) {
                     String a = patient.getFullName() + " has an appointment today.";
                     appointments.add(a);
                 }
             }
-            return appointments;
         }
-        catch(Exception e){
-            System.out.println(e);
-            return null;
-        }
+        return appointments;
     }
 
 
