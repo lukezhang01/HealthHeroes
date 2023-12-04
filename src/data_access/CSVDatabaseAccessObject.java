@@ -23,7 +23,7 @@ public class CSVDatabaseAccessObject implements CSVDatabaseAccessInterface {
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 
-    public CSVDatabaseAccessObject(String doctorFilePath) throws IOException{
+    public CSVDatabaseAccessObject(String doctorFilePath){
         this.filePath = doctorFilePath;
         File doctorFile = new File(doctorFilePath);
         if (doctorFile.length() == 0) {
@@ -47,6 +47,8 @@ public class CSVDatabaseAccessObject implements CSVDatabaseAccessInterface {
                         patients.put(Integer.parseInt(patientID), readPatientFromCSV(new File("data/Patient " + patientID + ".csv")));
                     }
                 }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         }
     }

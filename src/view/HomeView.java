@@ -1,5 +1,6 @@
 package view;
 
+import interface_adapter.ViewManagerModel;
 import interface_adapter.ViewModel;
 import interface_adapter.logged_in.LoggedInState;
 import interface_adapter.logged_in.LoggedInViewModel;
@@ -27,7 +28,7 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
     /**
      * A window with a title and a JButton.
      */
-    public HomeView(LoggedInViewModel loggedInViewModel) {
+    public HomeView(ViewManagerModel viewManagerModel, LoggedInViewModel loggedInViewModel) {
         this.setLayout(new BorderLayout());
 
         this.container = new JPanel();
@@ -51,7 +52,8 @@ public class HomeView extends JPanel implements ActionListener, PropertyChangeLi
         logOut.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ;
+                viewManagerModel.setActiveView("log in");
+                viewManagerModel.firePropertyChanged();
             }
         });
         bottomPanel.add(logOut);

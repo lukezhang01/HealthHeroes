@@ -8,6 +8,7 @@ public abstract class ViewModel {
 
     public static final Dimension VIEW_DIMENSION = new Dimension(800, 600);
 
+    public static final Dimension LOGIN_DIMENSION = new Dimension(400, 600);
 
     // COLOR PROPERTIES
 
