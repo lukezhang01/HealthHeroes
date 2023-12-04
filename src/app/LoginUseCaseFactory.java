@@ -1,9 +1,5 @@
 package app;
 
-import entity.Doctor;
-import entity.Patient;
-import entity.User;
-import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.login.LoginController;
@@ -15,10 +11,10 @@ import use_case.login.LoginOutputBoundary;
 import use_case.login.LoginInteractor;
 import use_case.login.LoginUserDataAccessInterface;
 import view.LoginView;
+import view.NavigationBar;
 
 import javax.swing.*;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class LoginUseCaseFactory {
 

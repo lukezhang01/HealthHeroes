@@ -11,6 +11,6 @@ public class AddPatientPresenter implements AddPatientOutputBoundary {
     }
 
     public void display() {
-        this.viewModel.display();
+
     }
 }
