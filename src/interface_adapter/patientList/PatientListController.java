@@ -4,6 +4,7 @@ import use_case.patientList.FetchPatientsUseCase;
 import use_case.patientList.PatientListInputData;
 import use_case.patientList.PatientListInteractor;
 import use_case.patientList.PatientListOutputData;
+import view.PatientListView;
 //import view.AddPatientView;
 
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ public class PatientListController {
         System.out.println(patientData.toString());
         patientListPresenter.present(patientData);
     }
+
 
     public ArrayList<PatientListOutputData> getPatients() {
         return patientListInteractor.fetchPatients();

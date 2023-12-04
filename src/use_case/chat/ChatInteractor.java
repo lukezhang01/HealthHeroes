@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class ChatInteractor implements ChatInputBoundary {
 
@@ -62,9 +63,10 @@ public class ChatInteractor implements ChatInputBoundary {
     }
 
     @Override
-    public void execute(ChatInputData inputData) {
+    public AtomicReference<String> execute(ChatInputData inputData) {
         String message = inputData.getMessage();
         boolean isUser = inputData.isUser();
+        AtomicReference<String> result = new AtomicReference<>("");
         if (message.equals("[ERROR]") | message.isEmpty()) {
             chatPresenter.preparePopupView("GPT error has occurred");
         } else{
@@ -92,6 +94,7 @@ public class ChatInteractor implements ChatInputBoundary {
                         SwingUtilities.invokeLater(() -> {
                             chatPresenter.updateChat("..[DONE QUERYING OPEN FDA API]..", false);
                         });
+                        result.set("API_CALL");
                     }
                     if (!csvData.isEmpty()) {
                         // there is a csv command
@@ -118,14 +121,17 @@ public class ChatInteractor implements ChatInputBoundary {
                         String aiResponse = chatGPTChatDataAccessObject.messageGPT("CSV file has been written to the ../reports directory", fdaData, true);
                         chatPresenter.updateChat(aiResponse, false);
                         chatPresenter.setUserChatEnabled(true);
+                        result.set("WRITE_CSV");
                     } else {
                         System.out.println("RESPONSE");
                         String aiResponse = chatGPTChatDataAccessObject.messageGPT(message, fdaData, false);
                         chatPresenter.updateChat(aiResponse, false);
                         chatPresenter.setUserChatEnabled(true);
+                        result.set("RESPONSE");
                     }
                 }).start();
             }
         }
+        return result;
     }
 }

@@ -22,7 +22,7 @@ public class ApplicationFactory {
         // create the Patients List View
         // create all the views
         PatientListView patientListView = PatientsListUseCaseFactory.create(databaseAccessObject);
-        HomeView homeView = new HomeView(viewManagerModel, loggedInViewModel);
+        HomeView homeView = new HomeView(viewManagerModel, loggedInViewModel, patientListView.getPatients());
         DrugsView drugsView = new DrugsView();
         // add the views
         viewManager.addView(patientListView, patientListView.viewName);
