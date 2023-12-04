@@ -39,18 +39,18 @@ public class PatientListInteractor {
     /*
         this class will add a patient to the database for the controller
      */
-//    public void addPatient(String fullName, float height, float weight, String dateOfBirthString, String gender,
-//                           String[] appointmentDatesString, ArrayList<Object[]> writtenDrugs,
-//                           ArrayList<String> allergies, ArrayList<String> illnesses, ArrayList<String> symptoms,
-//                           String lifestyleInformation, boolean isPregnant, String additionalNotes) {
-//        LocalDate now = LocalDate.now();
-//        int id = generateGUID();
-//        ArrayList<LocalDate> appointmentDates = convertToArrayList(appointmentDatesString);
-//        ArrayList<Drug> prescribedDrugs = convertToDrugs(writtenDrugs);
-//        LocalDate dateOfBirth = LocalDate.parse(dateOfBirthString, formatter);
-//        this.addPatientUseCase.execute(id, fullName, height, weight, dateOfBirth, gender, appointmentDates, now,
-//                prescribedDrugs, allergies, illnesses, symptoms, lifestyleInformation, isPregnant, additionalNotes);
-//    }
+    public void addPatient(String fullName, float height, float weight, String dateOfBirthString, String gender,
+                           String[] appointmentDatesString, ArrayList<Object[]> writtenDrugs,
+                           ArrayList<String> allergies, ArrayList<String> illnesses, ArrayList<String> symptoms,
+                           String lifestyleInformation, boolean isPregnant, String additionalNotes) {
+        LocalDate now = LocalDate.now();
+        int id = generateGUID();
+        ArrayList<LocalDate> appointmentDates = convertToArrayList(appointmentDatesString);
+        ArrayList<Drug> prescribedDrugs = convertToDrugs(writtenDrugs);
+        LocalDate dateOfBirth = LocalDate.parse(dateOfBirthString, formatter);
+        this.addPatientUseCase.addPatient(id, fullName, height, weight, dateOfBirth, gender, appointmentDates, now,
+                prescribedDrugs, allergies, illnesses, symptoms, lifestyleInformation, isPregnant, additionalNotes);
+    }
 
     private int generateGUID() {
         UUID uuid = UUID.randomUUID();

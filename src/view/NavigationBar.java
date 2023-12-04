@@ -24,23 +24,16 @@ public class NavigationBar extends JPanel implements ActionListener {
     private final Dimension BAR_DIMENSIONS = new Dimension(200, 80);
     private final Dimension NAV_BUTTON_SIZE = new Dimension(85, 85);
 
-    private final String defaultView;
-
     private ViewManagerModel viewManager; // Assuming this is a custom interface or class
     private JPanel navBar;
     private HashMap<String, JPanel> navButtons = new HashMap<>();
 
-    public String getDefaultView(){
-        return this.defaultView;
-    }
-
-    public NavigationBar(ViewManagerModel viewManager, String defaultView) {
+    public NavigationBar(ViewManagerModel viewManager) {
         this.viewManager = viewManager;
         this.navBar = new JPanel();
         // set up the navigation bar
         navBar.setBackground(ViewModel.BACKGROUND_COLOR);
         navBar.setLayout(new FlowLayout(FlowLayout.CENTER));
-        this.defaultView = defaultView;
         this.setMaximumSize(BAR_DIMENSIONS);
         this.setMinimumSize(BAR_DIMENSIONS);
 
@@ -57,19 +50,10 @@ public class NavigationBar extends JPanel implements ActionListener {
     }
 
     public void addNavigationButton(String viewName, String imageName) {
-        if (!this.navButtons.containsKey(viewName)) {
-            JPanel navigationButton = createNavigationButton(viewName, imageName);
-            navBar.add(navigationButton);
-        }
+        JPanel navigationButton = createNavigationButton(viewName, imageName);
+        navBar.add(navigationButton);
     }
 
-    public void setVisible(boolean visible) {
-        if (visible) {
-            // set the default view
-            this.setActiveView(this.defaultView);
-        }
-        super.setVisible(visible);
-    }
 
 
     private JPanel createNavigationButton(String name, String imageName) {
@@ -97,7 +81,7 @@ public class NavigationBar extends JPanel implements ActionListener {
         // listen to button clicks
         navButton.addActionListener(this);
         navButtons.put(name, buttonPanel);
-        this.setVisible(false);
+
         return buttonPanel;
     }
 

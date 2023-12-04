@@ -6,9 +6,10 @@ import view.AddPatientView;
 import java.beans.PropertyChangeListener;
 
 public class AddPatientViewModel extends ViewModel {
-    private String show;
-    public AddPatientViewModel(String viewName) {
+    private AddPatientView view;
+    public AddPatientViewModel(String viewName, AddPatientView view) {
         super(viewName);
+        this.view = view;
     }
 
     @Override
@@ -19,5 +20,9 @@ public class AddPatientViewModel extends ViewModel {
     @Override
     public void addPropertyChangeListener(PropertyChangeListener listener) {
 
+    }
+
+    public void display() {
+        view.setVisible(true);
     }
 }

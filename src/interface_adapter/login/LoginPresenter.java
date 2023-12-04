@@ -9,7 +9,6 @@ import use_case.login.LoginOutputBoundary;
 import use_case.login.LoginOutputData;
 import use_case.signup.SignupOutputBoundary;
 import use_case.signup.SignupOutputData;
-import view.NavigationBar;
 
 public class LoginPresenter implements LoginOutputBoundary{
     private final LoginViewModel loginViewModel;
@@ -31,7 +30,6 @@ public class LoginPresenter implements LoginOutputBoundary{
 
         LoggedInState loggedInState = loggedInViewModel.getState();
         loggedInState.setUsername(response.getUsername());
-        this.loggedInViewModel.setLoggedInUser(loggedInState.getUsername());
         this.loggedInViewModel.setState(loggedInState);
         this.loggedInViewModel.firePropertyChanged();
 
@@ -51,5 +49,6 @@ public class LoginPresenter implements LoginOutputBoundary{
         System.out.println(signupViewModel.getViewName());
         this.viewManagerModel.setActiveView(signupViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
+        System.out.println("presenter passed");
     }
 }

@@ -3,9 +3,9 @@ id
 full_name
 d
 height
-170.0
+170
 weight
-73.0
+73
 date_of_birth
 2000-04-23
 gender
@@ -15,16 +15,13 @@ appointment_date
 date_added
 2023-11-29
 prescribed_drugs
-Drug Name: fentanyl| Dosage: 100.0mL| Start Date: 2022-10-06| End Date: 2023-01-10\n
+fentanyl 100 2022-10-06 2023-01-10
 allergies
 
 illnesses
 
-symptoms
-eats fast food
 lifestyle_information
-false
+eats fast food
 isPregnant
 false
 additional_notes
-null

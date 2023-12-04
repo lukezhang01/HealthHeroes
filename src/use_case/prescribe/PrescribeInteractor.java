@@ -3,12 +3,10 @@ import entity.*;
 
 import java.io.IOException;
 
-
 public class PrescribeInteractor implements PrescribeInputBoundary{
     final PrescribeUserDataInterface userDataAccessObject;
     final PrescribeOutputBoundary userPresenter;
     final UserFactory userFactory;
-
 
     public PrescribeInteractor(PrescribeUserDataInterface prescribeUserDataInterface,
                             PrescribeOutputBoundary prescribeOutputBoundary,
@@ -17,8 +15,6 @@ public class PrescribeInteractor implements PrescribeInputBoundary{
         this.userPresenter = prescribeOutputBoundary;
         this.userFactory = userFactory;
     }
-
-
 
     @Override
     public void execute(PrescribeInputData inputData) throws IOException {
@@ -29,7 +25,5 @@ public class PrescribeInteractor implements PrescribeInputBoundary{
         else{
             userPresenter.prepareFailView("Patient does not exist");
         }
-
-
     }
 }

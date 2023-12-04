@@ -92,10 +92,14 @@ public class DirectoryDatabaseAccessObject implements LoginUserDataAccessInterfa
 
     @Override
     public Doctor get(String username) {
-        //System.out.println("test1");
-        CSVDatabaseAccessObject databaseAccessObject = new CSVDatabaseAccessObject("data/Doctor " + username + ".csv");
-        //System.out.println(databaseAccessObject.getUsername()+", "+databaseAccessObject.getPassword()+", "+databaseAccessObject.getPatients());
-        return new Doctor(databaseAccessObject.getUsername(), databaseAccessObject.getPassword(), databaseAccessObject.getPatients());
+        try {
+            //System.out.println("test1");
+            CSVDatabaseAccessObject databaseAccessObject = new CSVDatabaseAccessObject("data/Doctor " + username + ".csv");
+            //System.out.println(databaseAccessObject.getUsername()+", "+databaseAccessObject.getPassword()+", "+databaseAccessObject.getPatients());
+            return new Doctor(databaseAccessObject.getUsername(), databaseAccessObject.getPassword(), databaseAccessObject.getPatients());
+        } catch (IOException e) {
+            return null;
+        }
 
     }
 

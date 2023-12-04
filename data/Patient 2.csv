@@ -1,29 +1,28 @@
 id
 2
 full_name
-l
+dushaun lewis
 height
-170.0
+155.0
 weight
-73.0
+65.0
 date_of_birth
-2004-06-06
+2004-05-06
 gender
 male
 appointment_date
-2023-12-01
+2023-11-28
 date_added
-2023-11-30
+2023-11-29
 prescribed_drugs
-Drug Name: fentanyl| Dosage: 100.0mL| Start Date: 2022-10-06| End Date: 2023-01-10\n
-allergies
-
+fentanyl 100 2022-10-06 2023-01-10
+dust,pollen
 illnesses
-
+cold,flu
 symptoms
-eats fast food
+coughing,itchy throat
 lifestyle_information
-false
+plays basketball
 isPregnant
 false
 additional_notes

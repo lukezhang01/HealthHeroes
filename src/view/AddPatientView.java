@@ -17,7 +17,7 @@ public class AddPatientView extends JFrame {
     private AddPatientController controller;
     private AddPatientViewModel model;
     private ArrayList<DrugEntry> drugEntries;
-    private final Dimension DIMENSION = new Dimension(450, 650);
+    private final Dimension DIMENSION = new Dimension(300, 600);
     private JTextField nameField;
     private JTextField heightField;
     private JTextField weightField;
@@ -44,7 +44,7 @@ public class AddPatientView extends JFrame {
 
         // Set up the frame
         setTitle("Add New Patient");
-        setSize(500, 700);
+        setSize(400, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setMaximumSize(DIMENSION);
         setMinimumSize(DIMENSION);
@@ -93,8 +93,6 @@ public class AddPatientView extends JFrame {
         mainPanel.add(createLabeledField(fullNameLabel, nameField));
         mainPanel.add(createLabeledField(heightLabel, heightField));
         mainPanel.add(createLabeledField(weightLabel, weightField));
-        mainPanel.add(createLabeledField(dateOfBirthLabel, dateOfBirthField));
-        mainPanel.add(createLabeledField(genderLabel, genderField));
         mainPanel.add(createLabeledField(appointmentDatesLabel, appointmentDatesField));
 
 
@@ -169,7 +167,6 @@ public class AddPatientView extends JFrame {
 
                 controller.execute(fullName, height, weight, dateOfBirth, gender, appointmentDates, prescribedDrugs,
                         allergies, illnesses, symptoms, lifestyleInformation, isPregnant, additionalNotes);
-                close();
             }
         });
         mainPanel.add(addPatientButton);
@@ -178,7 +175,7 @@ public class AddPatientView extends JFrame {
         add(mainPanel);
 
         // Set the frame's visibility
-        setVisible(true);
+        // setVisible(true);
     }
 
     private ArrayList<String[]> getDrugsAsString() {
@@ -219,8 +216,5 @@ public class AddPatientView extends JFrame {
         return selection.equals("True");
     }
 
-    private void close() {
-        this.dispose();
-    }
 
 }

@@ -3,6 +3,6 @@ import entity.*;
 
 public interface PrescribeUserDataInterface {
 
-    public Patient getPatient(int id);
+    Patient getPatient(int id);
     void save();
 }

@@ -1,6 +1,6 @@
 package view;
-
-import interface_adapter.ViewModel;
+import interface_adapter.login.LoginController;
+import interface_adapter.login.LoginViewModel;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupState;
 import interface_adapter.signup.SignupViewModel;
@@ -9,18 +9,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.net.URL;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.net.URL;
 
-public class SignupView extends JPanel implements ActionListener, PropertyChangeListener {
+public class SignupView extends JPanel implements ActionListener, PropertyChangeListener{
     public final String viewName = "sign up";
     private JTextField usernameField;
     private JPasswordField passwordField;
@@ -30,155 +26,127 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
     private final SignupViewModel viewModel;
     private final SignupController controller;
 
-    private Font commonFont = new Font("Lato", Font.PLAIN, 15);
-    private Color textColor = Color.BLACK;
-    private Dimension commonTextFieldSize = new Dimension(150, 20);
-    private Dimension commonButtonSize = new Dimension(100, 25);
-
     public SignupView(SignupViewModel viewModel, SignupController controller) {
         this.controller = controller;
         this.viewModel = viewModel;
         viewModel.addPropertyChangeListener(this);
 
+        // Set the default close operation and layout
         setLayout(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.HORIZONTAL;
-        constraints.anchor = GridBagConstraints.WEST;
 
-        URL logoUrl = getClass().getClassLoader().getResource("icons/SignUp.png");
-        ImageIcon originalIcon = new ImageIcon(logoUrl);
-        Image originalImage = originalIcon.getImage();
-        Image scaledImage = originalImage.getScaledInstance(250, 250, Image.SCALE_SMOOTH);
-        ImageIcon scaledIcon = new ImageIcon(scaledImage);
-        JLabel logoLabel = new JLabel(scaledIcon);
+        // Username field
         constraints.gridx = 0;
         constraints.gridy = 0;
-        constraints.gridwidth = 2;
-        add(logoLabel, constraints);
-
-        constraints.gridx = 0;
-        constraints.gridy = 2;
-        constraints.gridwidth = 1;
-        JLabel usernameLabel = new JLabel("Username");
-        usernameLabel.setFont(commonFont);
-        usernameLabel.setForeground(textColor);
-        add(usernameLabel, constraints);
+        add(new JLabel("User name"), constraints);
 
         usernameField = new JTextField(15);
-        usernameField.setFont(commonFont);
-        usernameField.setPreferredSize(commonTextFieldSize);
         constraints.gridx = 1;
+        constraints.gridy = 0;
         add(usernameField, constraints);
 
-        constraints.gridy = 3;
+        // Password field
         constraints.gridx = 0;
-        JLabel passwordLabel = new JLabel("Password");
-        passwordLabel.setFont(commonFont);
-        passwordLabel.setForeground(textColor);
-        add(passwordLabel, constraints);
+        constraints.gridy = 1;
+        add(new JLabel("Password"), constraints);
 
         passwordField = new JPasswordField(15);
-        passwordField.setFont(commonFont);
-        passwordField.setPreferredSize(commonTextFieldSize);
         constraints.gridx = 1;
+        constraints.gridy = 1;
         add(passwordField, constraints);
 
-        constraints.gridy = 4;
+        // Repeat Password field
         constraints.gridx = 0;
-        JLabel repeatPasswordLabel = new JLabel("Repeat Password");
-        repeatPasswordLabel.setFont(commonFont);
-        repeatPasswordLabel.setForeground(textColor);
-        add(repeatPasswordLabel, constraints);
+        constraints.gridy = 2;
+        add(new JLabel("Repeat password"), constraints);
 
         repeatPasswordField = new JPasswordField(15);
-        repeatPasswordField.setFont(commonFont);
-        repeatPasswordField.setPreferredSize(commonTextFieldSize);
         constraints.gridx = 1;
+        constraints.gridy = 2;
         add(repeatPasswordField, constraints);
 
-        constraints.gridy = 5;
+        // Country combo box
         constraints.gridx = 0;
-        JLabel countryLabel = new JLabel("Country");
-        countryLabel.setFont(commonFont);
-        countryLabel.setForeground(textColor);
-        add(countryLabel, constraints);
+        constraints.gridy = 3;
+        add(new JLabel("Country"), constraints);
 
         countryComboBox = new JComboBox<>(countries);
-        countryComboBox.setFont(commonFont);
         constraints.gridx = 1;
+        constraints.gridy = 3;
         add(countryComboBox, constraints);
 
-        constraints.gridy = 6;
-        constraints.gridx = 0;
         JPanel buttonsPanel = getButtonsPanel();
-        constraints.gridwidth = 2;
-        constraints.anchor = GridBagConstraints.CENTER;
+
+        // Centering the buttons panel in the frame
+        constraints.gridx = 0;
+        constraints.gridy = 4;
+        constraints.gridwidth = 2; // Span across two columns
+        constraints.fill = GridBagConstraints.NONE;  // Override any previous fill settings
+        constraints.anchor = GridBagConstraints.CENTER; // Center the panel
         add(buttonsPanel, constraints);
 
+        // Set the frame size
         setPreferredSize(new Dimension(300, 200));
+
+        // Pack and display the window
         setVisible(true);
     }
 
-    private void launchErrorMessage(String message) {
-        ImageIcon icon = new ImageIcon(getClass().getResource("/icons/error.png"));
-        JOptionPane.showMessageDialog(
-                this,
-                message,
-                "Sign Up Error",
-                JOptionPane.ERROR_MESSAGE,
-                icon
-        );
-    }
-
     private JPanel getButtonsPanel() {
-        JPanel buttonsPanel = new JPanel(new GridLayout(1, 2, 10, 0));
+        JPanel buttonsPanel = new JPanel(new GridLayout(1, 2, 10, 0)); // 1 row, 2 cols, 10px horizontal gap
 
         JButton signUpButton = new JButton("Sign up");
-        signUpButton.setFont(commonFont);
-        signUpButton.setPreferredSize(commonButtonSize);
-        signUpButton.setBackground(new Color(126, 175, 252));
-        signUpButton.setForeground(new Color(255, 255, 255));
-        signUpButton.setOpaque(true);
-        signUpButton.setContentAreaFilled(true);
-        signUpButton.setBorderPainted(false);
-        signUpButton.setFocusPainted(false);
         signUpButton.addActionListener(e -> onSubmit());
 
         JButton cancelButton = new JButton("Cancel");
-        cancelButton.setFont(commonFont);
-        cancelButton.setPreferredSize(commonButtonSize);
         cancelButton.addActionListener(e -> onCancel());
-        cancelButton.setBackground(new Color(219, 77, 96));
-        cancelButton.setForeground(new Color(255, 255, 255));
-        cancelButton.setOpaque(true);
-        cancelButton.setContentAreaFilled(true);
-        cancelButton.setBorderPainted(false);
-        cancelButton.setFocusPainted(false);
 
+        // Set preferred size for the buttons to be the same
+        Dimension buttonSize = new Dimension(100, 25); // Set the desired size for both buttons
+        signUpButton.setPreferredSize(buttonSize);
+        cancelButton.setPreferredSize(buttonSize);
+
+        // Add buttons to the panel
         buttonsPanel.add(signUpButton);
         buttonsPanel.add(cancelButton);
         return buttonsPanel;
     }
 
     private void onSubmit() {
-        controller.handleSubmit(usernameField.getText(), new String(passwordField.getPassword()),
-                new String(repeatPasswordField.getPassword()), (String) countryComboBox.getSelectedItem());
+        // Get the user input from the fields
+        String username = usernameField.getText();
+        String password = new String(passwordField.getPassword());
+        String repeatPassword = new String(repeatPasswordField.getPassword());
+        String country = (String) countryComboBox.getSelectedItem();
+
+        // Print the data
+        System.out.println("Signup button clicked");
+        System.out.println("Username: " + username);
+        System.out.println("Password: " + password);
+        System.out.println("Repeat Password: " + repeatPassword);
+        System.out.println("Country: " + country);
+
+        // Submit
+        controller.handleSubmit(username, password, repeatPassword, country);
     }
 
     private void onCancel() {
+        // Print the message
+        System.out.println("Cancel button clicked");
+
         controller.handleCancel();
     }
-
-    @Override
     public void actionPerformed(ActionEvent evt) {
-        // Action event handling
+
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         SignupState state = (SignupState) evt.getNewValue();
         if (state.getDialogMessage() != null) {
-            launchErrorMessage(state.getDialogMessage());
+            JOptionPane.showMessageDialog(this, state.getDialogMessage());
         }
     }
 }
+

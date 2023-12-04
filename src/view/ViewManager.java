@@ -11,26 +11,18 @@ public class ViewManager implements PropertyChangeListener {
     private final JPanel views;
     private ViewManagerModel viewManagerModel;
 
-    public void addView(JPanel view, String viewName){
-        this.views.add(view, viewName);
-    }
-
-    public JPanel getViews() {
-        return this.views;
-    }
-
-    public ViewManager(ViewManagerModel viewManagerModel) {
-        this.cardLayout = new CardLayout();
-        this.views = new JPanel(cardLayout);
+    public ViewManager(JPanel views, CardLayout cardLayout, ViewManagerModel viewManagerModel) {
+        this.views = views;
+        this.cardLayout = cardLayout;
         this.viewManagerModel = viewManagerModel;
         this.viewManagerModel.addPropertyChangeListener(this);
+
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals("view")) {
             String viewModelName = (String) evt.getNewValue();
-            System.out.println(viewModelName);
             cardLayout.show(views, viewModelName);
         }
     }

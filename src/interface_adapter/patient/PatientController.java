@@ -4,29 +4,20 @@ import use_case.patient.PatientInputBoundary;
 import use_case.patient.PatientInputData;
 import use_case.patient.PatientOutputData;
 
-import java.util.ArrayList;
 import java.util.Map;
 
 public class PatientController {
     private Map<String, String> outputData;
-    private int id;
 
     private final PatientInputBoundary patientUseCaseInteractor;
 
-    public PatientController(PatientInputBoundary patientUseCaseInteractor, int id) {
-        this.id = id;
+    public PatientController(PatientInputBoundary patientUseCaseInteractor) {
         this.patientUseCaseInteractor = patientUseCaseInteractor;
     }
 
-    public void execute() {
+    public void execute(int id) {
         PatientInputData patientInputData = new PatientInputData(id);
         this.outputData = patientUseCaseInteractor.execute(patientInputData);
-    }
-
-    public void update(String fullName, String height, String weight, String dateOfBirth, String gender,
-                       String[] appointmentDates, ArrayList<String[]> prescribedDrugs, String[] allergies,
-                       String[] illnesses, String[] symptoms, String lifestyleInformation, String isPregnant, String additionalNotes) {
-
     }
 
     public String getNameField() {
@@ -71,9 +62,5 @@ public class PatientController {
 
     public String getAdditionalNotesField() {
         return outputData.get("additionalNotes");
-    }
-
-    public ArrayList<String[]> getDrugs() {
-        return null;
     }
 }

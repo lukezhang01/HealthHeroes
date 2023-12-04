@@ -4,7 +4,6 @@ package use_case.addPatient;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class AddPatientInputData {
@@ -41,18 +40,10 @@ public class AddPatientInputData {
         this.lifestyleInformation = lifestyleInformation;
         this.isPregnant = convertIsPregnant(isPregnant);
         this.additionalNotes = additionalNotes;
-
-        this.dateAdded = LocalDate.now();
     }
 
     public ArrayList<LocalDate> convertDates(String[] list) {
         ArrayList<LocalDate> dates = new ArrayList<>();
-        System.out.println(Arrays.toString(list));
-        if (list.length == 0 || Arrays.toString(list).equals("[]")) {
-            // by default make the current date the appointment date
-            dates.add(LocalDate.now());
-            return dates;
-        }
         for (String str : list) {
             dates.add(LocalDate.parse(str, formatter));
         }
