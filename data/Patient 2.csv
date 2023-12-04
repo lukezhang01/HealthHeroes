@@ -1,27 +1,29 @@
-﻿id
+id
 2
 full_name
-l
+dushaun lewis
 height
-170
-weight 
-73
+155.0
+weight
+65.0
 date_of_birth
-2004-06-06
+2004-05-06
 gender
 male
 appointment_date
-2023-12-01
+2023-11-28
 date_added
-2023-11-30
+2023-11-29
 prescribed_drugs
 fentanyl 100 2022-10-06 2023-01-10
-allergies
-
+dust,pollen
 illnesses
-
+cold,flu
+symptoms
+coughing,itchy throat
 lifestyle_information
-eats fast food
+plays basketball
 isPregnant
 false
 additional_notes
+null

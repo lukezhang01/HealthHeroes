@@ -131,7 +131,8 @@ public class CSVDatabaseAccessObject implements CSVDatabaseAccessInterface {
                 String file_path = "Patient " + patient.getID();
                 writer = new BufferedWriter(new FileWriter(file_path, false));
                 String[] patientData = new String[]{String.valueOf(patient.getID()), patient.fullName, String.valueOf(patient.getHeight()),
-                        String.valueOf(patient.getWeight()), patient.getAppointmentDatesAsString(), patient.getDateAdded().toString(),
+                        String.valueOf(patient.getWeight()), patient.getBirthDateAsString(), patient.getGender(),
+                        patient.getAppointmentDatesAsString(), patient.getDateAdded().toString(),
                         patient.getPrescribedDrugsAsString(), patient.getAllergiesAsString(), patient.getIllnessesAsString(),
                         patient.getSymptomsAsString(), patient.getLifestyleInformation(), String.valueOf(patient.getIsPregnant()),
                         patient.getAdditionalNotes()};
@@ -211,6 +212,7 @@ public class CSVDatabaseAccessObject implements CSVDatabaseAccessInterface {
     public void addPatient(Patient patient) {
         this.patients.put(patient.getID(), patient);
         this.savePatients();
+        System.out.println("Added patient successfully");
     }
 
     public String getUsername() {
