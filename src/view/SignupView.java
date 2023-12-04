@@ -44,6 +44,7 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         GridBagConstraints constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.anchor = GridBagConstraints.WEST;
+        constraints.insets = new Insets(10, 0, 10, 0); // Added padding for y-axis
 
         URL logoUrl = getClass().getClassLoader().getResource("icons/SignUp.png");
         ImageIcon originalIcon = new ImageIcon(logoUrl);
@@ -57,7 +58,7 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         add(logoLabel, constraints);
 
         constraints.gridx = 0;
-        constraints.gridy = 2;
+        constraints.gridy = 1;
         constraints.gridwidth = 1;
         JLabel usernameLabel = new JLabel("Username");
         usernameLabel.setFont(commonFont);
@@ -70,7 +71,7 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         constraints.gridx = 1;
         add(usernameField, constraints);
 
-        constraints.gridy = 3;
+        constraints.gridy = 2;
         constraints.gridx = 0;
         JLabel passwordLabel = new JLabel("Password");
         passwordLabel.setFont(commonFont);
@@ -83,7 +84,7 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         constraints.gridx = 1;
         add(passwordField, constraints);
 
-        constraints.gridy = 4;
+        constraints.gridy = 3;
         constraints.gridx = 0;
         JLabel repeatPasswordLabel = new JLabel("Repeat Password");
         repeatPasswordLabel.setFont(commonFont);
@@ -96,7 +97,7 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         constraints.gridx = 1;
         add(repeatPasswordField, constraints);
 
-        constraints.gridy = 5;
+        constraints.gridy = 4;
         constraints.gridx = 0;
         JLabel countryLabel = new JLabel("Country");
         countryLabel.setFont(commonFont);
@@ -108,7 +109,7 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         constraints.gridx = 1;
         add(countryComboBox, constraints);
 
-        constraints.gridy = 6;
+        constraints.gridy = 5;
         constraints.gridx = 0;
         JPanel buttonsPanel = getButtonsPanel();
         constraints.gridwidth = 2;

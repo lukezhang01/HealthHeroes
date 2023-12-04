@@ -21,8 +21,9 @@ public class AddPatientController {
         this.addPatientInteractor.execute(inputData);
     }
 
-    public void handleAddPatient() {
+    public AddPatientView handleAddPatient() {
         AddPatientView view = new AddPatientView(this);
         addPatientInteractor.display();
+        return view;
     }
 }
