@@ -23,6 +23,7 @@ public class PatientInteractor implements PatientInputBoundary {
     public Map<String, String> execute(PatientInputData patientInputData) {
         int id = patientInputData.getId();
         assert databaseAccessObject.existsById(id);
+        System.out.println(databaseAccessObject.getPatientData(id).values());
         return databaseAccessObject.getPatientData(id);
     }
 
