@@ -1,8 +1,11 @@
 ﻿# 🩺 Health Heroes (HH) - Doctor Drug Assistance Tool
 
 ## 📌 Overview
-https://docs.google.com/presentation/d/1QXVTlIKvhEGb74_8joQ4K3Q-6lx0xEQx7bAUkNJo6fc/edit?usp=sharing 
 Health Heroes is a comprehensive tool designed for doctors to manage, monitor, and suggest medications for their patients. By leveraging the Chat GPT API, Health Heroes offers advanced conflict and side-effect detection, as well as valuable insights for unique circumstances.
+
+For a quick overview of this project:
+https://docs.google.com/presentation/d/1QXVTlIKvhEGb74_8joQ4K3Q-6lx0xEQx7bAUkNJo6fc/edit?usp=sharing 
+
 
 ## 🌐 Domain
 
